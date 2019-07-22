@@ -101,7 +101,7 @@ class Utils
         if (self::doingOverrideConfiguration()) {
             return false;
         }
-        return $_ENV['USE_CACHE'] ?? false;
+        return $_ENV['POP_SERVER_USECACHE'] ?? false;
     }
 
     public static function enableApi()
