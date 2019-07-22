@@ -1,0 +1,50 @@
+<?php
+namespace PoP\Engine;
+
+abstract class DataStructureFormatterBase
+{
+    public function __construct()
+    {
+        $datastructureformat_manager = DataStructureFormatManagerFactory::getInstance();
+        $datastructureformat_manager->add($this->getName(), $this);
+    }
+    
+    abstract public function getName();
+    
+    public function getFormattedData($data)
+    {
+        return $data;
+    }
+    
+    public function getJsonEncodeType()
+    {
+        return null;
+    }
+    
+    public function getDataitem($data_fields, $resultitem, $fieldValueResolver)
+    {
+        $dataitem = array();
+        foreach ($data_fields as $field) {
+            $value = $fieldValueResolver->getValue($resultitem, $field);
+
+            // Comment Leo 29/08/2014: needed for compatibility with Dataloader_ConvertiblePostList
+            // (So that data-fields aimed for another post_type are not retrieved)
+            if (!\PoP\Engine\GeneralUtils::isError($value)) {
+                $dataitem[$field] = $value;
+            }
+        }
+        
+        return $dataitem;
+    }
+    
+    // Add dataitem to dataset
+    public function addToDataitems(&$dataitems, $id, $data_fields, $resultitem, $fieldValueResolver)
+    {
+        $dataitem = $this->getDataitem($data_fields, $resultitem, $fieldValueResolver);
+        
+        // Place under the ID, so it can be found in the database
+        $dataitems[$id] = $dataitem;
+
+        return $dataitem;
+    }
+}

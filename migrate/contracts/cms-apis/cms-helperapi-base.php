@@ -1,0 +1,10 @@
+<?php
+namespace PoP\Engine;
+
+abstract class HelperAPI_Base implements HelperAPI
+{
+    public function __construct()
+    {
+        HelperAPIFactory::setInstance($this);
+    }
+}
