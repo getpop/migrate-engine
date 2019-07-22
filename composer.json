@@ -18,7 +18,13 @@
     "minimum-stability": "dev",
     "prefer-stable": true,
     "require": {
-        "php" : "~7.1"
+        "php" : "~7.1",
+        "getpop/hooks": "^1.0@dev",
+        "getpop/root": "^1.0@dev",
+        "getpop/translation": "^1.0@dev",
+        "getpop/loosecontracts": "dev-master",
+        "getpop/modulerouting": "dev-master",
+        "getpop/definitions": "dev-master"
     },
     "autoload": {
         "files": [
