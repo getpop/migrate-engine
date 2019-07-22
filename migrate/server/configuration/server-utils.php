@@ -95,19 +95,13 @@ class Utils
 
     public static function useCache()
     {
-
         // If we are overriding the configuration, then do NOT use the cache
         // Otherwise, parameters from the config have need to be added to $vars, however they can't,
         // since we want the $vars model_instance_id to not change when testing with the "config" param
         if (self::doingOverrideConfiguration()) {
             return false;
         }
-
-        if (defined('POP_SERVER_USECACHE')) {
-            return POP_SERVER_USECACHE;
-        }
-
-        return false;
+        return $_ENV['USE_CACHE'] ?? false;
     }
 
     public static function enableApi()
