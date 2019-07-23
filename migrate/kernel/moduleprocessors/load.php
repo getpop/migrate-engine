@@ -27,3 +27,6 @@ require_once 'dataloads-base.php';
 require_once 'pop-moduleprocessor-manager-factory.php';
 require_once 'pop-moduleprocessor-manager.php';
 require_once 'pop-moduleprocessordecorator-manager-trait.php';
+require_once 'relationalfields-base.php';
+require_once 'relationalfields-dataqueries-base.php';
+require_once 'relationalfields-dataquery.php';
