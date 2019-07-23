@@ -7,6 +7,7 @@ require_once 'pop-engine-hooks.php';
 require_once 'pop-engine-factory.php';
 require_once 'pop-engine.php';
 
+require_once 'forminputs/load.php';
 require_once 'library/load.php';
 require_once 'vars/load.php';
 require_once 'moduleprocessors/load.php';
