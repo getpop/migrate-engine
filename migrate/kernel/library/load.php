@@ -12,3 +12,4 @@ require_once 'template-utils.php';
 require_once 'api-utils.php';
 require_once 'dataload-utils.php';
 require_once 'returntypes.php';
+require_once 'input-utils.php';
