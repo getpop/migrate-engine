@@ -31,4 +31,5 @@ require_once 'relationalfields-base.php';
 require_once 'relationalfields-dataqueries-base.php';
 require_once 'relationalfields-dataquery.php';
 require_once 'formcomponent-interface.php';
+require_once 'inputs-base-trait.php';
 require_once 'forminputs-base.php';
