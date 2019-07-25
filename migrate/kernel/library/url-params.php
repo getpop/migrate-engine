@@ -23,6 +23,8 @@ const GD_URLPARAM_ACTION = 'action';
 const GD_URLPARAM_LAYOUTS = 'layouts';
 const GD_URLPARAM_FIELDS = 'fields';
 
+const GD_URLPARAM_STRATUM = 'stratum';
+
 const GD_URLPARAM_BACKGROUNDLOADURLS = 'backgroundloadurls';
 const GD_URLPARAM_INTERCEPTURLS = 'intercept-urls';
 

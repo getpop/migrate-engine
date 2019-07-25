@@ -503,7 +503,7 @@ class Engine
         $meta = array();
         if (Utils::fetchingSite()) {
             $vars = Engine_Vars::getVars();
-            $cmsengineapi = \PoP\Engine\FunctionAPIFactory::getInstance();
+            // $cmsengineapi = \PoP\Engine\FunctionAPIFactory::getInstance();
 
             // $meta['domain'] = $cmsengineapi->getSiteURL();
             $meta[GD_DATALOAD_PARAMS] = array();
@@ -525,6 +525,22 @@ class Engine
             }
             if (Server\Utils::enableConfigByParams() && $vars['config']) {
                 $meta[GD_DATALOAD_PARAMS][POP_URLPARAM_CONFIG] = $vars['config'];
+            }
+
+            // Send the current selected theme back
+            if ($vars['stratum']) {
+                $meta[GD_DATALOAD_PARAMS][GD_URLPARAM_STRATUM] = $vars['stratum'];
+            }
+
+            $pushurlprops = [];
+
+            // Platform: send only when it's not the default one (so the user can still see/copy/share the embed/print URL)
+            if ($vars['stratum'] && !$vars['stratum-isdefault']) {
+                $pushurlprops[GD_URLPARAM_STRATUM] = $vars['stratum'];
+            }
+
+            if ($pushurlprops) {
+                $meta[GD_DATALOAD_PUSHURLATTS] = $pushurlprops;
             }
 
             // Tell the front-end: are the results from the cache? Needed for the editor, to initialize it since WP will not execute the code

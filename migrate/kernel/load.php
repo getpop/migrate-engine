@@ -14,3 +14,4 @@ require_once 'moduleprocessors/load.php';
 require_once 'dataload/load.php';
 require_once 'routemoduleprocessors/load.php';
 require_once 'settings/load.php';
+require_once 'strata/load.php';

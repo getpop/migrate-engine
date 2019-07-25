@@ -149,6 +149,9 @@ class Engine_Vars
             $target = POP_TARGET_MAIN;
         }
 
+        $platformmanager = StratumManagerFactory::getInstance();
+        $stratum = $platformmanager->getStratum();
+
         /**
          * Override values for the API mode!
          * Whenever doing ?action=api, the specific configuration below must be set in the vars
@@ -173,8 +176,11 @@ class Engine_Vars
             $dboutputmode = GD_URLPARAM_DATABASESOUTPUTMODE_COMBINED;
 
             // Only the data stratum is needed
-            $datastructure = POP_STRATUM_DATA;
+            $stratum = POP_STRATUM_DATA;
         }
+
+        $strata = $platformmanager->getStrata($stratum);
+        $stratum_isdefault = $platformmanager->isDefaultStratum();
         
         $modulefilter_manager = ModuleFilterManagerFacade::getInstance();
         $modulefilter = $modulefilter_manager->getSelectedModuleFilterName();

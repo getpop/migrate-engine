@@ -124,6 +124,7 @@ class Utils
                 GD_URLPARAM_MANGLED,
                 GD_URLPARAM_EXTRAROUTES,
                 GD_URLPARAM_ACTION, // Needed to remove ?action=preload, ?action=loaduserstate, ?action=loadlazy
+                GD_URLPARAM_STRATUM,
             )
         );
         $cmsenginehelpers = \PoP\Engine\HelperAPIFactory::getInstance();
