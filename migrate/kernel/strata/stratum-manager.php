@@ -46,7 +46,7 @@ class StratumManager
 
     public function getStratum()
     {
-        return $this->stratum_strata[$this->selected_stratum];
+        return $this->selected_stratum;
     }
     public function getStrata($stratum = null)
     {
