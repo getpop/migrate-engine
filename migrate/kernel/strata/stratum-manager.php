@@ -1,5 +1,5 @@
 <?php
-namespace PoP\Platform\Platforms;
+namespace PoP\Engine;
 use PoP\Hooks\Facades\HooksAPIFacade;
 
 class StratumManager

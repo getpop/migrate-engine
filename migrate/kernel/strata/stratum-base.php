@@ -1,5 +1,5 @@
 <?php
-namespace PoP\Platform\Platforms;
+namespace PoP\Engine;
 
 abstract class StratumBase
 {
