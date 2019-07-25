@@ -171,6 +171,9 @@ class Engine_Vars
             // dboutputmode => Combined: needed since we don't know under what database does the dbKeyPath point to. Then simply integrate all of them
             // Also, needed for REST/GraphQL APIs since all their data comes bundled all together
             $dboutputmode = GD_URLPARAM_DATABASESOUTPUTMODE_COMBINED;
+
+            // Only the data stratum is needed
+            $datastructure = POP_STRATUM_DATA;
         }
         
         $modulefilter_manager = ModuleFilterManagerFacade::getInstance();
