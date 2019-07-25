@@ -220,6 +220,9 @@ class Engine_Vars
             'action' => $action,
             'loading-site' => $loadingSite,
             'fetching-site' => $fetchingSite,
+            'stratum' => $stratum,
+            'strata' => $strata,
+            'stratum-isdefault' => $stratum_isdefault,
         );
 
         if (Server\Utils::enableConfigByParams()) {
