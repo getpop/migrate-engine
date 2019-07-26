@@ -69,6 +69,4 @@ class Plugin
 /**
  * Initialization
  */
-if (!defined('POP_SERVER_DISABLEPOP') || !POP_SERVER_DISABLEPOP) {
-    new Plugin();
-}
+new Plugin();
