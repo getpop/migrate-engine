@@ -94,9 +94,9 @@ class Utils
         return isset($_ENV['EXTERNAL_SITES_RUN_SAME_SOFTWARE']) ? strtolower($_ENV['EXTERNAL_SITES_RUN_SAME_SOFTWARE']) == "true" : false;
     }
 
-    public static function enableCustomCMSCode()
+    public static function disableCustomCMSCode()
     {
-        return isset($_ENV['ENABLE_CUSTOM_CMS_CODE']) ? strtolower($_ENV['ENABLE_CUSTOM_CMS_CODE']) == "true" : true;
+        return isset($_ENV['DISABLE_CUSTOM_CMS_CODE']) ? strtolower($_ENV['DISABLE_CUSTOM_CMS_CODE']) == "true" : false;
     }
 }
 
