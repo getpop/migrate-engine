@@ -84,9 +84,9 @@ class Utils
         return isset($_ENV['USE_CACHE']) ? strtolower($_ENV['USE_CACHE']) == "true" : false;
     }
 
-    public static function enableApi()
+    public static function disableAPI()
     {
-        return isset($_ENV['ENABLE_API']) ? strtolower($_ENV['ENABLE_API']) == "true" : true;
+        return isset($_ENV['DISABLE_API']) ? strtolower($_ENV['DISABLE_API']) == "true" : false;
     }
 
     public static function externalSitesRunSameSoftware()

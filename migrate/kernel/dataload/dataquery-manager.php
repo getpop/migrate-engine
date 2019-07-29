@@ -27,7 +27,7 @@ class DataQueryManager
 
         // Choose if to reject fields, starting from all of them...
         // By default, if API is enabled, then use this method
-        if (HooksAPIFacade::getInstance()->applyFilters('DataQueryManager:filter_by_rejection', Server\Utils::enableApi())) {
+        if (HooksAPIFacade::getInstance()->applyFilters('DataQueryManager:filter_by_rejection', !Server\Utils::disableAPI())) {
             return array_values(
                 array_diff(
                     $fields,

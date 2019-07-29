@@ -156,7 +156,7 @@ class Engine_Vars
          * Override values for the API mode!
          * Whenever doing ?action=api, the specific configuration below must be set in the vars
          */
-        if (Server\Utils::enableApi() && $action == POP_ACTION_API) {
+        if (!Server\Utils::disableAPI() && $action == POP_ACTION_API) {
 
             // For the API, the response is always JSON
             $output = GD_URLPARAM_OUTPUT_JSON;
