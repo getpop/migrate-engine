@@ -7,7 +7,6 @@ class Utils
 
     public static function init()
     {
-
         // Allow to override the configuration with values passed in the query string:
         // "config": comma-separated string with all fields with value "true"
         // Whatever fields are not there, will be considered "false"
@@ -24,7 +23,6 @@ class Utils
 
     public static function getOverrideConfiguration($key)
     {
-
         // If no values where defined in the configuration, then skip it completely
         if (empty(self::$override_configuration)) {
             return null;
@@ -41,7 +39,6 @@ class Utils
 
     public static function isMangled()
     {
-
         // By default, it is mangled, if not mangled then param "mangled" must have value "none"
         // Coment Leo 13/01/2017: getVars() can't function properly since it references objects which have not been initialized yet,
         // when called at the very beginning. So then access the request directly
@@ -50,29 +47,17 @@ class Utils
 
     public static function enableConfigByParams()
     {
-        if (defined('POP_SERVER_ENABLECONFIGBYPARAMS')) {
-            return POP_SERVER_ENABLECONFIGBYPARAMS;
-        }
-
-        return false;
+        return isset($_ENV['ENABLE_CONFIG_BY_PARAMS']) ? strtolower($_ENV['ENABLE_CONFIG_BY_PARAMS']) == "true" : false;
     }
 
     public static function failIfSubcomponentDataloaderUndefined()
     {
-        if (defined('POP_SERVER_FAILIFSUBCOMPONENTDATALOADERUNDEFINED')) {
-            return POP_SERVER_FAILIFSUBCOMPONENTDATALOADERUNDEFINED;
-        }
-
-        return false;
+        return isset($_ENV['FAIL_IF_SUBCOMPONENT_DATALOADER_IS_UNDEFINED']) ? strtolower($_ENV['FAIL_IF_SUBCOMPONENT_DATALOADER_IS_UNDEFINED']) == "true" : false;
     }
 
     public static function enableExtraRoutesByParams()
     {
-        if (defined('POP_SERVER_ENABLEEXTRAROUTESBYPARAMS')) {
-            return POP_SERVER_ENABLEEXTRAROUTESBYPARAMS;
-        }
-
-        return false;
+        return isset($_ENV['ENABLE_EXTRA_ROUTES_BY_PARAMS']) ? strtolower($_ENV['ENABLE_EXTRA_ROUTES_BY_PARAMS']) == "true" : false;
     }
 
     /**
@@ -80,17 +65,12 @@ class Utils
      */
     public static function compactResponseJsonKeys()
     {
-
         // Do not compact if not mangled
         if (!self::isMangled()) {
             return false;
         }
 
-        if (defined('POP_SERVER_COMPACTRESPONSEJSONKEYS')) {
-            return POP_SERVER_COMPACTRESPONSEJSONKEYS;
-        }
-
-        return false;
+        return isset($_ENV['COMPACT_RESPONSE_JSON_KEYS']) ? strtolower($_ENV['COMPACT_RESPONSE_JSON_KEYS']) == "true" : false;
     }
 
     public static function useCache()
@@ -101,34 +81,22 @@ class Utils
         if (self::doingOverrideConfiguration()) {
             return false;
         }
-        return $_ENV['POP_SERVER_USECACHE'] ? strtolower($_ENV['POP_SERVER_USECACHE']) == "true" : false;
+        return isset($_ENV['USE_CACHE']) ? strtolower($_ENV['USE_CACHE']) == "true" : false;
     }
 
     public static function enableApi()
     {
-        if (defined('POP_SERVER_ENABLEAPI')) {
-            return POP_SERVER_ENABLEAPI;
-        }
-
-        return true;
+        return isset($_ENV['ENABLE_API']) ? strtolower($_ENV['ENABLE_API']) == "true" : true;
     }
 
     public static function externalSitesRunSameSoftware()
     {
-        if (defined('POP_SERVER_EXTERNALSITESRUNSAMESOFTWARE')) {
-            return POP_SERVER_EXTERNALSITESRUNSAMESOFTWARE;
-        }
-
-        return false;
+        return isset($_ENV['EXTERNAL_SITES_RUN_SAME_SOFTWARE']) ? strtolower($_ENV['EXTERNAL_SITES_RUN_SAME_SOFTWARE']) == "true" : false;
     }
 
     public static function enableCustomCMSCode()
     {
-        if (defined('POP_SERVER_ENABLECUSTOMCMSCODE')) {
-            return POP_SERVER_ENABLECUSTOMCMSCODE;
-        }
-
-        return true;
+        return isset($_ENV['ENABLE_CUSTOM_CMS_CODE']) ? strtolower($_ENV['ENABLE_CUSTOM_CMS_CODE']) == "true" : true;
     }
 }
 
