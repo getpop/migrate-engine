@@ -1,5 +1,6 @@
 <?php
 namespace PoP\Engine;
+use PoP\Engine\Utils;
 use PoP\Engine\Facades\InstanceManagerFacade;
 
 class DataloadUtils
@@ -16,14 +17,16 @@ class DataloadUtils
 
         $fieldValueResolverClass = $dataloader->getFieldValueResolverClass();
         $fieldValueResolver = $instanceManager->getInstance($fieldValueResolverClass);
-        $subcomponent_dataloader_class = $fieldValueResolver->getFieldDefaultDataloaderClass($subcomponent_data_field);
+        $subcomponent_data_field_name = Utils::getFieldName($subcomponent_data_field);
+        $subcomponent_data_field_atts = Utils::getFieldAtts($subcomponent_data_field);
+        $subcomponent_dataloader_class = $fieldValueResolver->getFieldDefaultDataloaderClass($subcomponent_data_field_name, $subcomponent_data_field_atts);
         if (!$subcomponent_dataloader_class && \PoP\Engine\Server\Utils::failIfSubcomponentDataloaderUndefined()) {
             throw new \Exception(sprintf('There is no default dataloader set for field  "%s" from dataloader "%s" and fieldValueResolver "%s" (%s)', $subcomponent_data_field, $dataloader_class, $fieldValueResolverClass, fullUrl()));
         }
 
         return $subcomponent_dataloader_class;
     }
-    
+
     public static function addFilterParams($url, $moduleValues = array())
     {
         $moduleprocessor_manager = ModuleProcessorManagerFactory::getInstance();

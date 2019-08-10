@@ -4,7 +4,7 @@ use PoP\Engine\Facades\InstanceManagerFacade;
 
 abstract class ConvertibleFieldValueResolverBase extends FieldValueResolverBase
 {
-    abstract protected function getDefaultFieldValueResolverClass();
+    abstract protected function getDefaultFieldValueResolverClass(): string;
 
     protected function getFieldValueResolverAndResolver($resultitem)
     {
@@ -37,8 +37,8 @@ abstract class ConvertibleFieldValueResolverBase extends FieldValueResolverBase
         // Return also the resolver, as to cast the object
         return array($fieldValueResolver, $fieldvalueresolver_resolver);
     }
-    
-    public function getValue($resultitem, $field)
+
+    public function getValue($resultitem, string $fieldName, array $fieldAtts = [])
     {
 
         // Delegate to the FieldValueResolver corresponding to this object
@@ -50,22 +50,22 @@ abstract class ConvertibleFieldValueResolverBase extends FieldValueResolverBase
         }
 
         // Delegate to that fieldValueResolver to obtain the value
-        return $fieldValueResolver->getValue($resultitem, $field);
+        return $fieldValueResolver->getValue($resultitem, $fieldName, $fieldAtts);
     }
 
-    public function getFieldDefaultDataloaderClass($field)
+    public function getFieldDefaultDataloaderClass(string $fieldName, array $fieldAtts = [])
     {
 
         // Please notice that we're getting the default dataloader from the default fieldValueResolver
         if ($defaultFieldValueResolverClass = $this->getDefaultFieldValueResolverClass()) {
             $instanceManager = InstanceManagerFacade::getInstance();
             $default_fieldvalueresolver = $instanceManager->getInstance($defaultFieldValueResolverClass);
-            $default_dataloader = $default_fieldvalueresolver->getFieldDefaultDataloaderClass($field);
+            $default_dataloader = $default_fieldvalueresolver->getFieldDefaultDataloaderClass($fieldName, $fieldAtts);
             if ($default_dataloader) {
                 return $default_dataloader;
             }
         }
 
-        return parent::getFieldDefaultDataloaderClass($field);
+        return parent::getFieldDefaultDataloaderClass($fieldName, $fieldAtts);
     }
 }

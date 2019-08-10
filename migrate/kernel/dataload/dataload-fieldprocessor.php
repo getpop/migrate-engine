@@ -1,17 +1,14 @@
 <?php
 namespace PoP\Engine;
-use PoP\Engine\Utils;
-
-use PoP\Hooks\Facades\HooksAPIFacade;
 use PoP\Engine\Facades\InstanceManagerFacade;
 
 abstract class FieldValueResolverBase
 {
     abstract public function getId($resultitem);
-    
-    public function getValue($resultitem, $field)
+
+    public function getValue($resultitem, string $fieldName, array $fieldAtts = [])
     {
-        switch ($fieldName = Utils::getFieldName($field)) {
+        switch ($fieldName) {
             case 'id':
                 return $this->getId($resultitem);
         }
@@ -20,13 +17,13 @@ abstract class FieldValueResolverBase
         // (So that data-fields aimed for another post_type are not retrieved)
         return new \PoP\Engine\Error('no-field');
     }
-    
-    public function getFieldDefaultDataloaderClass($field)
+
+    public function getFieldDefaultDataloaderClass(string $fieldName, array $fieldAtts = [])
     {
         return null;
     }
 
-    public function getExtensionValue($fieldValueResolverClass, $resultitem, $field)
+    public function getExtensionValue(string $fieldValueResolverClass, $resultitem, string $fieldName, array $fieldAtts = [])
     {
         $instanceManager = InstanceManagerFacade::getInstance();
         $attachableExtensionManager = AttachableExtensionManagerFactory::getInstance();
@@ -36,7 +33,7 @@ abstract class FieldValueResolverBase
         foreach (array_reverse($attachableExtensionManager->getExtensionClasses($fieldValueResolverClass)) as $extensionClass) {
             $instance = $instanceManager->getInstance($extensionClass);
             // Also send the fieldValueResolver along, as to get the id of the $resultitem being passed
-            $value = $instance->getValue($resultitem, $field, $this);
+            $value = $instance->getValue($this, $resultitem, $fieldName, $fieldAtts);
             if (!\PoP\Engine\GeneralUtils::isError($value)) {
                 return $value;
             }
@@ -45,14 +42,14 @@ abstract class FieldValueResolverBase
         return new \PoP\Engine\Error('no-fieldValueResolver-hook');
     }
 
-    public function getExtensionFieldDefaultDataloaderClass($fieldValueResolverClass, $field)
+    public function getExtensionFieldDefaultDataloaderClass(string $fieldValueResolverClass, string $fieldName, array $fieldAtts = [])
     {
         $instanceManager = InstanceManagerFacade::getInstance();
         $attachableExtensionManager = AttachableExtensionManagerFactory::getInstance();
 
         foreach (array_reverse($attachableExtensionManager->getExtensionClasses($fieldValueResolverClass)) as $extensionClass) {
             $instance = $instanceManager->getInstance($extensionClass);
-            $value = $instance->getFieldDefaultDataloaderClass($field, $this);
+            $value = $instance->getFieldDefaultDataloaderClass($this, $fieldName, $fieldAtts);
             if ($value) {
                 return $value;
             }

@@ -1,20 +1,19 @@
 <?php
 namespace PoP\Engine;
-use PoP\Hooks\Facades\HooksAPIFacade;
 
 abstract class AbstractFieldValueResolverExtension
 {
 	/**
 	 * This class is attached to a FieldValueResolver
-	 */ 
+	 */
 	use AttachableExtensionTrait;
 
-    public function getValue($resultitem, $field, $fieldValueResolver)
+    public function getValue($fieldValueResolver, $resultitem, string $fieldName, array $fieldAtts = [])
     {
         return new \PoP\Engine\Error('no-field');
     }
 
-    public function getFieldDefaultDataloaderClass($field, $fieldValueResolver)
+    public function getFieldDefaultDataloaderClass($fieldValueResolver, string $fieldName, array $fieldAtts = [])
     {
         return null;
     }
