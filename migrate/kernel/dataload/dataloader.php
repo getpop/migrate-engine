@@ -7,12 +7,12 @@ abstract class Dataloader
 {
     abstract public function getDatabaseKey();
     abstract public function getFieldValueResolverClass();
-    
+
     public function getDataquery()
     {
         return null;
     }
-    
+
     public function executeGetData(array $ids)
     {
         return array();
@@ -39,7 +39,7 @@ abstract class Dataloader
                 }
             }
         }
-        
+
         return array(
             'dbobjectids' => $dbobjectids,
             'dbitems' => $databaseitems,
@@ -60,16 +60,16 @@ abstract class Dataloader
             array(&$data_fields),
             $this
         );
-        
+
         // Add to the dataitems
         foreach ($data_fields as $dbname => $db_data_fields) {
             if ($db_data_fields) {
                 $databaseitems[$dbname] = $databaseitems[$dbname] ?? array();
-                $dataitem = $formatter->addToDataitems($databaseitems[$dbname], $id, $db_data_fields, $resultitem, $fieldValueResolver);
+                $formatter->addToDataitems($databaseitems[$dbname], $id, $db_data_fields, $resultitem, $fieldValueResolver);
             }
         }
     }
-    
+
 
     /**
      * key: id
