@@ -33,7 +33,7 @@ abstract class FieldValueResolverBase
         $attachableExtensionManager = AttachableExtensionManagerFactory::getInstance();
 
         // Iterate classes from the current class towards the parent classes until finding fieldValueResolver that satisfies processing this field
-        $class = self::class;
+        $class = get_called_class();
         do {
             // Important: do array_reverse to enable more specific hooks, which are initialized later on in the project, to take priority
             foreach (array_reverse($attachableExtensionManager->getExtensionClasses($class)) as $extensionClass) {
@@ -56,7 +56,7 @@ abstract class FieldValueResolverBase
         $instanceManager = InstanceManagerFacade::getInstance();
         $attachableExtensionManager = AttachableExtensionManagerFactory::getInstance();
 
-        $class = self::class;
+        $class = get_called_class();
         do {
             foreach (array_reverse($attachableExtensionManager->getExtensionClasses($class)) as $extensionClass) {
                 $instance = $instanceManager->getInstance($extensionClass);
