@@ -14,20 +14,10 @@ abstract class FieldValueResolverBase
                 return $this->getId($resultitem);
         }
 
-        return $this->getExtensionValue($resultitem, $fieldName, $fieldAtts);
+        return $this->getValueFromUnits($resultitem, $fieldName, $fieldAtts);
     }
 
-    public function getFieldDefaultDataloaderClass(string $fieldName, array $fieldAtts = [])
-    {
-        switch ($fieldName) {
-            case 'id':
-                return $this->getIdFieldDataloaderClass();
-        }
-
-        return $this->getExtensionFieldDefaultDataloaderClass($fieldName, $fieldAtts);
-    }
-
-    protected function getExtensionValue($resultitem, string $fieldName, array $fieldAtts = [])
+    protected function getValueFromUnits($resultitem, string $fieldName, array $fieldAtts = [])
     {
         $instanceManager = InstanceManagerFacade::getInstance();
         $attachableExtensionManager = AttachableExtensionManagerFactory::getInstance();
@@ -51,7 +41,17 @@ abstract class FieldValueResolverBase
         return new \PoP\Engine\Error('no-field:'.$fieldName);
     }
 
-    protected function getExtensionFieldDefaultDataloaderClass(string $fieldName, array $fieldAtts = [])
+    public function getFieldDefaultDataloaderClass(string $fieldName, array $fieldAtts = [])
+    {
+        switch ($fieldName) {
+            case 'id':
+                return $this->getIdFieldDataloaderClass();
+        }
+
+        return $this->getFieldDefaultDataloaderClassFromUnits($fieldName, $fieldAtts);
+    }
+
+    protected function getFieldDefaultDataloaderClassFromUnits(string $fieldName, array $fieldAtts = [])
     {
         $instanceManager = InstanceManagerFacade::getInstance();
         $attachableExtensionManager = AttachableExtensionManagerFactory::getInstance();
