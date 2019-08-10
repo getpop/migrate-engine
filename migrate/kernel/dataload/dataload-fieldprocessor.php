@@ -48,7 +48,7 @@ abstract class FieldValueResolverBase
 
         // Needed for compatibility with Dataloader_ConvertiblePostList
         // (So that data-fields aimed for another post_type are not retrieved)
-        return new \PoP\Engine\Error('no-field');
+        return new \PoP\Engine\Error('no-field:'.$fieldName);
     }
 
     protected function getExtensionFieldDefaultDataloaderClass(string $fieldName, array $fieldAtts = [])

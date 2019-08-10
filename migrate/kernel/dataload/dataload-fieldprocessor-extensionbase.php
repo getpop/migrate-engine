@@ -10,7 +10,7 @@ abstract class AbstractFieldValueResolverExtension
 
     public function getValue($fieldValueResolver, $resultitem, string $fieldName, array $fieldAtts = [])
     {
-        return new \PoP\Engine\Error('no-field');
+        return new \PoP\Engine\Error('no-field:'.$fieldName);
     }
 
     public function getFieldDefaultDataloaderClass($fieldValueResolver, string $fieldName, array $fieldAtts = [])
