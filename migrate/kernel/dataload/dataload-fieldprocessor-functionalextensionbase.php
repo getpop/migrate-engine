@@ -1,6 +1,6 @@
 <?php
 namespace PoP\Engine;
 
-abstract class AbstractFunctionalFieldValueResolverExtension extends AbstractFieldValueResolverExtension
+abstract class AbstractFunctionalFieldValueResolverUnit extends AbstractFieldValueResolverUnit
 {
 }

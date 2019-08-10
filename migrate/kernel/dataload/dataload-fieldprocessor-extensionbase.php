@@ -1,7 +1,7 @@
 <?php
 namespace PoP\Engine;
 
-abstract class AbstractFieldValueResolverExtension
+abstract class AbstractFieldValueResolverUnit
 {
 	/**
 	 * This class is attached to a FieldValueResolver
