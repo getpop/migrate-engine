@@ -26,8 +26,7 @@ abstract class DataStructureFormatterBase
     {
         $dataitem = array();
         foreach ($data_fields as $field) {
-            $fieldName = Utils::getFieldName($field);
-            $fieldAtts = Utils::getFieldAtts($field);
+            list($fieldName, $fieldAtts) = Utils::listField($field);
             $value = $fieldValueResolver->getValue($resultitem, $fieldName, $fieldAtts);
 
             // Comment Leo 29/08/2014: needed for compatibility with Dataloader_ConvertiblePostList
