@@ -6,11 +6,15 @@ use PoP\Engine\FilterInputProcessor;
 class PoP_Module_Processor_FilterInputs extends \PoP\Engine\AbstractFormInputs implements \PoP\Engine\DataloadQueryArgsFilter
 {
     public const MODULE_FILTERINPUT_ORDER = 'filterinput-order';
+    public const MODULE_FILTERINPUT_LIMIT = 'filterinput-limit';
+    public const MODULE_FILTERINPUT_OFFSET = 'filterinput-offset';
 
     public function getModulesToProcess()
     {
         return array(
             [self::class, self::MODULE_FILTERINPUT_ORDER],
+            [self::class, self::MODULE_FILTERINPUT_LIMIT],
+            [self::class, self::MODULE_FILTERINPUT_OFFSET],
         );
     }
 
@@ -18,6 +22,8 @@ class PoP_Module_Processor_FilterInputs extends \PoP\Engine\AbstractFormInputs i
     {
         $filterInputs = [
             self::MODULE_FILTERINPUT_ORDER => [FilterInputProcessor::class, FilterInputProcessor::FILTERINPUT_ORDER],
+            self::MODULE_FILTERINPUT_LIMIT => [FilterInputProcessor::class, FilterInputProcessor::FILTERINPUT_LIMIT],
+            self::MODULE_FILTERINPUT_OFFSET => [FilterInputProcessor::class, FilterInputProcessor::FILTERINPUT_OFFSET],
         ];
         return $filterInputs[$module[1]];
     }
@@ -36,9 +42,13 @@ class PoP_Module_Processor_FilterInputs extends \PoP\Engine\AbstractFormInputs i
     {
         switch ($module[1]) {
             case self::MODULE_FILTERINPUT_ORDER:
+            case self::MODULE_FILTERINPUT_LIMIT:
+            case self::MODULE_FILTERINPUT_OFFSET:
                 // Add a nice name, so that the URL params when filtering make sense
                 $names = array(
                     self::MODULE_FILTERINPUT_ORDER => 'order',
+                    self::MODULE_FILTERINPUT_LIMIT => 'limit',
+                    self::MODULE_FILTERINPUT_OFFSET => 'offset',
                 );
                 return $names[$module[1]];
         }
