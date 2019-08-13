@@ -22,6 +22,8 @@ require_once 'pop-moduledecoratorprocessor.php';
 require_once 'pop-querydatamoduleprocessor-trait.php';
 require_once 'pop-querydatamoduleprocessor.php';
 
+require_once 'dataloader-api-trait.php';
+
 require_once 'filterinput-processor-manager.php';
 require_once 'filterinput-processor.php';
 
