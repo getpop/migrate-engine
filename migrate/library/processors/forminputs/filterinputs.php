@@ -1,5 +1,8 @@
 <?php
 
+use PoP\Engine\FilterInput;
+use PoP\Engine\FilterInputProcessor;
+
 class PoP_Module_Processor_FilterInputs extends \PoP\Engine\AbstractFormInputs implements \PoP\Engine\DataloadQueryArgsFilter
 {
     public const MODULE_FILTERINPUT_ORDER = 'filterinput-order';
@@ -11,14 +14,12 @@ class PoP_Module_Processor_FilterInputs extends \PoP\Engine\AbstractFormInputs i
         );
     }
 
-    public function filterDataloadQueryArgs(array &$query, array $module, $value)
+    public function getFilterInput(array $module): ?array
     {
-        switch ($module[1]) {
-            case self::MODULE_FILTERINPUT_ORDER:
-                $query['orderby'] = $value['orderby'];
-                $query['order'] = $value['order'];
-                break;
-        }
+        $filterInputs = [
+            self::MODULE_FILTERINPUT_ORDER => [FilterInputProcessor::class, FilterInputProcessor::FILTERINPUT_ORDER],
+        ];
+        return $filterInputs[$module[1]];
     }
 
     public function getInputClass(array $module)
@@ -27,7 +28,7 @@ class PoP_Module_Processor_FilterInputs extends \PoP\Engine\AbstractFormInputs i
             case self::MODULE_FILTERINPUT_ORDER:
                 return \PoP\Engine\GD_FormInput_Order::class;
         }
-        
+
         return parent::getInputClass($module);
     }
 

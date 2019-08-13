@@ -60,12 +60,15 @@ trait QueryDataModuleProcessorTrait
     {
         if ($active_filterqueryargs_modules = $this->getActiveDataloadQueryArgsFilteringModules($module)) {
             $moduleprocessor_manager = ModuleProcessorManagerFactory::getInstance();
+            global $pop_filterinputprocessor_manager;
 
             foreach ($active_filterqueryargs_modules as $submodule) {
 
                 $submodule_processor = $moduleprocessor_manager->getProcessor($submodule);
                 $value = $submodule_processor->getValue($submodule);
-                $submodule_processor->filterDataloadQueryArgs($query, $submodule, $value);
+                if ($filterInput = $submodule_processor->getFilterInput($submodule)) {
+                    $pop_filterinputprocessor_manager->getProcessor($filterInput)->filterDataloadQueryArgs($query, $filterInput, $value);
+                }
             }
         }
     }
