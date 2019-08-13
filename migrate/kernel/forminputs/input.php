@@ -21,12 +21,11 @@ class GD_FormInput
     {
         return false;
     }
-    
-    public function getSelectedvalueFromRequest()
-    {
 
+    protected function getValueFromSource(array $source)
+    {
         // If not set, it will be NULL
-        $value =  $_REQUEST[$this->getName()];
+        $value =  $source[$this->getName()];
 
         // If it is multiple and the URL contains an empty value (eg: &searchfor[]=&), it will interpret it as array(''),
         // but instead it must be an empty array
@@ -49,25 +48,27 @@ class GD_FormInput
     /**
      * $_REQUEST has priority (for when editing post / user data, after submitting form this will override original post / user metadata values)
      */
-    public function getValue(/*$filter = null*/)
+    public function getValue(?array $source = null)
     {
-
         // Empty values (eg: '', array()) can be the value. Only if NULL get a default value
         if (!is_null($this->selected)) {
             return $this->selected;
         }
 
+        // If no source is passed, then use the request
+        $source = $source ?? $_REQUEST;
+
         // Otherwise, if filtering, get the value from the request
         // if (!$filter || \PoP\Engine\FilterUtils::filteringBy($filter)) {
-        $selected = $this->getSelectedvalueFromRequest();
+        $selected = $this->getValueFromSource($source);
         if (!is_null($selected)) {
             return $selected;
         }
         // }
-        
+
         return $this->getDefaultValue();
     }
-    
+
     /**
      * Function to override
      */

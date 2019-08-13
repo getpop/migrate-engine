@@ -22,7 +22,7 @@ trait FormInputsTrait
         if ($this->isMultiple($module)) {
             return GD_FormInput_MultiInput::class;
         }
-        
+
         return GD_FormInput::class;
     }
 
@@ -40,11 +40,11 @@ trait FormInputsTrait
     {
         return ModuleUtils::getModuleOutputName($module);
     }
-    
-    public function getValue(array $module)
+
+    public function getValue(array $module, ?array $source = null)
     {
         if ($input = $this->getInput($module)) {
-            return $input->getValue();
+            return $input->getValue($source);
         }
         return null;
     }
