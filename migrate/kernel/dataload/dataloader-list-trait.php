@@ -65,7 +65,7 @@ trait Dataloader_ListTrait
         if ($filtering_modules = $data_properties[GD_DATALOAD_QUERYARGSFILTERINGMODULES]) {
             $moduleprocessor_manager = \PoP\Engine\ModuleProcessorManagerFactory::getInstance();
             foreach ($filtering_modules as $module) {
-                $moduleprocessor_manager->getProcessor($module)->filterHeadmoduleDataloadQueryArgs($query, $module);
+                $moduleprocessor_manager->getProcessor($module)->filterHeadmoduleDataloadQueryArgs($module, $query);
             }
         }
 

@@ -14,7 +14,7 @@ class FilterInputProcessor extends \PoP\Engine\AbstractFilterInputProcessor
         );
     }
 
-    public function filterDataloadQueryArgs(array &$query, array $filterInput, $value)
+    public function filterDataloadQueryArgs(array $filterInput, array &$query, $value)
     {
         switch ($filterInput[1]) {
             case self::FILTERINPUT_ORDER:

@@ -56,18 +56,17 @@ trait QueryDataModuleProcessorTrait
 
         return $ret;
     }
-    public function filterHeadmoduleDataloadQueryArgs(&$query, array $module, array $source = null)
+    public function filterHeadmoduleDataloadQueryArgs(array $module, array &$query, array $source = null)
     {
         if ($active_filterqueryargs_modules = $this->getActiveDataloadQueryArgsFilteringModules($module, $source)) {
             $moduleprocessor_manager = ModuleProcessorManagerFactory::getInstance();
             global $pop_filterinputprocessor_manager;
-
             foreach ($active_filterqueryargs_modules as $submodule) {
 
                 $submodule_processor = $moduleprocessor_manager->getProcessor($submodule);
                 $value = $submodule_processor->getValue($submodule, $source);
                 if ($filterInput = $submodule_processor->getFilterInput($submodule)) {
-                    $pop_filterinputprocessor_manager->getProcessor($filterInput)->filterDataloadQueryArgs($query, $filterInput, $value);
+                    $pop_filterinputprocessor_manager->getProcessor($filterInput)->filterDataloadQueryArgs($filterInput, $query, $value);
                 }
             }
         }
