@@ -56,16 +56,16 @@ trait QueryDataModuleProcessorTrait
 
         return $ret;
     }
-    public function filterHeadmoduleDataloadQueryArgs(&$query, array $module)
+    public function filterHeadmoduleDataloadQueryArgs(&$query, array $module, array $source = null)
     {
-        if ($active_filterqueryargs_modules = $this->getActiveDataloadQueryArgsFilteringModules($module)) {
+        if ($active_filterqueryargs_modules = $this->getActiveDataloadQueryArgsFilteringModules($module, $source)) {
             $moduleprocessor_manager = ModuleProcessorManagerFactory::getInstance();
             global $pop_filterinputprocessor_manager;
 
             foreach ($active_filterqueryargs_modules as $submodule) {
 
                 $submodule_processor = $moduleprocessor_manager->getProcessor($submodule);
-                $value = $submodule_processor->getValue($submodule);
+                $value = $submodule_processor->getValue($submodule, $source);
                 if ($filterInput = $submodule_processor->getFilterInput($submodule)) {
                     $pop_filterinputprocessor_manager->getProcessor($filterInput)->filterDataloadQueryArgs($query, $filterInput, $value);
                 }
@@ -73,12 +73,13 @@ trait QueryDataModuleProcessorTrait
         }
     }
 
-    public function getActiveDataloadQueryArgsFilteringModules(array $module)
+    public function getActiveDataloadQueryArgsFilteringModules(array $module, array $source = null)
     {
         // Search for cached result
-        $this->activeDataloadQueryArgsFilteringModules = $this->activeDataloadQueryArgsFilteringModules ?? [];
-        if (!is_null($this->activeDataloadQueryArgsFilteringModules[$module[1]])) {
-            return $this->activeDataloadQueryArgsFilteringModules[$module[1]];
+        $cacheKey = json_encode($source ?? []);
+        $this->activeDataloadQueryArgsFilteringModules[$cacheKey] = $this->activeDataloadQueryArgsFilteringModules[$cacheKey] ?? [];
+        if (!is_null($this->activeDataloadQueryArgsFilteringModules[$cacheKey][$module[1]])) {
+            return $this->activeDataloadQueryArgsFilteringModules[$cacheKey][$module[1]];
         }
         // if ($this instanceof \PoP\Engine\DataloadingModule) {
 
@@ -87,22 +88,22 @@ trait QueryDataModuleProcessorTrait
         // if ($filter_module = $this->getFilterSubmodule($module)) {
         // Check if the module has any filtercomponent
         if ($filterqueryargs_modules = array_filter(
-            // $moduleprocessor_manager->getProcessor($filter_module)->getDatasetmoduletreeSectionFlattenedModules($filter_module), 
-            $this->getDatasetmoduletreeSectionFlattenedModules($module), 
+            // $moduleprocessor_manager->getProcessor($filter_module)->getDatasetmoduletreeSectionFlattenedModules($filter_module),
+            $this->getDatasetmoduletreeSectionFlattenedModules($module),
             function($module) use($moduleprocessor_manager) {
                 return $moduleprocessor_manager->getProcessor($module) instanceof \PoP\Engine\DataloadQueryArgsFilter;
             }
         )) {
             // Check if if we're currently filtering by any filtercomponent
             $modules = array_filter(
-                $filterqueryargs_modules, 
-                function($module) use($moduleprocessor_manager) {
-                    return !is_null($moduleprocessor_manager->getProcessor($module)->getValue($module));
+                $filterqueryargs_modules,
+                function($module) use($moduleprocessor_manager, $source) {
+                    return !is_null($moduleprocessor_manager->getProcessor($module)->getValue($module, $source));
                 }
             );
         }
 
-        $this->activeDataloadQueryArgsFilteringModules[$module[1]] = $modules;
+        $this->activeDataloadQueryArgsFilteringModules[$cacheKey][$module[1]] = $modules;
         return $modules;
     }
 
@@ -181,7 +182,7 @@ trait QueryDataModuleProcessorTrait
         if ($queryhandler_name = $this->getQueryhandler($module)) {
             $queryhandler_manager = QueryHandlerManagerFactory::getInstance();
             $queryhandler = $queryhandler_manager->get($queryhandler_name);
-            
+
             if ($query_state = $queryhandler->getQueryState($data_properties, $dataaccess_checkpoint_validation, $actionexecution_checkpoint_validation, $executed, $dbobjectids)) {
                 $ret['querystate'] = $query_state;
             }
