@@ -152,7 +152,7 @@ class Engine
                 )
             );
         }
-        
+
         HooksAPIFacade::getInstance()->doAction('\PoP\Engine\Engine:beginning');
 
         // Process the request and obtain the results
@@ -223,7 +223,7 @@ class Engine
         $moduleprocessor_manager = ModuleProcessorManagerFactory::getInstance();
 
         $processor = $moduleprocessor_manager->getProcessor($module);
-        
+
         // Important: cannot use it if doing POST, because the request may have to be handled by a different block than the one whose data was cached
         // Eg: doing GET on /add-post/ will show the form BLOCK_ADDPOST_CREATE, but doing POST on /add-post/ will bring the action ACTION_ADDPOST_CREATE
         // First check if there's a cache stored
@@ -236,7 +236,7 @@ class Engine
         if (!$model_props) {
             $model_props = array();
             $processor->initModelPropsModuletree($module, $model_props, array(), array());
-            
+
             if ($useCache) {
                 $cachemanager->storeCacheByModelInstance(self::CACHETYPE_PROPS, $model_props);
             }
@@ -250,7 +250,7 @@ class Engine
     {
         $moduleprocessor_manager = ModuleProcessorManagerFactory::getInstance();
         $processor = $moduleprocessor_manager->getProcessor($module);
-        
+
         // The input $props is the model_props. We add, on object, the mutableonrequest props, resulting in a "static + mutableonrequest" props object
         $processor->initRequestPropsModuletree($module, $props, array(), array());
 
@@ -390,6 +390,16 @@ class Engine
         }
     }
 
+    protected function maybeRemoveEntryModuleFromOutput(array $results): array
+    {
+        $vars = Engine_Vars::getVars();
+        // For the API: maybe remove the entry module from the output
+        if (!\PoP\Engine\Server\Utils::disableAPI() && $vars['scheme'] == POP_SCHEME_API && $vars['action'] == POP_ACTION_REMOVE_ENTRYMODULE_FROM_OUTPUT) {
+            return array_values($results)[0];
+        }
+        return $results;
+    }
+
     public function getModuleDatasetSettings(array $module, $model_props, array &$props)
     {
         $cachemanager = PersistentCacheFacade::getInstance();
@@ -398,14 +408,10 @@ class Engine
         $ret = array();
 
         $processor = $moduleprocessor_manager->getProcessor($module);
-        
+
         // From the state we know if to process static/staful content or both
         $vars = Engine_Vars::getVars();
-        $datasources = $vars['datasources'];
         $dataoutputmode = $vars['dataoutputmode'];
-        $dataoutputitems = $vars['dataoutputitems'];
-
-        $add_datasetsettings = in_array(GD_URLPARAM_DATAOUTPUTITEMS_DATASETMODULESETTINGS, $dataoutputitems);
 
         // Templates: What modules must be executed after call to loadMore is back with data:
         // CB: list of modules to merge
@@ -423,7 +429,7 @@ class Engine
             $this->cachedsettings = true;
         } else {
             $immutable_datasetsettings = $processor->getImmutableSettingsDatasetmoduletree($module, $model_props);
-            
+
             if ($useCache) {
                 $cachemanager->storeCacheByModelInstance(self::CACHETYPE_IMMUTABLEDATASETSETTINGS, $immutable_datasetsettings);
             }
@@ -439,6 +445,8 @@ class Engine
         } elseif ($dataoutputmode == GD_URLPARAM_DATAOUTPUTMODE_COMBINED) {
             // If everything is combined, then it belongs under "mutableonrequest"
             if ($combined_datasetsettings = $immutable_datasetsettings) {
+                // For the API: maybe remove the entry module from the output
+                $combined_datasetsettings = $this->maybeRemoveEntryModuleFromOutput($combined_datasetsettings);
                 $ret['datasetmodulesettings'] = $has_extra_routes ? array($current_uri => $combined_datasetsettings) : $combined_datasetsettings;
             }
         }
@@ -454,7 +462,7 @@ class Engine
             GD_URLPARAM_URL => Utils::getCurrentUrl(),
             'modelinstanceid' => ModelInstanceFacade::getInstance()->getModelInstanceId(),
         );
-        
+
         if ($this->backgroundload_urls) {
             $meta[GD_URLPARAM_BACKGROUNDLOADURLS] = $this->backgroundload_urls;
         };
@@ -610,7 +618,7 @@ class Engine
         $moduleFullName = ModuleUtils::getModuleFullName($module);
 
         $modulefilter_manager = ModuleFilterManagerFacade::getInstance();
-        
+
         // If modulepaths is provided, and we haven't reached the destination module yet, then do not execute the function at this level
         if (!$modulefilter_manager->excludeModule($module, $props)) {
             // If the current module loads data, then add its path to the list
@@ -632,11 +640,11 @@ class Engine
                 $module,
             )
         );
-        
+
         // Propagate to its inner modules
         $submodules = $processor->getAllSubmodules($module);
         $submodules = $modulefilter_manager->removeExcludedSubmodules($module, $submodules);
-        
+
         // This function must be called always, to register matching modules into requestmeta.filtermodules even when the module has no submodules
         $modulefilter_manager->prepareForPropagation($module, $props);
         foreach ($submodules as $submodule) {
@@ -659,7 +667,7 @@ class Engine
         $moduleFullName = ModuleUtils::getModuleFullName($module);
 
         $modulefilter_manager = ModuleFilterManagerFacade::getInstance();
-        
+
         // If modulepaths is provided, and we haven't reached the destination module yet, then do not execute the function at this level
         if (!$modulefilter_manager->excludeModule($module, $props)) {
             // If the current module loads data, then add its path to the list
@@ -679,11 +687,11 @@ class Engine
                 $module,
             )
         );
-        
+
         // Propagate to its inner modules
         $submodules = $processor->getAllSubmodules($module);
         $submodules = $modulefilter_manager->removeExcludedSubmodules($module, $submodules);
-        
+
         // This function must be called always, to register matching modules into requestmeta.filtermodules even when the module has no submodules
         $modulefilter_manager->prepareForPropagation($module, $props);
         foreach ($submodules as $submodule) {
@@ -949,7 +957,7 @@ class Engine
                          // Get the info for the subcomponent dataloader
                         $extend_data_fields = $extend_data_properties['data-fields'] ? $extend_data_properties['data-fields'] : array();
                         $extend_ids = $extend_data_properties['ids'];
-                                
+
                         $this->combineIdsDatafields($this->ids_data_fields, $extend_dataloader_class, $extend_ids, $extend_data_fields);
 
                         // This is needed to add the dataloader-extend IDs, for if nobody else creates an entry for this dataloader
@@ -1099,6 +1107,8 @@ class Engine
                     $mutableonrequest_moduledata ?? array()
                 )
                 ) {
+                    // For the API: maybe remove the entry module from the output
+                    $combined_moduledata = $this->maybeRemoveEntryModuleFromOutput($combined_moduledata);
                     $ret['moduledata'] = $has_extra_routes ? array($current_uri => $combined_moduledata) : $combined_moduledata;
                 }
                 if ($combined_datasetmoduledata = array_merge_recursive(
@@ -1107,6 +1117,8 @@ class Engine
                     $mutableonrequest_datasetmoduledata ?? array()
                 )
                 ) {
+                    // For the API: maybe remove the entry module from the output
+                    $combined_datasetmoduledata = $this->maybeRemoveEntryModuleFromOutput($combined_datasetmoduledata);
                     $ret['datasetmoduledata'] = $has_extra_routes ? array($current_uri => $combined_datasetmoduledata) : $combined_datasetmoduledata;
                 }
                 if ($add_meta) {
@@ -1141,7 +1153,7 @@ class Engine
         $dataquery_manager = DataQueryManagerFactory::getInstance();
         $cmsengineapi = \PoP\Engine\FunctionAPIFactory::getInstance();
         $cmsenginehelpers = \PoP\Engine\HelperAPIFactory::getInstance();
-        
+
         $vars = Engine_Vars::getVars();
         $dboutputmode = $vars['dboutputmode'];
         $formatter = Utils::getDatastructureFormatter();
@@ -1202,14 +1214,14 @@ class Engine
             if ($dataquery_name = $dataloader->getDataquery()) {
                 $dataquery = $dataquery_manager->get($dataquery_name);
                 $objectid_fieldname = $dataquery->getObjectidFieldname();
-                
+
                 // Force retrieval of data from the server. Eg: recommendpost-count
                 $forceserverload_fields = $dataquery->getNoCacheFields();
-                
+
                 // Lazy fields. Eg: comments
                 $lazylayouts = $dataquery->getLazyLayouts();
                 $lazyload_fields = array_keys($lazylayouts);
-                
+
                 // Store the intersected fields and the corresponding ids
                 $forceserverload = array(
                     'ids' => array(),
@@ -1264,7 +1276,7 @@ class Engine
                     $url = $cmsenginehelpers->addQueryArgs([
                         $objectid_fieldname => $forceserverload['ids'],
                         GD_URLPARAM_FIELDS => $forceserverload['fields'],
-                        GD_URLPARAM_FORMAT => POP_FORMAT_FIELDS, 
+                        GD_URLPARAM_FORMAT => POP_FORMAT_FIELDS,
                     ], $url);
                     $this->backgroundload_urls[urldecode($url)] = array(POP_TARGET_MAIN);
 
@@ -1282,7 +1294,7 @@ class Engine
 
                     $url = \PoP\Engine\Utils::getRouteURL($dataquery->getCacheableRoute());
                     $url = $cmsenginehelpers->addQueryArgs([
-                        $objectid_fieldname => $lazyload['ids'], 
+                        $objectid_fieldname => $lazyload['ids'],
                         // Convert from module to moduleFullName
                         GD_URLPARAM_LAYOUTS => array_map(
                             [ModuleUtils::class, 'getModuleOutputName'],
@@ -1370,7 +1382,7 @@ class Engine
         }
 
         $ret = array();
-        
+
         // Do not add the "database", "userstatedatabase" entries unless there are values in them
         // Otherwise, it messes up integrating the current databases in the webplatform with those from the response when deep merging them
         if ($databases) {
@@ -1396,7 +1408,7 @@ class Engine
     {
         $moduleprocessor_manager = ModuleProcessorManagerFactory::getInstance();
         $processor = $moduleprocessor_manager->getProcessor($module);
-        
+
         // Integrate the feedback into $moduledata
         if (!is_null($this->moduledata)) {
             $moduledata = &$this->moduledata;

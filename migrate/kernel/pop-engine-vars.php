@@ -136,7 +136,7 @@ class Engine_Vars
                 )
             );
         }
-        
+
         // If not target, or invalid, reset it to "main"
         // We allow an empty target if none provided, so that we can generate the settings cache when no target is provided
         // (ie initial load) and when target is provided (ie loading pageSection)
@@ -161,7 +161,7 @@ class Engine_Vars
 
             // For the API, the response is always JSON
             $output = GD_URLPARAM_OUTPUT_JSON;
-        
+
             // Fetch datasetmodulesettings: needed to obtain the dbKeyPath to know where to find the database entries
             $dataoutputitems = [
                 GD_URLPARAM_DATAOUTPUTITEMS_DATASETMODULESETTINGS,
@@ -178,14 +178,17 @@ class Engine_Vars
 
             // Only the data stratum is needed
             $stratum = POP_STRATUM_DATA;
+
+            // Do not print the entry module
+            $action = POP_ACTION_REMOVE_ENTRYMODULE_FROM_OUTPUT;
         }
 
         $strata = $platformmanager->getStrata($stratum);
         $stratum_isdefault = $platformmanager->isDefaultStratum();
-        
+
         $modulefilter_manager = ModuleFilterManagerFacade::getInstance();
         $modulefilter = $modulefilter_manager->getSelectedModuleFilterName();
-        
+
         $fetchingSite = is_null($modulefilter);
         $loadingSite = $fetchingSite && $output == GD_URLPARAM_OUTPUT_HTML;
 
