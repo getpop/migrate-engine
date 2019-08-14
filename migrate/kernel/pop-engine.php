@@ -97,15 +97,21 @@ class Engine
         }
     }
 
-    protected function getExtraRoutes()
+    public function getExtraRoutes()
     {
-
         // The extra URIs must be cached! That is because we will change the requested URI in $vars, upon which the hook to inject extra URIs (eg: for page INITIALFRAMES) will stop working
         if (!is_null($this->extra_routes)) {
             return $this->extra_routes;
         }
 
         $this->extra_routes = array();
+
+        // The API cannot use getExtraRoutes()!!!!! Because the fields can't be applied to different resources! (Eg: author/leo/ and author/leo/?route=posts)
+        $vars = Engine_Vars::getVars();
+        if ($vars['scheme'] == POP_SCHEME_API) {
+            return $this->extra_routes;
+        }
+
         if (Server\Utils::enableExtraRoutesByParams()) {
             $this->extra_routes = $_REQUEST[GD_URLPARAM_EXTRAROUTES] ?? array();
             $this->extra_routes = is_array($this->extra_routes) ? $this->extra_routes : array($this->extra_routes);
@@ -120,7 +126,7 @@ class Engine
         return $this->extra_routes;
     }
 
-    protected function listExtraRouteVars()
+    public function listExtraRouteVars()
     {
         if ($has_extra_routes = !empty($this->getExtraRoutes())) {
             $model_instance_id = ModelInstanceFacade::getInstance()->getModelInstanceId();
@@ -132,7 +138,6 @@ class Engine
 
     public function generateData()
     {
-
         // Check if there are hooks that must be implemented by the CMS, that have not been done so.
         // Check here, since we can't rely on addAction('popcms:init') to check, since we don't know if it was implemented!
         $loosecontract_manager = \PoP\LooseContracts\CMSLooseContractManagerFactory::getInstance();
