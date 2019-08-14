@@ -65,6 +65,7 @@ class Engine_Vars
         $target = strtolower($_REQUEST[GD_URLPARAM_TARGET]);
         $mangled = Server\Utils::isMangled() ? '' : GD_URLPARAM_MANGLED_NONE;
         $action = strtolower($_REQUEST[GD_URLPARAM_ACTION]);
+        $scheme = strtolower($_REQUEST[GD_URLPARAM_SCHEME]);
 
         $outputs = HooksAPIFacade::getInstance()->applyFilters(
             '\PoP\Engine\Engine_Vars:outputs',
@@ -154,9 +155,9 @@ class Engine_Vars
 
         /**
          * Override values for the API mode!
-         * Whenever doing ?action=api, the specific configuration below must be set in the vars
+         * Whenever doing ?scheme=api, the specific configuration below must be set in the vars
          */
-        if (!Server\Utils::disableAPI() && $action == POP_ACTION_API) {
+        if (!Server\Utils::disableAPI() && $scheme == POP_SCHEME_API) {
 
             // For the API, the response is always JSON
             $output = GD_URLPARAM_OUTPUT_JSON;
@@ -218,6 +219,7 @@ class Engine_Vars
             'format' => $format,
             'settingsformat' => $settingsformat,
             'action' => $action,
+            'scheme' => $scheme,
             'loading-site' => $loadingSite,
             'fetching-site' => $fetchingSite,
             'stratum' => $stratum,

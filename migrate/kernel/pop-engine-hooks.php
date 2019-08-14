@@ -36,7 +36,7 @@ class Engine_Hooks
         // Allow WP API to set the "routing-state" first
         // Each page is an independent configuration
         $vars = &$vars_in_array[0];
-        if (!Server\Utils::disableAPI() && $vars['action'] == POP_ACTION_API) {
+        if (!Server\Utils::disableAPI() && $vars['scheme'] == POP_SCHEME_API) {
             $this->addFieldsToVars($vars);
         } elseif ($vars['nature'] == POP_NATURE_STANDARD) {
             $dataquery_manager = DataQueryManagerFactory::getInstance();
@@ -78,7 +78,7 @@ class Engine_Hooks
         // Allow WP API to set the "routing-state" first
         // Each page is an independent configuration
         $vars = Engine_Vars::getVars();
-        if (!Server\Utils::disableAPI() && $vars['action'] == POP_ACTION_API) {
+        if (!Server\Utils::disableAPI() && $vars['scheme'] == POP_SCHEME_API) {
             $this->addFieldsToComponents($components);
         } elseif ($vars['routing-state']['is-standard']) {
             $dataquery_manager = DataQueryManagerFactory::getInstance();

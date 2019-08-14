@@ -19,6 +19,7 @@ const GD_URLPARAM_DATABASESOUTPUTMODE_SPLITBYDATABASES = 'splitbydbs';
 const GD_URLPARAM_DATABASESOUTPUTMODE_COMBINED = 'combined';
 
 const GD_URLPARAM_ACTION = 'action';
+const GD_URLPARAM_SCHEME = 'scheme';
 
 const GD_URLPARAM_LAYOUTS = 'layouts';
 const GD_URLPARAM_FIELDS = 'fields';

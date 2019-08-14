@@ -1043,7 +1043,7 @@ abstract class ModuleProcessorBase
 
         // If we are in the API currently, stay in the API
         $vars = Engine_Vars::getVars();
-        if ($vars['action'] == POP_ACTION_API) {
+        if ($vars['scheme'] == POP_SCHEME_API) {
             $ret = \PoP\Engine\APIUtils::getEndpoint($ret, $vars['dataoutputitems']);
         }
 
