@@ -48,8 +48,6 @@ class Engine_Vars
             return self::$vars;
         }
 
-        $cmsengineapi = \PoP\Engine\FunctionAPIFactory::getInstance();
-
         // Only initialize the first time. Then, it will call ->resetState() to retrieve new state, no need to create a new instance
         $cmsrouting = \PoP\Routing\CMSRoutingStateFactory::getInstance();
         $nature = $cmsrouting->getNature();

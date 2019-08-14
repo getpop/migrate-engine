@@ -208,6 +208,19 @@ class Engine
     // Allow PoPWebPlatform_Engine to override this function
     protected function getEncodedDataObject($data)
     {
+        // For the API: maybe remove the entry module from the output
+        $vars = Engine_Vars::getVars();
+        if ($vars['dataoutputmode'] == GD_URLPARAM_DATAOUTPUTMODE_COMBINED) {
+            if ($data['datasetmodulesettings']) {
+                $data['datasetmodulesettings'] = $this->maybeRemoveEntryModuleFromOutput($data['datasetmodulesettings']);
+            }
+            if ($data['moduledata']) {
+                $data['moduledata'] = $this->maybeRemoveEntryModuleFromOutput($data['moduledata']);
+            }
+            if ($data['datasetmoduledata']) {
+                $data['datasetmoduledata'] = $this->maybeRemoveEntryModuleFromOutput($data['datasetmoduledata']);
+            }
+        }
 
         // Comment Leo 14/09/2018: Re-enable here:
         // if (true) {
@@ -395,7 +408,8 @@ class Engine
         $vars = Engine_Vars::getVars();
         // For the API: maybe remove the entry module from the output
         if (!\PoP\Engine\Server\Utils::disableAPI() && $vars['scheme'] == POP_SCHEME_API && $vars['action'] == POP_ACTION_REMOVE_ENTRYMODULE_FROM_OUTPUT) {
-            return array_values($results)[0];
+            list($has_extra_routes) = $this->listExtraRouteVars();
+            return $has_extra_routes ? array_values(array_values($results)[0])[0] : array_values($results)[0];
         }
         return $results;
     }
@@ -445,8 +459,6 @@ class Engine
         } elseif ($dataoutputmode == GD_URLPARAM_DATAOUTPUTMODE_COMBINED) {
             // If everything is combined, then it belongs under "mutableonrequest"
             if ($combined_datasetsettings = $immutable_datasetsettings) {
-                // For the API: maybe remove the entry module from the output
-                $combined_datasetsettings = $this->maybeRemoveEntryModuleFromOutput($combined_datasetsettings);
                 $ret['datasetmodulesettings'] = $has_extra_routes ? array($current_uri => $combined_datasetsettings) : $combined_datasetsettings;
             }
         }
@@ -1107,8 +1119,6 @@ class Engine
                     $mutableonrequest_moduledata ?? array()
                 )
                 ) {
-                    // For the API: maybe remove the entry module from the output
-                    $combined_moduledata = $this->maybeRemoveEntryModuleFromOutput($combined_moduledata);
                     $ret['moduledata'] = $has_extra_routes ? array($current_uri => $combined_moduledata) : $combined_moduledata;
                 }
                 if ($combined_datasetmoduledata = array_merge_recursive(
@@ -1117,8 +1127,6 @@ class Engine
                     $mutableonrequest_datasetmoduledata ?? array()
                 )
                 ) {
-                    // For the API: maybe remove the entry module from the output
-                    $combined_datasetmoduledata = $this->maybeRemoveEntryModuleFromOutput($combined_datasetmoduledata);
                     $ret['datasetmoduledata'] = $has_extra_routes ? array($current_uri => $combined_datasetmoduledata) : $combined_datasetmoduledata;
                 }
                 if ($add_meta) {
