@@ -9,24 +9,24 @@ class DataStructureFormatter_MirrorQuery extends \PoP\Engine\DataStructureFormat
     {
         return GD_DATALOAD_DATASTRUCTURE_MIRRORQUERY;
     }
-    
+
     protected function getFields()
     {
         // Allow REST to override with default fields
         $vars = \PoP\Engine\Engine_Vars::getVars();
         return $vars['fields'];
     }
-    
+
     public function getFormattedData($data)
     {
         // Re-create the shape of the query by iterating through all dbObjectIDs and all required fields,
         // getting the data from the corresponding dbKeyPath
         $ret = [];
-        if ($fields = $this->getFields()) {        
+        if ($fields = $this->getFields()) {
             $databases = $data['databases'] ?? [];
             $datasetModuleData = $data['datasetmoduledata'] ?? [];
             foreach ($datasetModuleData as $moduleName => $dbObjectIDs) {
-                $dbKeyPaths = $data['datasetmodulesettings'][$moduleName]['dbkeys'] ?? [];    
+                $dbKeyPaths = $data['datasetmodulesettings'][$moduleName]['dbkeys'] ?? [];
                 $dbObjectIDorIDs = $dbObjectIDs['dbobjectids'];
                 $this->addData($ret, $fields, $databases, $dbObjectIDorIDs, 'id', $dbKeyPaths, false);
             }
@@ -34,6 +34,49 @@ class DataStructureFormatter_MirrorQuery extends \PoP\Engine\DataStructureFormat
 
         return $ret;
     }
+    // GraphQL/REST cannot have getExtraRoutes()!!!!! Because the fields can't be applied to different resources! (Eg: author/leo/ and author/leo/?route=posts)
+    // public function getFormattedData($data)
+    // {
+    //     // Re-create the shape of the query by iterating through all dbObjectIDs and all required fields,
+    //     // getting the data from the corresponding dbKeyPath
+    //     $ret = [];
+    //     if ($fields = $this->getFields()) {
+    //         $engine = EngineFactory::getInstance();
+    //         list($has_extra_routes) = $engine->listExtraRouteVars();
+    //         $vars = \PoP\Engine\Engine_Vars::getVars();
+    //         $dataoutputmode = $vars['dataoutputmode'];
+
+    //         $databases = $data['databases'] ?? [];
+    //         $datasetModuleData = $data['datasetmoduledata'] ?? [];
+    //         $datasetModuleSettings = $data['datasetmodulesettings'] ?? [];
+    //         if ($dataoutputmode == GD_URLPARAM_DATAOUTPUTMODE_SPLITBYSOURCES) {
+    //             if ($has_extra_routes) {
+    //                 $datasetModuleData = array_merge_recursive(
+    //                     $datasetModuleData['immutable'] ?? [],
+    //                     ($has_extra_routes ? array_values($datasetModuleData['mutableonmodel'])[0] : $datasetModuleData['mutableonmodel']) ?? [],
+    //                     ($has_extra_routes ? array_values($datasetModuleData['mutableonrequest'])[0] : $datasetModuleData['mutableonrequest']) ?? []
+    //                 );
+    //                 $datasetModuleSettings = array_merge_recursive(
+    //                     $datasetModuleSettings['immutable'] ?? [],
+    //                     ($has_extra_routes ? array_values($datasetModuleSettings['mutableonmodel'])[0] : $datasetModuleSettings['mutableonmodel']) ?? [],
+    //                     ($has_extra_routes ? array_values($datasetModuleSettings['mutableonrequest'])[0] : $datasetModuleSettings['mutableonrequest']) ?? []
+    //                 );
+    //             }
+    //         } elseif ($dataoutputmode == GD_URLPARAM_DATAOUTPUTMODE_COMBINED) {
+    //             if ($has_extra_routes) {
+    //                 $datasetModuleData = array_values($datasetModuleData)[0];
+    //                 $datasetModuleSettings = array_values($datasetModuleSettings)[0];
+    //             }
+    //         }
+    //         foreach ($datasetModuleData as $moduleName => $dbObjectIDs) {
+    //             $dbKeyPaths = $datasetModuleSettings[$moduleName]['dbkeys'] ?? [];
+    //             $dbObjectIDorIDs = $dbObjectIDs['dbobjectids'];
+    //             $this->addData($ret, $fields, $databases, $dbObjectIDorIDs, 'id', $dbKeyPaths, false);
+    //         }
+    //     }
+
+    //     return $ret;
+    // }
 
     protected function addData(&$ret, $fields, &$databases, $dbObjectIDorIDs, $dbObjectKeyPath, &$dbKeyPaths, $concatenateField = true)
     {
@@ -90,7 +133,7 @@ class DataStructureFormatter_MirrorQuery extends \PoP\Engine\DataStructureFormat
         }
     }
 }
-    
+
 /**
  * Initialize
  */
