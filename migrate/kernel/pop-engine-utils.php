@@ -172,9 +172,9 @@ class Utils
                 $fieldArgs = [];
                 $attsStr = substr($field, $pos+strlen(POP_CONSTANT_FIELDARGS_START), -1*(strlen(POP_CONSTANT_FIELDARGS_END)));
                 foreach (explode(POP_CONSTANT_FIELDARGS_ATTSEPARATOR, $attsStr) as $attStr) {
-                    $attParts = explode(POP_CONSTANT_FIELDARGS_ATTKEYVALUESEPARATOR, $attStr);
-                    $fieldArgKey = $attParts[0];
-                    $fieldArgValue = $attParts[1];
+                    $argParts = explode(POP_CONSTANT_FIELDARGS_ATTKEYVALUESEPARATOR, $attStr);
+                    $fieldArgKey = $argParts[0];
+                    $fieldArgValue = $argParts[1];
                     // The value may be a variable, if it starts with "$". Then, retrieve the actual value from the request
                     if ($fieldArgValue and substr($fieldArgValue, 0, 1) == POP_CONSTANT_FIELDARGS_ATTVARIABLEPREFIX) {
                         $fieldArgValue = $variables[substr($fieldArgValue, 1)];
