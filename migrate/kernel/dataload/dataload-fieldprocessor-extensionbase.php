@@ -8,12 +8,12 @@ abstract class AbstractFieldValueResolverUnit
 	 */
 	use AttachableExtensionTrait;
 
-    public function getValue($fieldValueResolver, $resultitem, string $fieldName, array $fieldAtts = [])
+    public function getValue($fieldValueResolver, $resultitem, string $fieldName, array $fieldArgs = [])
     {
         return new \PoP\Engine\Error('no-field:'.$fieldName);
     }
 
-    public function getFieldDefaultDataloaderClass($fieldValueResolver, string $fieldName, array $fieldAtts = [])
+    public function getFieldDefaultDataloaderClass($fieldValueResolver, string $fieldName, array $fieldArgs = [])
     {
         return null;
     }

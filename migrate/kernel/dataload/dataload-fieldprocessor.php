@@ -7,17 +7,17 @@ abstract class FieldValueResolverBase
     abstract public function getId($resultitem);
     abstract public function getIdFieldDataloaderClass();
 
-    public function getValue($resultitem, string $fieldName, array $fieldAtts = [])
+    public function getValue($resultitem, string $fieldName, array $fieldArgs = [])
     {
         switch ($fieldName) {
             case 'id':
                 return $this->getId($resultitem);
         }
 
-        return $this->getValueFromUnits($resultitem, $fieldName, $fieldAtts);
+        return $this->getValueFromUnits($resultitem, $fieldName, $fieldArgs);
     }
 
-    protected function getValueFromUnits($resultitem, string $fieldName, array $fieldAtts = [])
+    protected function getValueFromUnits($resultitem, string $fieldName, array $fieldArgs = [])
     {
         $instanceManager = InstanceManagerFacade::getInstance();
         $attachableExtensionManager = AttachableExtensionManagerFactory::getInstance();
@@ -29,7 +29,7 @@ abstract class FieldValueResolverBase
             foreach (array_reverse($attachableExtensionManager->getExtensionClasses($class)) as $extensionClass) {
                 $instance = $instanceManager->getInstance($extensionClass);
                 // Also send the fieldValueResolver along, as to get the id of the $resultitem being passed
-                $value = $instance->getValue($this, $resultitem, $fieldName, $fieldAtts);
+                $value = $instance->getValue($this, $resultitem, $fieldName, $fieldArgs);
                 if (!\PoP\Engine\GeneralUtils::isError($value)) {
                     return $value;
                 }
@@ -41,17 +41,17 @@ abstract class FieldValueResolverBase
         return new \PoP\Engine\Error('no-field:'.$fieldName);
     }
 
-    public function getFieldDefaultDataloaderClass(string $fieldName, array $fieldAtts = [])
+    public function getFieldDefaultDataloaderClass(string $fieldName, array $fieldArgs = [])
     {
         switch ($fieldName) {
             case 'id':
                 return $this->getIdFieldDataloaderClass();
         }
 
-        return $this->getFieldDefaultDataloaderClassFromUnits($fieldName, $fieldAtts);
+        return $this->getFieldDefaultDataloaderClassFromUnits($fieldName, $fieldArgs);
     }
 
-    protected function getFieldDefaultDataloaderClassFromUnits(string $fieldName, array $fieldAtts = [])
+    protected function getFieldDefaultDataloaderClassFromUnits(string $fieldName, array $fieldArgs = [])
     {
         $instanceManager = InstanceManagerFacade::getInstance();
         $attachableExtensionManager = AttachableExtensionManagerFactory::getInstance();
@@ -60,7 +60,7 @@ abstract class FieldValueResolverBase
         do {
             foreach (array_reverse($attachableExtensionManager->getExtensionClasses($class)) as $extensionClass) {
                 $instance = $instanceManager->getInstance($extensionClass);
-                $value = $instance->getFieldDefaultDataloaderClass($this, $fieldName, $fieldAtts);
+                $value = $instance->getFieldDefaultDataloaderClass($this, $fieldName, $fieldArgs);
                 if ($value) {
                     return $value;
                 }

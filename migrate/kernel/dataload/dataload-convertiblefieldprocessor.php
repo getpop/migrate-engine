@@ -38,7 +38,7 @@ abstract class ConvertibleFieldValueResolverBase extends FieldValueResolverBase
         return array($fieldValueResolver, $fieldvalueresolver_resolver);
     }
 
-    public function getValue($resultitem, string $fieldName, array $fieldAtts = [])
+    public function getValue($resultitem, string $fieldName, array $fieldArgs = [])
     {
 
         // Delegate to the FieldValueResolver corresponding to this object
@@ -50,22 +50,22 @@ abstract class ConvertibleFieldValueResolverBase extends FieldValueResolverBase
         }
 
         // Delegate to that fieldValueResolver to obtain the value
-        return $fieldValueResolver->getValue($resultitem, $fieldName, $fieldAtts);
+        return $fieldValueResolver->getValue($resultitem, $fieldName, $fieldArgs);
     }
 
-    public function getFieldDefaultDataloaderClass(string $fieldName, array $fieldAtts = [])
+    public function getFieldDefaultDataloaderClass(string $fieldName, array $fieldArgs = [])
     {
 
         // Please notice that we're getting the default dataloader from the default fieldValueResolver
         if ($defaultFieldValueResolverClass = $this->getDefaultFieldValueResolverClass()) {
             $instanceManager = InstanceManagerFacade::getInstance();
             $default_fieldvalueresolver = $instanceManager->getInstance($defaultFieldValueResolverClass);
-            $default_dataloader = $default_fieldvalueresolver->getFieldDefaultDataloaderClass($fieldName, $fieldAtts);
+            $default_dataloader = $default_fieldvalueresolver->getFieldDefaultDataloaderClass($fieldName, $fieldArgs);
             if ($default_dataloader) {
                 return $default_dataloader;
             }
         }
 
-        return parent::getFieldDefaultDataloaderClass($fieldName, $fieldAtts);
+        return parent::getFieldDefaultDataloaderClass($fieldName, $fieldArgs);
     }
 }

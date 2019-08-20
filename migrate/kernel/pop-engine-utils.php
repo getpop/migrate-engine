@@ -169,19 +169,19 @@ class Utils
         if (substr($field, -1*strlen(POP_CONSTANT_FIELDATTS_END)) == POP_CONSTANT_FIELDATTS_END) {
             $pos = strpos($field, POP_CONSTANT_FIELDATTS_START);
             if ($pos !== false) {
-                $fieldAtts = [];
+                $fieldArgs = [];
                 $attsStr = substr($field, $pos+strlen(POP_CONSTANT_FIELDATTS_START), -1*(strlen(POP_CONSTANT_FIELDATTS_END)));
                 foreach (explode(POP_CONSTANT_FIELDATTS_ATTSEPARATOR, $attsStr) as $attStr) {
                     $attParts = explode(POP_CONSTANT_FIELDATTS_ATTKEYVALUESEPARATOR, $attStr);
-                    $fieldAttKey = $attParts[0];
-                    $fieldAttValue = $attParts[1];
+                    $fieldArgKey = $attParts[0];
+                    $fieldArgValue = $attParts[1];
                     // The value may be a variable, if it starts with "$". Then, retrieve the actual value from the request
-                    if ($fieldAttValue and substr($fieldAttValue, 0, 1) == POP_CONSTANT_FIELDATTS_ATTVARIABLEPREFIX) {
-                        $fieldAttValue = $variables[substr($fieldAttValue, 1)];
+                    if ($fieldArgValue and substr($fieldArgValue, 0, 1) == POP_CONSTANT_FIELDATTS_ATTVARIABLEPREFIX) {
+                        $fieldArgValue = $variables[substr($fieldArgValue, 1)];
                     }
-                    $fieldAtts[$fieldAttKey] = $fieldAttValue;
+                    $fieldArgs[$fieldArgKey] = $fieldArgValue;
                 }
-                return $fieldAtts;
+                return $fieldArgs;
             }
         }
         return [];
@@ -192,10 +192,10 @@ class Utils
         return [self::getFieldName($field), self::getFieldAtts($field)];
     }
 
-    public static function getField(string $fieldName, array $fieldAtts): string
+    public static function getField(string $fieldName, array $fieldArgs): string
     {
         $items = [];
-        foreach ($fieldAtts as $key => $value) {
+        foreach ($fieldArgs as $key => $value) {
             $items[] = $key.POP_CONSTANT_FIELDATTS_ATTKEYVALUESEPARATOR.$value;
         }
         return $fieldName.POP_CONSTANT_FIELDATTS_START.implode(POP_CONSTANT_FIELDATTS_ATTSEPARATOR, $items).POP_CONSTANT_FIELDATTS_END;
