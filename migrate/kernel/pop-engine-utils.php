@@ -216,10 +216,55 @@ class Utils
         $fields = array();
         $pointer = &$fields;
 
+        // Allow for aliases, similar to GraphQL: https://graphql.org/learn/queries/#aliases
+        // The alias "prev" is a reserved one: it always refers to the previous query node
+        $aliasPaths = [
+            'prev' => [],
+        ];
+
         // Split the items by ","
         foreach (explode(POP_CONSTANT_PARAMVALUE_SEPARATOR, $dotNotation) as $commafields) {
-            // For each item, advance to the last level by following the "."
+            // The fields are split by "."
             $dotfields = explode(POP_CONSTANT_DOTSYNTAX_DOT, $commafields);
+
+            // If there is a path to the node...
+            if (count($dotfields) >= 2) {
+                // The first element may reference an alias from a previous iteration (if surrounded by "[]"). If so, retrieve it
+                if (
+                    substr($dotfields[0], 0, 1) == POP_CONSTANT_DOTSYNTAX_ALIASPREFIX &&
+                    substr($dotfields[0], -1) == POP_CONSTANT_DOTSYNTAX_ALIASSUFFIX
+                    ) {
+                    $alias = substr($dotfields[0], 1, strlen($dotfields[0])-2);
+                    // Replace the first element with the alias path
+                    array_shift($dotfields);
+                    $dotfields = array_merge(
+                        $aliasPaths[$alias] ?? [],
+                        $dotfields
+                    );
+                }
+
+                // On the last level of the path, it may establish an alias to the path (if ends with "[" and the opening "[" is somewhere in between)
+                $lastPathLevel = count($dotfields)-2;
+                if (substr($dotfields[$lastPathLevel], -1) == POP_CONSTANT_DOTSYNTAX_ALIASSUFFIX) {
+                    // Calculate where the alias is defined
+                    $startPos = strpos($dotfields[$lastPathLevel], POP_CONSTANT_DOTSYNTAX_ALIASPREFIX);
+                    // Extract the alias
+                    $alias = substr($dotfields[$lastPathLevel], $startPos+1, strlen($dotfields[$lastPathLevel])-$startPos-2);
+                    // Remove the alias from the path
+                    $dotfields[$lastPathLevel] = substr($dotfields[$lastPathLevel], 0, $startPos);
+                    // Recalculate the path (all the levels excluding the last one, which contains the properties), and store it to be used on a later iteration
+                    $aliasPath = $dotfields;
+                    array_pop($aliasPath);
+                    $aliasPaths[$alias] = $aliasPath;
+                }
+
+                // Calculate the new "prev" alias path
+                $aliasPrevPath = $dotfields;
+                array_pop($aliasPrevPath);
+                $aliasPaths['prev'] = $aliasPrevPath;
+            }
+
+            // For each item, advance to the last level by following the "."
             for ($i = 0; $i < count($dotfields)-1; $i++) {
                 $pointer[$dotfields[$i]] = $pointer[$dotfields[$i]] ?? array();
                 $pointer = &$pointer[$dotfields[$i]];
