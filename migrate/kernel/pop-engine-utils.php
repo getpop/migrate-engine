@@ -162,6 +162,7 @@ class Utils
     public static function getFieldAtts(string $field, ?array $variables = null): array
     {
         // Variables: allow to pass a field argument "key:$input", and then resolve it as ?variable[input]=value
+        // Expected input is similar to GraphQL: https://graphql.org/learn/queries/#variables
         // If not passed the variables parameter, use $_REQUEST["variables"] by default
         $variables = $variables ?? $_REQUEST['variables'] ?? [];
         // We check that the format is "$fieldName($prop1;$prop2;...;$propN)"
