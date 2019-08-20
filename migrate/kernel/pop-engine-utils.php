@@ -161,7 +161,8 @@ class Utils
 
     public static function getFieldAtts(string $field, ?array $variables = null): array
     {
-        // If not passed the variables parameter, use the request for "variables"
+        // Variables: allow to pass a field argument "key:$input", and then resolve it as ?variable[input]=value
+        // If not passed the variables parameter, use $_REQUEST["variables"] by default
         $variables = $variables ?? $_REQUEST['variables'] ?? [];
         // We check that the format is "$fieldName($prop1;$prop2;...;$propN)"
         if (substr($field, -1*strlen(POP_CONSTANT_FIELDATTS_END)) == POP_CONSTANT_FIELDATTS_END) {
