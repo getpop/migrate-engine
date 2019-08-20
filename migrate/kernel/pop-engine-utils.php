@@ -159,7 +159,7 @@ class Utils
         return $field;
     }
 
-    public static function getFieldAtts(string $field, ?array $variables = null): array
+    public static function getFieldArgs(string $field, ?array $variables = null): array
     {
         // Variables: allow to pass a field argument "key:$input", and then resolve it as ?variable[input]=value
         // Expected input is similar to GraphQL: https://graphql.org/learn/queries/#variables
@@ -189,7 +189,7 @@ class Utils
 
     public static function listField(string $field): array
     {
-        return [self::getFieldName($field), self::getFieldAtts($field)];
+        return [self::getFieldName($field), self::getFieldArgs($field)];
     }
 
     public static function getField(string $fieldName, array $fieldArgs): string
