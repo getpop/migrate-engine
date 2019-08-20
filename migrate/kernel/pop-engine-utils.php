@@ -152,7 +152,7 @@ class Utils
 
     public static function getFieldName(string $field): string
     {
-        $pos = strpos($field, POP_CONSTANT_FIELDATTS_START);
+        $pos = strpos($field, POP_CONSTANT_FIELDARGS_START);
         if ($pos !== false) {
             return substr($field, 0, $pos);
         }
@@ -166,17 +166,17 @@ class Utils
         // If not passed the variables parameter, use $_REQUEST["variables"] by default
         $variables = $variables ?? $_REQUEST['variables'] ?? [];
         // We check that the format is "$fieldName($prop1;$prop2;...;$propN)"
-        if (substr($field, -1*strlen(POP_CONSTANT_FIELDATTS_END)) == POP_CONSTANT_FIELDATTS_END) {
-            $pos = strpos($field, POP_CONSTANT_FIELDATTS_START);
+        if (substr($field, -1*strlen(POP_CONSTANT_FIELDARGS_END)) == POP_CONSTANT_FIELDARGS_END) {
+            $pos = strpos($field, POP_CONSTANT_FIELDARGS_START);
             if ($pos !== false) {
                 $fieldArgs = [];
-                $attsStr = substr($field, $pos+strlen(POP_CONSTANT_FIELDATTS_START), -1*(strlen(POP_CONSTANT_FIELDATTS_END)));
-                foreach (explode(POP_CONSTANT_FIELDATTS_ATTSEPARATOR, $attsStr) as $attStr) {
-                    $attParts = explode(POP_CONSTANT_FIELDATTS_ATTKEYVALUESEPARATOR, $attStr);
+                $attsStr = substr($field, $pos+strlen(POP_CONSTANT_FIELDARGS_START), -1*(strlen(POP_CONSTANT_FIELDARGS_END)));
+                foreach (explode(POP_CONSTANT_FIELDARGS_ATTSEPARATOR, $attsStr) as $attStr) {
+                    $attParts = explode(POP_CONSTANT_FIELDARGS_ATTKEYVALUESEPARATOR, $attStr);
                     $fieldArgKey = $attParts[0];
                     $fieldArgValue = $attParts[1];
                     // The value may be a variable, if it starts with "$". Then, retrieve the actual value from the request
-                    if ($fieldArgValue and substr($fieldArgValue, 0, 1) == POP_CONSTANT_FIELDATTS_ATTVARIABLEPREFIX) {
+                    if ($fieldArgValue and substr($fieldArgValue, 0, 1) == POP_CONSTANT_FIELDARGS_ATTVARIABLEPREFIX) {
                         $fieldArgValue = $variables[substr($fieldArgValue, 1)];
                     }
                     $fieldArgs[$fieldArgKey] = $fieldArgValue;
@@ -196,9 +196,9 @@ class Utils
     {
         $items = [];
         foreach ($fieldArgs as $key => $value) {
-            $items[] = $key.POP_CONSTANT_FIELDATTS_ATTKEYVALUESEPARATOR.$value;
+            $items[] = $key.POP_CONSTANT_FIELDARGS_ATTKEYVALUESEPARATOR.$value;
         }
-        return $fieldName.POP_CONSTANT_FIELDATTS_START.implode(POP_CONSTANT_FIELDATTS_ATTSEPARATOR, $items).POP_CONSTANT_FIELDATTS_END;
+        return $fieldName.POP_CONSTANT_FIELDARGS_START.implode(POP_CONSTANT_FIELDARGS_ATTSEPARATOR, $items).POP_CONSTANT_FIELDARGS_END;
     }
 
     public static function maybeConvertDotNotationToArray($dotNotationOrArray)
