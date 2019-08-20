@@ -8,7 +8,7 @@ use PoP\Engine\ModuleFilters\HeadModule;
 class Utils
 {
     public static $errors = array();
-    
+
     public static function getDomainId($domain)
     {
 
@@ -159,8 +159,10 @@ class Utils
         return $field;
     }
 
-    public static function getFieldAtts(string $field): array
+    public static function getFieldAtts(string $field, ?array $variables = null): array
     {
+        // If not passed the variables parameter, use the request for "variables"
+        $variables = $variables ?? $_REQUEST['variables'] ?? [];
         // We check that the format is "$fieldName($prop1;$prop2;...;$propN)"
         if (substr($field, -1*strlen(POP_CONSTANT_FIELDATTS_END)) == POP_CONSTANT_FIELDATTS_END) {
             $pos = strpos($field, POP_CONSTANT_FIELDATTS_START);
@@ -169,7 +171,13 @@ class Utils
                 $attsStr = substr($field, $pos+strlen(POP_CONSTANT_FIELDATTS_START), -1*(strlen(POP_CONSTANT_FIELDATTS_END)));
                 foreach (explode(POP_CONSTANT_FIELDATTS_ATTSEPARATOR, $attsStr) as $attStr) {
                     $attParts = explode(POP_CONSTANT_FIELDATTS_ATTKEYVALUESEPARATOR, $attStr);
-                    $fieldAtts[$attParts[0]] = $attParts[1];
+                    $fieldAttKey = $attParts[0];
+                    $fieldAttValue = $attParts[1];
+                    // The value may be a variable, if it starts with "$". Then, retrieve the actual value from the request
+                    if ($fieldAttValue and substr($fieldAttValue, 0, 1) == POP_CONSTANT_FIELDATTS_ATTVARIABLEPREFIX) {
+                        $fieldAttValue = $variables[substr($fieldAttValue, 1)];
+                    }
+                    $fieldAtts[$fieldAttKey] = $fieldAttValue;
                 }
                 return $fieldAtts;
             }
@@ -222,14 +230,14 @@ class Utils
             }
             $pointer = &$fields;
         }
-        
+
         return $fields;
     }
 
     public static function getFramecomponentModules()
     {
         return HooksAPIFacade::getInstance()->applyFilters(
-            '\PoP\Engine\Utils:getFramecomponentModules', 
+            '\PoP\Engine\Utils:getFramecomponentModules',
             array()
         );
     }
