@@ -1,8 +1,8 @@
 <?php
 
-\PoP\Engine\TemplateUtils::validatePopLoaded(true);
-\PoP\Engine\TemplateUtils::maybeRedirect();
-\PoP\Engine\TemplateUtils::generateData();
+\PoP\ComponentModel\TemplateUtils::validatePopLoaded(true);
+\PoP\ComponentModel\TemplateUtils::maybeRedirect();
+\PoP\ComponentModel\TemplateUtils::generateData();
 
 // Indicate that this is a json response in the HTTP Header
 header('Content-type: application/json');

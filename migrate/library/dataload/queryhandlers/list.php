@@ -159,7 +159,7 @@ class GD_DataLoad_QueryHandler_List extends \PoP\ComponentModel\QueryHandlerBase
     //     $msgs = array();
 
     //     // Show error message if no items, but only if the checkpoint did not fail
-    //     $checkpoint_failed = \PoP\Engine\GeneralUtils::isError($dataaccess_checkpoint_validation);
+    //     $checkpoint_failed = \PoP\ComponentModel\GeneralUtils::isError($dataaccess_checkpoint_validation);
     //     if (!$checkpoint_failed) {
     //         if (empty($dbobjectids)) {
 
