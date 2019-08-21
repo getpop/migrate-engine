@@ -1,6 +1,6 @@
 <?php
 
-class PoP_Engine_Module_Processor_Elements extends \PoP\Engine\ModuleProcessorBase
+class PoP_Engine_Module_Processor_Elements extends \PoP\ComponentModel\ModuleProcessorBase
 {
     public const MODULE_EMPTY = 'empty';
 

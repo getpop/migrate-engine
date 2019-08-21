@@ -13,7 +13,7 @@ class DataStructureFormatter_REST extends DataStructureFormatter_MirrorQuery
     protected function getFields()
     {
         // Get the fields from the entry module's module atts
-        $engine = \PoP\Engine\EngineFactory::getInstance();
+        $engine = \PoP\ComponentModel\EngineFactory::getInstance();
         $entry_module = $engine->getEntryModule();
         if ($moduleatts = $entry_module[2]) {
             if ($fields = $moduleatts['fields']) {

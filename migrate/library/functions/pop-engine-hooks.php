@@ -1,26 +1,26 @@
 <?php
 namespace PoP\Engine\Impl;
 use PoP\Hooks\Facades\HooksAPIFacade;
-use PoP\Engine\Managers\ModuleFilterManager;
+use PoP\ComponentModel\Managers\ModuleFilterManager;
 
 class EngineHooks
 {
     public function __construct()
     {
         HooksAPIFacade::getInstance()->addAction(
-            '\PoP\Engine\Engine:getModuleData:start',
+            '\PoP\ComponentModel\Engine:getModuleData:start',
             array($this, 'start'),
             10,
             4
         );
         HooksAPIFacade::getInstance()->addAction(
-            '\PoP\Engine\Engine:getModuleData:dataloading-module',
+            '\PoP\ComponentModel\Engine:getModuleData:dataloading-module',
             array($this, 'calculateDataloadingModuleData'),
             10,
             8
         );
         HooksAPIFacade::getInstance()->addAction(
-            '\PoP\Engine\Engine:getModuleData:end',
+            '\PoP\ComponentModel\Engine:getModuleData:end',
             array($this, 'end'),
             10,
             5
@@ -58,7 +58,7 @@ class EngineHooks
                 ],
                 ModuleFilterManager::URLPARAM_MODULEFILTER => \PoP\Engine\ModuleFilters\Lazy::NAME,
                 GD_URLPARAM_ACTION => POP_ACTION_LOADLAZY,
-            ], \PoP\Engine\Utils::getCurrentUrl());
+            ], \PoP\ComponentModel\Utils::getCurrentUrl());
             $engine->addBackgroundUrl($url, array(POP_TARGET_MAIN));
         }
     }

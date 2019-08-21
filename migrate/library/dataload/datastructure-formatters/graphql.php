@@ -16,7 +16,7 @@ class DataStructureFormatter_GraphQL extends DataStructureFormatter_MirrorQuery
         // Replicate this structure. Because we don't have a query name here, replace it with the queried URL path, which is known to the client
         return [
             'data' => [
-                \PoP\Engine\Utils::getURLPath() => parent::getFormattedData($data),
+                \PoP\ComponentModel\Utils::getURLPath() => parent::getFormattedData($data),
             ],
         ];
     }

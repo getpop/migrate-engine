@@ -3,7 +3,7 @@ namespace PoP\Engine\Impl;
 
 define('GD_DATALOAD_DATASTRUCTURE_DEFAULT', 'default');
 
-class DataStructureFormatter_Default extends \PoP\Engine\DataStructureFormatterBase
+class DataStructureFormatter_Default extends \PoP\ComponentModel\DataStructureFormatterBase
 {
     public function getName()
     {
@@ -17,5 +17,5 @@ class DataStructureFormatter_Default extends \PoP\Engine\DataStructureFormatterB
 $gd_dataload_formatter_default = new DataStructureFormatter_Default();
 
 // Set as the default one
-$datastructureformat_manager = \PoP\Engine\DataStructureFormatManagerFactory::getInstance();
+$datastructureformat_manager = \PoP\ComponentModel\DataStructureFormatManagerFactory::getInstance();
 $datastructureformat_manager->setDefault($gd_dataload_formatter_default);

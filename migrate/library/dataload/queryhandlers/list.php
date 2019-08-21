@@ -3,7 +3,7 @@
 // BlockList because it serves both Carousel and InfiniteScroll
 define('GD_DATALOAD_QUERYHANDLER_LIST', 'list');
 
-class GD_DataLoad_QueryHandler_List extends \PoP\Engine\QueryHandlerBase
+class GD_DataLoad_QueryHandler_List extends \PoP\ComponentModel\QueryHandlerBase
 {
     public function getName()
     {

@@ -1,7 +1,7 @@
 <?php
 define('POP_STRATUM_DATA', 'data');
 
-class GD_Stratum_Data extends \PoP\Engine\StratumBase
+class GD_Stratum_Data extends \PoP\ComponentModel\StratumBase
 {
 	public function getStratum()
     {

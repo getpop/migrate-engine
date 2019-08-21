@@ -1,7 +1,7 @@
 <?php
 namespace PoP\Engine;
 
-class FilterInputProcessor extends \PoP\Engine\AbstractFilterInputProcessor
+class FilterInputProcessor extends \PoP\ComponentModel\AbstractFilterInputProcessor
 {
     public const FILTERINPUT_ORDER = 'filterinput-order';
     public const FILTERINPUT_LIMIT = 'filterinput-limit';

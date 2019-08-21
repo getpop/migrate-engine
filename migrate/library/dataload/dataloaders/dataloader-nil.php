@@ -1,7 +1,7 @@
 <?php
 namespace PoP\Engine;
 
-class Dataloader_Nil extends \PoP\Engine\QueryDataDataloader
+class Dataloader_Nil extends \PoP\ComponentModel\QueryDataDataloader
 {
     public function getFieldValueResolverClass()
     {

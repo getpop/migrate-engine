@@ -1,9 +1,9 @@
 <?php
 
-use PoP\Engine\FilterInput;
+use PoP\ComponentModel\FilterInput;
 use PoP\Engine\FilterInputProcessor;
 
-class PoP_Module_Processor_FilterInputs extends \PoP\Engine\AbstractFormInputs implements \PoP\Engine\DataloadQueryArgsFilter
+class PoP_Module_Processor_FilterInputs extends \PoP\ComponentModel\AbstractFormInputs implements \PoP\ComponentModel\DataloadQueryArgsFilter
 {
     public const MODULE_FILTERINPUT_ORDER = 'filterinput-order';
     public const MODULE_FILTERINPUT_LIMIT = 'filterinput-limit';

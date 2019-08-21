@@ -3,7 +3,7 @@ namespace PoP\Engine\Impl;
 
 define('GD_DATALOAD_DATASTRUCTURE_RESULTS', 'results');
 
-class DataStructureFormatter_Results extends \PoP\Engine\DataStructureFormatterBase
+class DataStructureFormatter_Results extends \PoP\ComponentModel\DataStructureFormatterBase
 {
     public function getName()
     {
@@ -31,7 +31,7 @@ class DataStructureFormatter_Results extends \PoP\Engine\DataStructureFormatterB
     {
 
         // If we are requesting only the databases, then return these as a list of items
-        $vars = \PoP\Engine\Engine_Vars::getVars();
+        $vars = \PoP\ComponentModel\Engine_Vars::getVars();
         $dataoutputitems = $vars['dataoutputitems'];
         if (in_array(GD_URLPARAM_DATAOUTPUTITEMS_DATABASES, $dataoutputitems)) {
             $ret = array();

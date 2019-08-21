@@ -3,7 +3,7 @@ namespace PoP\Engine\Impl;
 
 define('GD_DATALOAD_DATASTRUCTURE_MIRRORQUERY', 'mirrorquery');
 
-class DataStructureFormatter_MirrorQuery extends \PoP\Engine\DataStructureFormatterBase
+class DataStructureFormatter_MirrorQuery extends \PoP\ComponentModel\DataStructureFormatterBase
 {
     public function getName()
     {
@@ -13,7 +13,7 @@ class DataStructureFormatter_MirrorQuery extends \PoP\Engine\DataStructureFormat
     protected function getFields()
     {
         // Allow REST to override with default fields
-        $vars = \PoP\Engine\Engine_Vars::getVars();
+        $vars = \PoP\ComponentModel\Engine_Vars::getVars();
         return $vars['fields'];
     }
 
@@ -43,7 +43,7 @@ class DataStructureFormatter_MirrorQuery extends \PoP\Engine\DataStructureFormat
     //     if ($fields = $this->getFields()) {
     //         $engine = EngineFactory::getInstance();
     //         list($has_extra_routes) = $engine->listExtraRouteVars();
-    //         $vars = \PoP\Engine\Engine_Vars::getVars();
+    //         $vars = \PoP\ComponentModel\Engine_Vars::getVars();
     //         $dataoutputmode = $vars['dataoutputmode'];
 
     //         $databases = $data['databases'] ?? [];

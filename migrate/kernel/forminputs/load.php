@@ -1,6 +1,5 @@
 <?php
 
-require_once 'input.php';
 require_once 'select.php';
 require_once 'multiselect.php';
 require_once 'multipleinputs.php';

@@ -1,7 +1,7 @@
 <?php
 namespace PoP\Engine\Settings\Impl;
 
-class PageModuleSiteConfigurationProcessor extends \PoP\Engine\Settings\SiteConfigurationProcessorBase
+class PageModuleSiteConfigurationProcessor extends \PoP\ComponentModel\Settings\SiteConfigurationProcessorBase
 {
     public function getEntryModule(): ?array
     {

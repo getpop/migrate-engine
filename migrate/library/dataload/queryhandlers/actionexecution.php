@@ -3,7 +3,7 @@ namespace PoP\Engine\Impl;
 
 define('GD_DATALOAD_QUERYHANDLER_ACTIONEXECUTION', 'actionexecution');
 
-class QueryHandler_ActionExecution extends \PoP\Engine\QueryHandlerBase
+class QueryHandler_ActionExecution extends \PoP\ComponentModel\QueryHandlerBase
 {
     public function getName()
     {
