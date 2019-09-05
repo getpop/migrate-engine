@@ -71,7 +71,7 @@ class PoP_Module_Processor_FilterInputs extends \PoP\ComponentModel\AbstractForm
     {
         $translationAPI = TranslationAPIFacade::getInstance();
         $descriptions = [
-            self::MODULE_FILTERINPUT_ORDER => $translationAPI->__('Order the results. Specify the "orderby" and "order" ("ASC" or "DESC") fields in this format: "orderby|order"', ''),
+            self::MODULE_FILTERINPUT_ORDER => $translationAPI->__('Order the results. Specify the \'orderby\' and \'order\' (\'ASC\' or \'DESC\') fields in this format: \'orderby|order\'', ''),
             self::MODULE_FILTERINPUT_LIMIT => $translationAPI->__('Limit the results. -1 to bring all results (or the maximum amount allowed)', ''),
             self::MODULE_FILTERINPUT_OFFSET => $translationAPI->__('Offset the results by how many places, needed for pagination', ''),
         ];
