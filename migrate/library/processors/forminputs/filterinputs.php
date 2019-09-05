@@ -61,8 +61,6 @@ class PoP_Module_Processor_FilterInputs extends \PoP\ComponentModel\AbstractForm
 
     public function addFilterDocumentation(array &$documentation, array $module)
     {
-        parent::addFilterDocumentation($documentation, $module);
-
         $translationAPI = TranslationAPIFacade::getInstance();
         switch ($module[1]) {
             case self::MODULE_FILTERINPUT_ORDER:
