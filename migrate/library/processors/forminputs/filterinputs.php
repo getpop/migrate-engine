@@ -66,17 +66,17 @@ class PoP_Module_Processor_FilterInputs extends \PoP\ComponentModel\AbstractForm
         $translationAPI = TranslationAPIFacade::getInstance();
         switch ($module[1]) {
             case self::MODULE_FILTERINPUT_ORDER:
-                $documentation['description'] = $translationAPI->('', '');
+                $documentation['description'] = $translationAPI->__('', '');
                 $documentation['type'] = TYPE_STRING;
                 break;
 
             case self::MODULE_FILTERINPUT_LIMIT:
-                $documentation['description'] = $translationAPI->('', '');
+                $documentation['description'] = $translationAPI->__('', '');
                 $documentation['type'] = TYPE_INT;
                 break;
 
             case self::MODULE_FILTERINPUT_OFFSET:
-                $documentation['description'] = $translationAPI->('', '');
+                $documentation['description'] = $translationAPI->__('', '');
                 $documentation['type'] = TYPE_INT;
                 break;
         }
