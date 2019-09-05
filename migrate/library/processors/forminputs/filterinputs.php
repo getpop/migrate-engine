@@ -5,6 +5,8 @@ use PoP\Engine\FilterInputProcessor;
 
 class PoP_Module_Processor_FilterInputs extends \PoP\ComponentModel\AbstractFormInputs implements \PoP\ComponentModel\DataloadQueryArgsFilter
 {
+    use \PoP\ComponentModel\DataloadQueryArgsFilterTrait;
+    
     public const MODULE_FILTERINPUT_ORDER = 'filterinput-order';
     public const MODULE_FILTERINPUT_LIMIT = 'filterinput-limit';
     public const MODULE_FILTERINPUT_OFFSET = 'filterinput-offset';
