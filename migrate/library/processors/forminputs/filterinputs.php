@@ -1,13 +1,11 @@
 <?php
-
-use PoP\ComponentModel\FilterInput;
 use PoP\Engine\FilterInputProcessor;
 use PoP\Translation\Facades\TranslationAPIFacade;
 
 class PoP_Module_Processor_FilterInputs extends \PoP\ComponentModel\AbstractFormInputs implements \PoP\ComponentModel\DataloadQueryArgsFilter
 {
     use \PoP\ComponentModel\DataloadQueryArgsFilterTrait;
-    
+
     public const MODULE_FILTERINPUT_ORDER = 'filterinput-order';
     public const MODULE_FILTERINPUT_LIMIT = 'filterinput-limit';
     public const MODULE_FILTERINPUT_OFFSET = 'filterinput-offset';
@@ -59,25 +57,25 @@ class PoP_Module_Processor_FilterInputs extends \PoP\ComponentModel\AbstractForm
         return parent::getName($module);
     }
 
-    public function addFilterDocumentation(array &$documentation, array $module)
+    public function getFilterDocumentationType(array $module): ?string
+    {
+        $types = [
+            self::MODULE_FILTERINPUT_ORDER => TYPE_STRING,
+            self::MODULE_FILTERINPUT_LIMIT => TYPE_INT,
+            self::MODULE_FILTERINPUT_OFFSET => TYPE_INT,
+        ];
+        return $types[$module[1]];
+    }
+
+    public function getFilterDocumentationDescription(array $module): ?string
     {
         $translationAPI = TranslationAPIFacade::getInstance();
-        switch ($module[1]) {
-            case self::MODULE_FILTERINPUT_ORDER:
-                $documentation['description'] = $translationAPI->__('', '');
-                $documentation['type'] = TYPE_STRING;
-                break;
-
-            case self::MODULE_FILTERINPUT_LIMIT:
-                $documentation['description'] = $translationAPI->__('', '');
-                $documentation['type'] = TYPE_INT;
-                break;
-
-            case self::MODULE_FILTERINPUT_OFFSET:
-                $documentation['description'] = $translationAPI->__('', '');
-                $documentation['type'] = TYPE_INT;
-                break;
-        }
+        $descriptions = [
+            self::MODULE_FILTERINPUT_ORDER => $translationAPI->__('', ''),
+            self::MODULE_FILTERINPUT_LIMIT => $translationAPI->__('', ''),
+            self::MODULE_FILTERINPUT_OFFSET => $translationAPI->__('', ''),
+        ];
+        return $descriptions[$module[1]];
     }
 }
 
