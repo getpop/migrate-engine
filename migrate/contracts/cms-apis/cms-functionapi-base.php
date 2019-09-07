@@ -12,6 +12,11 @@ abstract class FunctionAPI_Base implements FunctionAPI
     	return '';
     }
 
+    public function getDomain(): string
+    {
+        return getDomain($this->getSiteURL());
+    }
+
     public function isError($object)
     {
     	return $object instanceof Throwable;
