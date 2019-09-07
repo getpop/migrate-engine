@@ -121,12 +121,21 @@ class DataStructureFormatter_MirrorQuery extends \PoP\ComponentModel\DataStructu
 
             // Add a new subarray for the nested property
             $dbObjectNestedPropertyRet = &$dbObjectRet[$nestedField];
+
             // If the value of the nested property is NULL, then no need to return it (to avoid guessing if it's a null ID or a null array, in which case the response may be different)
             if (!is_null($dbObject[$nestedField])) {
                 // If it is an empty array, then directly add an empty array as the result
                 if (is_array($dbObject[$nestedField]) && empty($dbObject[$nestedField])) {
                     $dbObjectRet[$nestedField] = [];
                 } else {
+                    // Watch out! If we load a relational property as its ID, and then load properties on the corresponding object, then it will fail because it will attempt to add a property to a non-array element
+                    // Eg: /posts/api/graphql/?fields=id|author,author.name will first return "author => 1" and on the "1" element add property "name"
+                    // Then, if this situation happens, simply override the ID (which is a scalar value, such as an int or string) with an object with the 'id' property
+                    if (!empty($dbObjectNestedPropertyRet) && !is_array($dbObjectNestedPropertyRet)) {
+                        $dbObjectRet[$nestedField] = [
+                            'id' => $dbObjectRet[$nestedField],
+                        ];
+                    }
                     $this->addData($dbObjectNestedPropertyRet, $nestedPropertyFields, $databases, $dbObject[$nestedField], $nextField, $dbKeyPaths);
                 }
             }
