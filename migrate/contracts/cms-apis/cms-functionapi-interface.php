@@ -8,7 +8,7 @@ interface FunctionAPI
     public function getVersion();
     public function getHomeURL();
     public function getSiteURL(): string;
-    public function getDomain(): string;
+    public function getHost(): string;
     public function isError($object);
     public function getContentDir();
     public function getContentURL();
