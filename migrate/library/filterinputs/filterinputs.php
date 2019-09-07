@@ -7,6 +7,7 @@ class FilterInputProcessor extends \PoP\ComponentModel\AbstractFilterInputProces
     public const FILTERINPUT_LIMIT = 'filterinput-limit';
     public const FILTERINPUT_OFFSET = 'filterinput-offset';
     public const FILTERINPUT_SEARCH = 'filterinput-search';
+    public const FILTERINPUT_DATES = 'filterinput-dates';
 
     public function getFilterInputsToProcess()
     {
@@ -15,6 +16,7 @@ class FilterInputProcessor extends \PoP\ComponentModel\AbstractFilterInputProces
             [self::class, self::FILTERINPUT_LIMIT],
             [self::class, self::FILTERINPUT_OFFSET],
             [self::class, self::FILTERINPUT_SEARCH],
+            [self::class, self::FILTERINPUT_DATES],
         );
     }
 
@@ -33,6 +35,10 @@ class FilterInputProcessor extends \PoP\ComponentModel\AbstractFilterInputProces
                 break;
             case self::FILTERINPUT_SEARCH:
                 $query['search'] = $value;
+                break;
+            case self::FILTERINPUT_DATES:
+                $query['date-from'] = $value['from'];
+                $query['date-to'] = $value['to'];
                 break;
         }
     }

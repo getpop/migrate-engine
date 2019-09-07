@@ -9,6 +9,8 @@ class PoP_Module_Processor_FilterInputs extends \PoP\ComponentModel\AbstractForm
     public const MODULE_FILTERINPUT_ORDER = 'filterinput-order';
     public const MODULE_FILTERINPUT_LIMIT = 'filterinput-limit';
     public const MODULE_FILTERINPUT_OFFSET = 'filterinput-offset';
+    public const MODULE_FILTERINPUT_SEARCH = 'filterinput-search';
+    public const MODULE_FILTERINPUT_DATES = 'filterinput-postdates';
 
     public function getModulesToProcess()
     {
@@ -16,6 +18,8 @@ class PoP_Module_Processor_FilterInputs extends \PoP\ComponentModel\AbstractForm
             [self::class, self::MODULE_FILTERINPUT_ORDER],
             [self::class, self::MODULE_FILTERINPUT_LIMIT],
             [self::class, self::MODULE_FILTERINPUT_OFFSET],
+            [self::class, self::MODULE_FILTERINPUT_SEARCH],
+            [self::class, self::MODULE_FILTERINPUT_DATES],
         );
     }
 
@@ -25,8 +29,39 @@ class PoP_Module_Processor_FilterInputs extends \PoP\ComponentModel\AbstractForm
             self::MODULE_FILTERINPUT_ORDER => [FilterInputProcessor::class, FilterInputProcessor::FILTERINPUT_ORDER],
             self::MODULE_FILTERINPUT_LIMIT => [FilterInputProcessor::class, FilterInputProcessor::FILTERINPUT_LIMIT],
             self::MODULE_FILTERINPUT_OFFSET => [FilterInputProcessor::class, FilterInputProcessor::FILTERINPUT_OFFSET],
+            self::MODULE_FILTERINPUT_SEARCH => [FilterInputProcessor::class, FilterInputProcessor::FILTERINPUT_SEARCH],
+            self::MODULE_FILTERINPUT_DATES => [FilterInputProcessor::class, FilterInputProcessor::FILTERINPUT_DATES],
         ];
         return $filterInputs[$module[1]];
+    }
+
+    public function getInputName(array $module)
+    {
+        switch ($module[1]) {
+            case self::MODULE_FILTERINPUT_DATES:
+                // Allow for multiple names, for multiple inputs
+                $name = $this->getName($module);
+                $names = array();
+                foreach ($this->getInputSubnames($module) as $subname) {
+                    $names[$subname] = PoP_InputUtils::getMultipleinputsName($name, $subname).($this->isMultiple($module) ? '[]' : '');
+                }
+                return $names;
+        }
+
+        return parent::getInputName($module);
+    }
+
+    public function getInputOptions(array $module)
+    {
+        $options = parent::getInputOptions($module);
+
+        switch ($module[1]) {
+            case self::MODULE_FILTERINPUT_DATES:
+                $options['subnames'] = ['from', 'to'];
+                break;
+        }
+
+        return $options;
     }
 
     public function getInputClass(array $module)
@@ -34,6 +69,8 @@ class PoP_Module_Processor_FilterInputs extends \PoP\ComponentModel\AbstractForm
         switch ($module[1]) {
             case self::MODULE_FILTERINPUT_ORDER:
                 return \PoP\Engine\GD_FormInput_Order::class;
+            case self::MODULE_FILTERINPUT_DATES:
+                return \PoP\Engine\GD_FormInput_MultipleInputs::class;
         }
 
         return parent::getInputClass($module);
@@ -45,11 +82,15 @@ class PoP_Module_Processor_FilterInputs extends \PoP\ComponentModel\AbstractForm
             case self::MODULE_FILTERINPUT_ORDER:
             case self::MODULE_FILTERINPUT_LIMIT:
             case self::MODULE_FILTERINPUT_OFFSET:
+            case self::MODULE_FILTERINPUT_SEARCH:
+            case self::MODULE_FILTERINPUT_DATES:
                 // Add a nice name, so that the URL params when filtering make sense
                 $names = array(
                     self::MODULE_FILTERINPUT_ORDER => 'order',
                     self::MODULE_FILTERINPUT_LIMIT => 'limit',
                     self::MODULE_FILTERINPUT_OFFSET => 'offset',
+                    self::MODULE_FILTERINPUT_SEARCH => 'searchfor',
+                    self::MODULE_FILTERINPUT_DATES => 'date',
                 );
                 return $names[$module[1]];
         }
@@ -63,6 +104,8 @@ class PoP_Module_Processor_FilterInputs extends \PoP\ComponentModel\AbstractForm
             self::MODULE_FILTERINPUT_ORDER => TYPE_STRING,
             self::MODULE_FILTERINPUT_LIMIT => TYPE_INT,
             self::MODULE_FILTERINPUT_OFFSET => TYPE_INT,
+            self::MODULE_FILTERINPUT_SEARCH => TYPE_STRING,
+            self::MODULE_FILTERINPUT_DATES => TYPE_DATE,
         ];
         return $types[$module[1]];
     }
@@ -70,10 +113,22 @@ class PoP_Module_Processor_FilterInputs extends \PoP\ComponentModel\AbstractForm
     public function getFilterDocumentationDescription(array $module): ?string
     {
         $translationAPI = TranslationAPIFacade::getInstance();
+        switch ($module[1]) {
+            case self::MODULE_FILTERINPUT_DATES:
+                $name = $this->getName($module);
+                $subnames = $this->getInputOptions($module)['subnames'];
+                return sprintf(
+                    $translationAPI->__('Search for elements between the \'from\' and \'to\' dates. Provide dates through params \'%s\' and \'%s\'', 'pop-engine'),
+                    \PoP\ComponentModel\PoP_InputUtils::getMultipleinputsName($name, $subnames[0]),
+                    \PoP\ComponentModel\PoP_InputUtils::getMultipleinputsName($name, $subnames[1])
+                );
+        }
+
         $descriptions = [
-            self::MODULE_FILTERINPUT_ORDER => $translationAPI->__('Order the results. Specify the \'orderby\' and \'order\' (\'ASC\' or \'DESC\') fields in this format: \'orderby|order\'', ''),
-            self::MODULE_FILTERINPUT_LIMIT => $translationAPI->__('Limit the results. \'-1\' brings all the results (or the maximum amount allowed)', ''),
-            self::MODULE_FILTERINPUT_OFFSET => $translationAPI->__('Offset the results by how many places (useful for pagination)', ''),
+            self::MODULE_FILTERINPUT_ORDER => $translationAPI->__('Order the results. Specify the \'orderby\' and \'order\' (\'ASC\' or \'DESC\') fields in this format: \'orderby|order\'', 'pop-engine'),
+            self::MODULE_FILTERINPUT_LIMIT => $translationAPI->__('Limit the results. \'-1\' brings all the results (or the maximum amount allowed)', 'pop-engine'),
+            self::MODULE_FILTERINPUT_OFFSET => $translationAPI->__('Offset the results by how many places (useful for pagination)', 'pop-engine'),
+            self::MODULE_FILTERINPUT_SEARCH => $translationAPI->__('Search for elements containing the given string', 'pop-engine'),
         ];
         return $descriptions[$module[1]];
     }
