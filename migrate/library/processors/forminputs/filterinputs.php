@@ -62,6 +62,9 @@ class PoP_Module_Processor_FilterInputs extends \PoP\ComponentModel\AbstractForm
             case self::MODULE_FILTERINPUT_DATES:
                 $options['subnames'] = ['from', 'to'];
                 break;
+            case self::MODULE_FILTERINPUT_IDS:
+                $options['separator'] = '!';
+                break;
         }
 
         return $options;
@@ -75,7 +78,7 @@ class PoP_Module_Processor_FilterInputs extends \PoP\ComponentModel\AbstractForm
             case self::MODULE_FILTERINPUT_DATES:
                 return \PoP\Engine\GD_FormInput_MultipleInputs::class;
             case self::MODULE_FILTERINPUT_IDS:
-                return \PoP\Engine\GD_FormInput_MultiInput::class;
+                return \PoP\Engine\GD_FormInput_MultiValueFromString::class;
         }
 
         return parent::getInputClass($module);
