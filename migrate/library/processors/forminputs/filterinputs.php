@@ -110,7 +110,7 @@ class PoP_Module_Processor_FilterInputs extends \PoP\ComponentModel\AbstractForm
             self::MODULE_FILTERINPUT_SEARCH => TYPE_STRING,
             self::MODULE_FILTERINPUT_DATES => TYPE_DATE,
             self::MODULE_FILTERINPUT_IDS => \PoP\ComponentModel\DataloadUtils::combineTypes(TYPE_ARRAY, TYPE_ID),
-            self::MODULE_FILTERINPUT_ID => \PoP\ComponentModel\DataloadUtils::combineTypes(TYPE_STRING, TYPE_ID),
+            self::MODULE_FILTERINPUT_ID => TYPE_STRING,
         ];
         return $types[$module[1]] ?? parent::getFilterDocumentationType($module);
     }
