@@ -14,6 +14,11 @@ class GD_FormInput_MultiValueFromString extends GD_FormInput
 
     public function getValue(?array $source = null)
     {
-        return array_map('trim', explode($this->separator, parent::getValue($source)));
+        $value = parent::getValue($source);
+        // Only if it is not null process it
+        if (!is_null($value)) {
+            return array_map('trim', explode($this->separator, $value));
+        }
+        return $value;
     }
 }

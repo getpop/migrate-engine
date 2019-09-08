@@ -12,6 +12,7 @@ class PoP_Module_Processor_FilterInputs extends \PoP\ComponentModel\AbstractForm
     public const MODULE_FILTERINPUT_SEARCH = 'filterinput-search';
     public const MODULE_FILTERINPUT_DATES = 'filterinput-dates';
     public const MODULE_FILTERINPUT_IDS = 'filterinput-ids';
+    public const MODULE_FILTERINPUT_ID = 'filterinput-id';
 
     public function getModulesToProcess()
     {
@@ -22,6 +23,7 @@ class PoP_Module_Processor_FilterInputs extends \PoP\ComponentModel\AbstractForm
             [self::class, self::MODULE_FILTERINPUT_SEARCH],
             [self::class, self::MODULE_FILTERINPUT_DATES],
             [self::class, self::MODULE_FILTERINPUT_IDS],
+            [self::class, self::MODULE_FILTERINPUT_ID],
         );
     }
 
@@ -34,6 +36,7 @@ class PoP_Module_Processor_FilterInputs extends \PoP\ComponentModel\AbstractForm
             self::MODULE_FILTERINPUT_SEARCH => [FilterInputProcessor::class, FilterInputProcessor::FILTERINPUT_SEARCH],
             self::MODULE_FILTERINPUT_DATES => [FilterInputProcessor::class, FilterInputProcessor::FILTERINPUT_DATES],
             self::MODULE_FILTERINPUT_IDS => [FilterInputProcessor::class, FilterInputProcessor::FILTERINPUT_IDS],
+            self::MODULE_FILTERINPUT_ID => [FilterInputProcessor::class, FilterInputProcessor::FILTERINPUT_ID],
         ];
         return $filterInputs[$module[1]];
     }
@@ -75,6 +78,8 @@ class PoP_Module_Processor_FilterInputs extends \PoP\ComponentModel\AbstractForm
             case self::MODULE_FILTERINPUT_DATES:
                 return \PoP\Engine\GD_FormInput_MultipleInputs::class;
             case self::MODULE_FILTERINPUT_IDS:
+                return \PoP\ComponentModel\GD_FormInput_MultiInput::class;
+            case self::MODULE_FILTERINPUT_ID:
                 return \PoP\Engine\GD_FormInput_MultiValueFromString::class;
         }
 
@@ -91,6 +96,7 @@ class PoP_Module_Processor_FilterInputs extends \PoP\ComponentModel\AbstractForm
             self::MODULE_FILTERINPUT_SEARCH => 'searchfor',
             self::MODULE_FILTERINPUT_DATES => 'date',
             self::MODULE_FILTERINPUT_IDS => 'ids',
+            self::MODULE_FILTERINPUT_ID => 'id',
         );
         return $names[$module[1]] ?? parent::getName($module);
     }
@@ -104,6 +110,7 @@ class PoP_Module_Processor_FilterInputs extends \PoP\ComponentModel\AbstractForm
             self::MODULE_FILTERINPUT_SEARCH => TYPE_STRING,
             self::MODULE_FILTERINPUT_DATES => TYPE_DATE,
             self::MODULE_FILTERINPUT_IDS => \PoP\ComponentModel\DataloadUtils::combineTypes(TYPE_ARRAY, TYPE_ID),
+            self::MODULE_FILTERINPUT_ID => \PoP\ComponentModel\DataloadUtils::combineTypes(TYPE_STRING, TYPE_ID),
         ];
         return $types[$module[1]] ?? parent::getFilterDocumentationType($module);
     }
@@ -128,7 +135,11 @@ class PoP_Module_Processor_FilterInputs extends \PoP\ComponentModel\AbstractForm
             self::MODULE_FILTERINPUT_OFFSET => $translationAPI->__('Offset the results by how many places (useful for pagination)', 'pop-engine'),
             self::MODULE_FILTERINPUT_SEARCH => $translationAPI->__('Search for elements containing the given string', 'pop-engine'),
             self::MODULE_FILTERINPUT_IDS => sprintf(
-                $translationAPI->__('Search for elements with the given IDs (separated by \'%s\')', 'pop-engine'),
+                $translationAPI->__('Search for elements with the given IDs, passed as an array through \'variables\' param (eg: ?fields=posts(ids:$ids)&variables[ids][]=4&variables[ids][]=7)', 'pop-engine'),
+                POP_CONSTANT_PARAMVALUE_SEPARATOR
+            ),
+            self::MODULE_FILTERINPUT_ID => sprintf(
+                $translationAPI->__('Search for elements with the given ID, or IDs (separated by \'%s\')', 'pop-engine'),
                 POP_CONSTANT_PARAMVALUE_SEPARATOR
             ),
         ];
