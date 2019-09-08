@@ -10,7 +10,8 @@ class PoP_Module_Processor_FilterInputs extends \PoP\ComponentModel\AbstractForm
     public const MODULE_FILTERINPUT_LIMIT = 'filterinput-limit';
     public const MODULE_FILTERINPUT_OFFSET = 'filterinput-offset';
     public const MODULE_FILTERINPUT_SEARCH = 'filterinput-search';
-    public const MODULE_FILTERINPUT_DATES = 'filterinput-postdates';
+    public const MODULE_FILTERINPUT_DATES = 'filterinput-dates';
+    public const MODULE_FILTERINPUT_IDS = 'filterinput-ids';
 
     public function getModulesToProcess()
     {
@@ -20,6 +21,7 @@ class PoP_Module_Processor_FilterInputs extends \PoP\ComponentModel\AbstractForm
             [self::class, self::MODULE_FILTERINPUT_OFFSET],
             [self::class, self::MODULE_FILTERINPUT_SEARCH],
             [self::class, self::MODULE_FILTERINPUT_DATES],
+            [self::class, self::MODULE_FILTERINPUT_IDS],
         );
     }
 
@@ -31,6 +33,7 @@ class PoP_Module_Processor_FilterInputs extends \PoP\ComponentModel\AbstractForm
             self::MODULE_FILTERINPUT_OFFSET => [FilterInputProcessor::class, FilterInputProcessor::FILTERINPUT_OFFSET],
             self::MODULE_FILTERINPUT_SEARCH => [FilterInputProcessor::class, FilterInputProcessor::FILTERINPUT_SEARCH],
             self::MODULE_FILTERINPUT_DATES => [FilterInputProcessor::class, FilterInputProcessor::FILTERINPUT_DATES],
+            self::MODULE_FILTERINPUT_IDS => [FilterInputProcessor::class, FilterInputProcessor::FILTERINPUT_IDS],
         ];
         return $filterInputs[$module[1]];
     }
@@ -71,6 +74,8 @@ class PoP_Module_Processor_FilterInputs extends \PoP\ComponentModel\AbstractForm
                 return \PoP\Engine\GD_FormInput_Order::class;
             case self::MODULE_FILTERINPUT_DATES:
                 return \PoP\Engine\GD_FormInput_MultipleInputs::class;
+            case self::MODULE_FILTERINPUT_IDS:
+                return \PoP\Engine\GD_FormInput_MultiInput::class;
         }
 
         return parent::getInputClass($module);
@@ -78,24 +83,16 @@ class PoP_Module_Processor_FilterInputs extends \PoP\ComponentModel\AbstractForm
 
     public function getName(array $module)
     {
-        switch ($module[1]) {
-            case self::MODULE_FILTERINPUT_ORDER:
-            case self::MODULE_FILTERINPUT_LIMIT:
-            case self::MODULE_FILTERINPUT_OFFSET:
-            case self::MODULE_FILTERINPUT_SEARCH:
-            case self::MODULE_FILTERINPUT_DATES:
-                // Add a nice name, so that the URL params when filtering make sense
-                $names = array(
-                    self::MODULE_FILTERINPUT_ORDER => 'order',
-                    self::MODULE_FILTERINPUT_LIMIT => 'limit',
-                    self::MODULE_FILTERINPUT_OFFSET => 'offset',
-                    self::MODULE_FILTERINPUT_SEARCH => 'searchfor',
-                    self::MODULE_FILTERINPUT_DATES => 'date',
-                );
-                return $names[$module[1]];
-        }
-
-        return parent::getName($module);
+        // Add a nice name, so that the URL params when filtering make sense
+        $names = array(
+            self::MODULE_FILTERINPUT_ORDER => 'order',
+            self::MODULE_FILTERINPUT_LIMIT => 'limit',
+            self::MODULE_FILTERINPUT_OFFSET => 'offset',
+            self::MODULE_FILTERINPUT_SEARCH => 'searchfor',
+            self::MODULE_FILTERINPUT_DATES => 'date',
+            self::MODULE_FILTERINPUT_IDS => 'ids',
+        );
+        return $names[$module[1]] ?? parent::getName($module);
     }
 
     public function getFilterDocumentationType(array $module): ?string
@@ -106,8 +103,9 @@ class PoP_Module_Processor_FilterInputs extends \PoP\ComponentModel\AbstractForm
             self::MODULE_FILTERINPUT_OFFSET => TYPE_INT,
             self::MODULE_FILTERINPUT_SEARCH => TYPE_STRING,
             self::MODULE_FILTERINPUT_DATES => TYPE_DATE,
+            self::MODULE_FILTERINPUT_IDS => \PoP\ComponentModel\DataloadUtils::combineTypes(TYPE_ARRAY, TYPE_ID),
         ];
-        return $types[$module[1]];
+        return $types[$module[1]] ?? parent::getFilterDocumentationType($module);
     }
 
     public function getFilterDocumentationDescription(array $module): ?string
@@ -129,8 +127,9 @@ class PoP_Module_Processor_FilterInputs extends \PoP\ComponentModel\AbstractForm
             self::MODULE_FILTERINPUT_LIMIT => $translationAPI->__('Limit the results. \'-1\' brings all the results (or the maximum amount allowed)', 'pop-engine'),
             self::MODULE_FILTERINPUT_OFFSET => $translationAPI->__('Offset the results by how many places (useful for pagination)', 'pop-engine'),
             self::MODULE_FILTERINPUT_SEARCH => $translationAPI->__('Search for elements containing the given string', 'pop-engine'),
+            self::MODULE_FILTERINPUT_IDS => $translationAPI->__('Search for elements with the given ID or IDs (separated by comma \',\')', 'pop-engine'),
         ];
-        return $descriptions[$module[1]];
+        return $descriptions[$module[1]] ?? parent::getFilterDocumentationDescription($module);
     }
 }
 
