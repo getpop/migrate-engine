@@ -62,9 +62,6 @@ class PoP_Module_Processor_FilterInputs extends \PoP\ComponentModel\AbstractForm
             case self::MODULE_FILTERINPUT_DATES:
                 $options['subnames'] = ['from', 'to'];
                 break;
-            case self::MODULE_FILTERINPUT_IDS:
-                $options['separator'] = '!';
-                break;
         }
 
         return $options;
@@ -130,7 +127,10 @@ class PoP_Module_Processor_FilterInputs extends \PoP\ComponentModel\AbstractForm
             self::MODULE_FILTERINPUT_LIMIT => $translationAPI->__('Limit the results. \'-1\' brings all the results (or the maximum amount allowed)', 'pop-engine'),
             self::MODULE_FILTERINPUT_OFFSET => $translationAPI->__('Offset the results by how many places (useful for pagination)', 'pop-engine'),
             self::MODULE_FILTERINPUT_SEARCH => $translationAPI->__('Search for elements containing the given string', 'pop-engine'),
-            self::MODULE_FILTERINPUT_IDS => $translationAPI->__('Search for elements with the given ID or IDs (separated by comma \',\')', 'pop-engine'),
+            self::MODULE_FILTERINPUT_IDS => sprintf(
+                $translationAPI->__('Search for elements with the given IDs (separated by \'%s\')', 'pop-engine'),
+                POP_CONSTANT_PARAMVALUE_SEPARATOR
+            ),
         ];
         return $descriptions[$module[1]] ?? parent::getFilterDocumentationDescription($module);
     }
