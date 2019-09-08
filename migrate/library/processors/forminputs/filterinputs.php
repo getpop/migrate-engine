@@ -132,7 +132,7 @@ class PoP_Module_Processor_FilterInputs extends \PoP\ComponentModel\AbstractForm
         $descriptions = [
             self::MODULE_FILTERINPUT_ORDER => $translationAPI->__('Order the results. Specify the \'orderby\' and \'order\' (\'ASC\' or \'DESC\') fields in this format: \'orderby|order\'', 'pop-engine'),
             self::MODULE_FILTERINPUT_LIMIT => $translationAPI->__('Limit the results. \'-1\' brings all the results (or the maximum amount allowed)', 'pop-engine'),
-            self::MODULE_FILTERINPUT_OFFSET => $translationAPI->__('Offset the results by how many places (useful for pagination)', 'pop-engine'),
+            self::MODULE_FILTERINPUT_OFFSET => $translationAPI->__('Offset the results by how many places (required for pagination)', 'pop-engine'),
             self::MODULE_FILTERINPUT_SEARCH => $translationAPI->__('Search for elements containing the given string', 'pop-engine'),
             self::MODULE_FILTERINPUT_IDS => sprintf(
                 $translationAPI->__('Search for elements with the given IDs, passed as an array through \'variables\' param (eg: ?fields=posts(ids:$ids)&variables[ids][]=4&variables[ids][]=7)', 'pop-engine'),
