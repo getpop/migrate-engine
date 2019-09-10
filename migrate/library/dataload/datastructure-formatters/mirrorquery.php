@@ -111,7 +111,10 @@ class DataStructureFormatter_MirrorQuery extends \PoP\ComponentModel\DataStructu
         // Add all properties requested from the object
         $dbObject = $databases[$dbKeyPaths[$dbObjectKeyPath]][$dbObjectID] ?? [];
         foreach ($propertyFields as $propertyField) {
-            $dbObjectRet[$propertyField] = $dbObject[$propertyField];
+            // Only if the property has been set (in case of dbError it is not set)
+            if (isset($dbObject[$propertyField])) {
+                $dbObjectRet[$propertyField] = $dbObject[$propertyField];
+            }
         }
 
         // Add the nested levels
