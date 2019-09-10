@@ -3,8 +3,8 @@ namespace PoP\Engine;
 
 interface HelperAPI
 {
-    public function addQueryArgs(array $key_values, string $url);
-    public function removeQueryArgs(array $keys, string $url);
-    public function maybeAddTrailingSlash(string $text);
-    public function hash($data);
+    public function addQueryArgs(array $key_values, string $url): string;
+    public function removeQueryArgs(array $keys, string $url): string;
+    public function maybeAddTrailingSlash(string $text): string;
+    public function hash($data): string;
 }
