@@ -9,7 +9,7 @@ interface FunctionAPI
     public function getHomeURL(): string;
     public function getSiteURL(): string;
     public function getHost(): string;
-    public function isError($object);
+    public function isError($object): bool;
     public function getContentDir();
     public function getContentURL();
 }

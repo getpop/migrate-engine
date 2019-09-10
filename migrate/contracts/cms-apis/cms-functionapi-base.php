@@ -17,7 +17,7 @@ abstract class FunctionAPI_Base implements FunctionAPI
         return removeScheme($this->getHomeURL());
     }
 
-    public function isError($object)
+    public function isError($object): bool
     {
     	return $object instanceof Throwable;
     }
