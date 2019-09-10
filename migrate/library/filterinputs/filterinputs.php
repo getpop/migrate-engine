@@ -8,8 +8,7 @@ class FilterInputProcessor extends \PoP\ComponentModel\AbstractFilterInputProces
     public const FILTERINPUT_OFFSET = 'filterinput-offset';
     public const FILTERINPUT_SEARCH = 'filterinput-search';
     public const FILTERINPUT_DATES = 'filterinput-dates';
-    public const FILTERINPUT_IDS = 'filterinput-ids';
-    public const FILTERINPUT_ID = 'filterinput-id';
+    public const FILTERINPUT_INCLUDE = 'filterinput-include';
 
     public function getFilterInputsToProcess()
     {
@@ -19,8 +18,7 @@ class FilterInputProcessor extends \PoP\ComponentModel\AbstractFilterInputProces
             [self::class, self::FILTERINPUT_OFFSET],
             [self::class, self::FILTERINPUT_SEARCH],
             [self::class, self::FILTERINPUT_DATES],
-            [self::class, self::FILTERINPUT_IDS],
-            [self::class, self::FILTERINPUT_ID],
+            [self::class, self::FILTERINPUT_INCLUDE],
         );
     }
 
@@ -44,8 +42,7 @@ class FilterInputProcessor extends \PoP\ComponentModel\AbstractFilterInputProces
                 $query['date-from'] = $value['from'];
                 $query['date-to'] = $value['to'];
                 break;
-            case self::FILTERINPUT_IDS:
-            case self::FILTERINPUT_ID:
+            case self::FILTERINPUT_INCLUDE:
                 $query['include'] = $value;
                 break;
         }
