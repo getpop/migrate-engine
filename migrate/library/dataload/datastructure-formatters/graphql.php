@@ -29,7 +29,7 @@ class DataStructureFormatter_GraphQL extends DataStructureFormatter_MirrorQuery
         // Add errors
         $errors = [];
         if ($data['dbErrors']) {
-
+            $errors = $this->reformatDBEntries($data['dbErrors']);
         }
         if ($data['schemaErrors']) {
             $errors = array_merge(
@@ -48,18 +48,35 @@ class DataStructureFormatter_GraphQL extends DataStructureFormatter_MirrorQuery
         return $ret;
     }
 
+    protected function reformatDBEntries($entries)
+    {
+        $ret = [];
+        foreach ($entries as $dbKey => $id_field_message) {
+            foreach ($id_field_message as $id => $field_message) {
+                foreach ($field_message as $field => $message) {
+                    $ret[] = [
+                        'entity' => $dbKey,
+                        'id' => $id,
+                        'field' => $field,
+                        'message' => $message,
+                    ];
+                }
+            }
+        }
+        return $ret;
+    }
+
     protected function reformatSchemaEntries($entries)
     {
-        $translationAPI = TranslationAPIFacade::getInstance();
         $ret = [];
-        foreach ($entries as $field => $message) {
-            $ret[] = [
-                'message' => sprintf(
-                    $translationAPI->__('Field \'%s\': %s', 'pop-api-graphql'),
-                    $field,
-                    $message
-                ),
-            ];
+        foreach ($entries as $dbKey => $field_message) {
+            foreach ($field_message as $field => $message) {
+                $ret[] = [
+                    'entity' => $dbKey,
+                    'field' => $field,
+                    'message' => $message,
+                ];
+            }
         }
         return $ret;
     }
