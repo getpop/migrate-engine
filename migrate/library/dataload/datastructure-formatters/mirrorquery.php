@@ -119,14 +119,15 @@ class DataStructureFormatter_MirrorQuery extends \PoP\ComponentModel\DataStructu
 
         // Add the nested levels
         foreach ($nestedFields as $nestedField => $nestedPropertyFields) {
-            // The first field, "id", needs not be concatenated. All the others do need
-            $nextField = ($concatenateField ? $dbObjectKeyPath.'.' : '').$nestedField;
-
-            // Add a new subarray for the nested property
-            $dbObjectNestedPropertyRet = &$dbObjectRet[$nestedField];
-
             // If the value of the nested property is NULL, then no need to return it (to avoid guessing if it's a null ID or a null array, in which case the response may be different)
             if (!is_null($dbObject[$nestedField])) {
+
+                // The first field, "id", needs not be concatenated. All the others do need
+                $nextField = ($concatenateField ? $dbObjectKeyPath.'.' : '').$nestedField;
+
+                // Add a new subarray for the nested property
+                $dbObjectNestedPropertyRet = &$dbObjectRet[$nestedField];
+
                 // If it is an empty array, then directly add an empty array as the result
                 if (is_array($dbObject[$nestedField]) && empty($dbObject[$nestedField])) {
                     $dbObjectRet[$nestedField] = [];
