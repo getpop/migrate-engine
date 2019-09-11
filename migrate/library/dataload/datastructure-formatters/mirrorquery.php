@@ -109,7 +109,8 @@ class DataStructureFormatter_MirrorQuery extends \PoP\ComponentModel\DataStructu
     protected function addDBObjectData(&$dbObjectRet, $propertyFields, $nestedFields, &$databases, $dbObjectID, $dbObjectKeyPath, &$dbKeyPaths, $concatenateField)
     {
         // Add all properties requested from the object
-        $dbObject = $databases[$dbKeyPaths[$dbObjectKeyPath]][$dbObjectID] ?? [];
+        $dbKey = $dbKeyPaths[$dbObjectKeyPath];
+        $dbObject = $databases[$dbKey][$dbObjectID] ?? [];
         foreach ($propertyFields as $propertyField) {
             // Only if the property has been set (in case of dbError it is not set)
             if (isset($dbObject[$propertyField])) {
@@ -133,7 +134,9 @@ class DataStructureFormatter_MirrorQuery extends \PoP\ComponentModel\DataStructu
                     $dbObjectRet[$nestedField] = [];
                 } else {
                     // Watch out! If the property has already been loaded from a previous iteration, in some cases it can create trouble!
-                    if (!empty($dbObjectNestedPropertyRet)) {
+                    // But make sure that there truly are subproperties! It could also be a schemaError.
+                    // Eg: ?fields=posts.title.id, then no need to transform "title" from string to {"id" => ...}
+                    if (!empty($dbObjectNestedPropertyRet) && !\PoP\ComponentModel\Utils::getSchemaError($dbKey, $nestedField)) {
                         // 1. If we load a relational property as its ID, and then load properties on the corresponding object, then it will fail because it will attempt to add a property to a non-array element
                         // Eg: /posts/api/graphql/?fields=id|author,author.name will first return "author => 1" and on the "1" element add property "name"
                         // Then, if this situation happens, simply override the ID (which is a scalar value, such as an int or string) with an object with the 'id' property
