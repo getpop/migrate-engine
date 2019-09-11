@@ -37,6 +37,12 @@ class DataStructureFormatter_GraphQL extends DataStructureFormatter_MirrorQuery
                 $this->reformatSchemaEntries($data['schemaErrors'])
             );
         }
+        if ($data['queryErrors']) {
+            $errors = array_merge(
+                $errors,
+                $this->reformatQueryEntries($data['queryErrors'])
+            );
+        }
         if ($errors) {
             $ret['errors'] = $errors;
         }
@@ -76,6 +82,21 @@ class DataStructureFormatter_GraphQL extends DataStructureFormatter_MirrorQuery
                     'type' => 'schema',
                     'entity' => $dbKey,
                     'field' => $field,
+                    'message' => $message,
+                ];
+            }
+        }
+        return $ret;
+    }
+
+    protected function reformatQueryEntries($entries)
+    {
+        $ret = [];
+        foreach ($entries as $variableName => $messages) {
+            foreach ($messages as $message) {
+                $ret[] = [
+                    'type' => 'query',
+                    'variable' => $variableName,
                     'message' => $message,
                 ];
             }
