@@ -92,14 +92,11 @@ class DataStructureFormatter_GraphQL extends DataStructureFormatter_MirrorQuery
     protected function reformatQueryEntries($entries)
     {
         $ret = [];
-        foreach ($entries as $variableName => $messages) {
-            foreach ($messages as $message) {
-                $ret[] = [
-                    'type' => 'query',
-                    'variable' => $variableName,
-                    'message' => $message,
-                ];
-            }
+        foreach ($entries as $message) {
+            $ret[] = [
+                'type' => 'query',
+                'message' => $message,
+            ];
         }
         return $ret;
     }
