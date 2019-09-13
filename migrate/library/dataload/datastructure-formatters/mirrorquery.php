@@ -1,5 +1,6 @@
 <?php
 namespace PoP\Engine\Impl;
+use PoP\ComponentModel\FieldUtils;
 
 define('GD_DATALOAD_DATASTRUCTURE_MIRRORQUERY', 'mirrorquery');
 
@@ -113,25 +114,27 @@ class DataStructureFormatter_MirrorQuery extends \PoP\ComponentModel\DataStructu
         $dbObject = $databases[$dbKey][$dbObjectID] ?? [];
         foreach ($propertyFields as $propertyField) {
             // Only if the property has been set (in case of dbError it is not set)
-            if (isset($dbObject[$propertyField])) {
-                $dbObjectRet[$propertyField] = $dbObject[$propertyField];
+            $propertyFieldOutputKey = FieldUtils::getFieldOutputKey($propertyField);
+            if (isset($dbObject[$propertyFieldOutputKey])) {
+                $dbObjectRet[$propertyFieldOutputKey] = $dbObject[$propertyFieldOutputKey];
             }
         }
 
         // Add the nested levels
         foreach ($nestedFields as $nestedField => $nestedPropertyFields) {
-            // If the value of the nested property is NULL, then no need to return it (to avoid guessing if it's a null ID or a null array, in which case the response may be different)
-            if (!is_null($dbObject[$nestedField])) {
 
+            $nestedFieldOutputKey = FieldUtils::getFieldOutputKey($nestedField);
+            // If the value of the nested property is NULL, then no need to return it (to avoid guessing if it's a null ID or a null array, in which case the response may be different)
+            if (!is_null($dbObject[$nestedFieldOutputKey])) {
                 // The first field, "id", needs not be concatenated. All the others do need
-                $nextField = ($concatenateField ? $dbObjectKeyPath.'.' : '').$nestedField;
+                $nextField = ($concatenateField ? $dbObjectKeyPath.'.' : '').$nestedFieldOutputKey;
 
                 // Add a new subarray for the nested property
-                $dbObjectNestedPropertyRet = &$dbObjectRet[$nestedField];
+                $dbObjectNestedPropertyRet = &$dbObjectRet[$nestedFieldOutputKey];
 
                 // If it is an empty array, then directly add an empty array as the result
-                if (is_array($dbObject[$nestedField]) && empty($dbObject[$nestedField])) {
-                    $dbObjectRet[$nestedField] = [];
+                if (is_array($dbObject[$nestedFieldOutputKey]) && empty($dbObject[$nestedFieldOutputKey])) {
+                    $dbObjectRet[$nestedFieldOutputKey] = [];
                 } else {
                     // Watch out! If the property has already been loaded from a previous iteration, in some cases it can create trouble!
                     // But make sure that there truly are subproperties! It could also be a schemaError.
@@ -141,19 +144,19 @@ class DataStructureFormatter_MirrorQuery extends \PoP\ComponentModel\DataStructu
                         // Eg: /posts/api/graphql/?fields=id|author,author.name will first return "author => 1" and on the "1" element add property "name"
                         // Then, if this situation happens, simply override the ID (which is a scalar value, such as an int or string) with an object with the 'id' property
                         if (!is_array($dbObjectNestedPropertyRet)) {
-                            $dbObjectRet[$nestedField] = [
-                                'id' => $dbObjectRet[$nestedField],
+                            $dbObjectRet[$nestedFieldOutputKey] = [
+                                'id' => $dbObjectRet[$nestedFieldOutputKey],
                             ];
                         } else {
                             // 2. If the previous iteration loaded an array of IDs, then override this value with an empty array and initialize the ID again to this object, through adding property 'id' on the next iteration
                             // Eg: /api/graphql/?fields=tags,tags.name
-                            $dbObjectRet[$nestedField] = [];
+                            $dbObjectRet[$nestedFieldOutputKey] = [];
                             if (!in_array('id', $nestedPropertyFields)) {
                                 array_unshift($nestedPropertyFields, 'id');
                             }
                         }
                     }
-                    $this->addData($dbObjectNestedPropertyRet, $nestedPropertyFields, $databases, $dbObject[$nestedField], $nextField, $dbKeyPaths);
+                    $this->addData($dbObjectNestedPropertyRet, $nestedPropertyFields, $databases, $dbObject[$nestedFieldOutputKey], $nextField, $dbKeyPaths);
                 }
             }
         }
