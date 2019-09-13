@@ -14,7 +14,7 @@ class PoP_Module_Processor_FilterInputs extends \PoP\ComponentModel\AbstractForm
     public const MODULE_FILTERINPUT_IDS = 'filterinput-ids';
     public const MODULE_FILTERINPUT_ID = 'filterinput-id';
 
-    public function getModulesToProcess()
+    public function getModulesToProcess(): array
     {
         return array(
             [self::class, self::MODULE_FILTERINPUT_ORDER],
