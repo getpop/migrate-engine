@@ -10,9 +10,9 @@ class QueryHandler_ActionExecution extends \PoP\ComponentModel\QueryHandlerBase
         return GD_DATALOAD_QUERYHANDLER_ACTIONEXECUTION;
     }
 
-    public function getQueryResult($data_properties, $dataaccess_checkpoint_validation, $actionexecution_checkpoint_validation, $executed, $dbobjectids)
+    public function getQueryResult($data_properties, $dataaccess_checkpoint_validation, $actionexecution_checkpoint_validation, $executed, $dbObjectIDOrIDs): array
     {
-        $ret = parent::getQueryResult($data_properties, $dataaccess_checkpoint_validation, $actionexecution_checkpoint_validation, $executed, $dbobjectids);
+        $ret = parent::getQueryResult($data_properties, $dataaccess_checkpoint_validation, $actionexecution_checkpoint_validation, $executed, $dbObjectIDOrIDs);
 
         if ($executed) {
             // $ret['success'] = $executed[GD_DATALOAD_QUERYHANDLERRESPONSE_SUCCESS] ? true : false;

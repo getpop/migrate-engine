@@ -29,9 +29,9 @@ class GD_DataLoad_QueryHandler_List extends \PoP\ComponentModel\QueryHandlerBase
         $query_args[GD_URLPARAM_LIMIT] = $limit ? intval($limit) : $posts_per_page;
     }
 
-    public function getQueryState($data_properties, $dataaccess_checkpoint_validation, $actionexecution_checkpoint_validation, $executed, $dbobjectids)
+    public function getQueryState($data_properties, $dataaccess_checkpoint_validation, $actionexecution_checkpoint_validation, $executed, $dbObjectIDOrIDs): array
     {
-        $ret = parent::getQueryState($data_properties, $dataaccess_checkpoint_validation, $actionexecution_checkpoint_validation, $executed, $dbobjectids);
+        $ret = parent::getQueryState($data_properties, $dataaccess_checkpoint_validation, $actionexecution_checkpoint_validation, $executed, $dbObjectIDOrIDs);
 
         // Needed to loadLatest, to know from what time to get results
         if ($data_properties[GD_DATALOAD_DATASOURCE] == POP_DATALOAD_DATASOURCE_MUTABLEONREQUEST) {
@@ -49,14 +49,14 @@ class GD_DataLoad_QueryHandler_List extends \PoP\ComponentModel\QueryHandlerBase
             return $ret;
         }
         
-        $ret[GD_URLPARAM_STOPFETCHING] = PoP_BaseCollectionData_Utils::stopFetching($dbobjectids, $data_properties);
+        $ret[GD_URLPARAM_STOPFETCHING] = PoP_BaseCollectionData_Utils::stopFetching($dbObjectIDOrIDs, $data_properties);
         
         return $ret;
     }
 
-    public function getQueryParams($data_properties, $dataaccess_checkpoint_validation, $actionexecution_checkpoint_validation, $executed, $dbobjectids)
+    public function getQueryParams($data_properties, $dataaccess_checkpoint_validation, $actionexecution_checkpoint_validation, $executed, $dbObjectIDOrIDs): array
     {
-        $ret = parent::getQueryParams($data_properties, $dataaccess_checkpoint_validation, $actionexecution_checkpoint_validation, $executed, $dbobjectids);
+        $ret = parent::getQueryParams($data_properties, $dataaccess_checkpoint_validation, $actionexecution_checkpoint_validation, $executed, $dbObjectIDOrIDs);
 
         // If data is not to be loaded, then "stop-fetching" as to not show the Load More button
         if ($data_properties[GD_DATALOAD_SKIPDATALOAD] || $data_properties[GD_DATALOAD_DATASOURCE] != POP_DATALOAD_DATASOURCE_MUTABLEONREQUEST) {
@@ -71,7 +71,7 @@ class GD_DataLoad_QueryHandler_List extends \PoP\ComponentModel\QueryHandlerBase
 
         $pagenumber = $query_args[GD_URLPARAM_PAGENUMBER];
         $nextpaged = '';
-        if (!PoP_BaseCollectionData_Utils::stopFetching($dbobjectids, $data_properties)) {
+        if (!PoP_BaseCollectionData_Utils::stopFetching($dbObjectIDOrIDs, $data_properties)) {
             // When loading latest, we need to return the same $pagenumber as we got, because it must not alter the params
             $nextpagenumber = (PoP_Application_Engine_Utils::loadingLatest()) ? $pagenumber : $pagenumber + 1;
         }
