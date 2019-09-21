@@ -115,12 +115,12 @@ class GD_DataLoad_QueryHandler_List extends \PoP\ComponentModel\QueryHandlerBase
     //     $ret[GD_URLPARAM_STOPFETCHING] = $stop_loading;
 
     //     // When loading latest, we need to return the same $pagenumber as we got, because it must not alter the params
-    //     $nextpaged = (PoP_Application_Engine_Utils::loadingLatest()) ? $pagenumber : $pagenumber + 1;
+    //     $nextpaged = $vars['loading-latest'] ? $pagenumber : $pagenumber + 1;
     //     $ret[GD_DATALOAD_PARAMS][GD_URLPARAM_PAGENUMBER] = $stop_loading ? '' : $nextpaged;
 
     //     // Do not send this value back when doing loadLatest, or it will mess up the original structure loading
     //     // Doing 'unset' as to also take it out if an ancestor class (eg: GD_DataLoad_BlockQueryHandler) has set it
-    //     if (PoP_Application_Engine_Utils::loadingLatest()) {
+    //     if ($vars['loading-latest']) {
 
     //         unset($ret[GD_URLPARAM_STOPFETCHING]);
     //     }
@@ -166,7 +166,7 @@ class GD_DataLoad_QueryHandler_List extends \PoP\ComponentModel\QueryHandlerBase
     //         if (empty($dbobjectids)) {
 
     //             // Do not show the message when doing loadLatest
-    //             if (!(PoP_Application_Engine_Utils::loadingLatest())) {
+    //             if (!$vars['loading-latest']) {
                 
     //                 // If pagenumber < 2 => There are no results at all
     //                 $msgs[] = array(
@@ -195,7 +195,7 @@ class GD_DataLoad_QueryHandler_List extends \PoP\ComponentModel\QueryHandlerBase
 
     //     // Do not send this value back when doing loadLatest, or it will mess up the original structure loading
     //     // Doing 'unset' as to also take it out if an ancestor class (eg: GD_DataLoad_BlockQueryHandler) has set it
-    //     if (PoP_Application_Engine_Utils::loadingLatest()) {
+    //     if ($vars['loading-latest']) {
 
     //         unset($ret[GD_URLPARAM_STOPFETCHING]);
     //     }
