@@ -32,6 +32,7 @@ class GD_DataLoad_QueryHandler_List extends \PoP\ComponentModel\QueryHandlerBase
     public function getQueryState($data_properties, $dataaccess_checkpoint_validation, $actionexecution_checkpoint_validation, $executed, $dbObjectIDOrIDs): array
     {
         $ret = parent::getQueryState($data_properties, $dataaccess_checkpoint_validation, $actionexecution_checkpoint_validation, $executed, $dbObjectIDOrIDs);
+        $vars = \PoP\ComponentModel\Engine_Vars::getVars();
 
         // Needed to loadLatest, to know from what time to get results
         if ($data_properties[GD_DATALOAD_DATASOURCE] == POP_DATALOAD_DATASOURCE_MUTABLEONREQUEST) {
@@ -39,7 +40,7 @@ class GD_DataLoad_QueryHandler_List extends \PoP\ComponentModel\QueryHandlerBase
         }
         
         // If it is lazy load, no need to calculate pagenumber / stop-fetching / etc
-        if ($data_properties[GD_DATALOAD_LAZYLOAD] || $data_properties[GD_DATALOAD_EXTERNALLOAD] || $data_properties[GD_DATALOAD_DATASOURCE] != POP_DATALOAD_DATASOURCE_MUTABLEONREQUEST || PoP_Application_Engine_Utils::loadingLatest()) {
+        if ($data_properties[GD_DATALOAD_LAZYLOAD] || $data_properties[GD_DATALOAD_EXTERNALLOAD] || $data_properties[GD_DATALOAD_DATASOURCE] != POP_DATALOAD_DATASOURCE_MUTABLEONREQUEST || $vars['loading-latest']) {
             return $ret;
         }
 
@@ -57,6 +58,7 @@ class GD_DataLoad_QueryHandler_List extends \PoP\ComponentModel\QueryHandlerBase
     public function getQueryParams($data_properties, $dataaccess_checkpoint_validation, $actionexecution_checkpoint_validation, $executed, $dbObjectIDOrIDs): array
     {
         $ret = parent::getQueryParams($data_properties, $dataaccess_checkpoint_validation, $actionexecution_checkpoint_validation, $executed, $dbObjectIDOrIDs);
+        $vars = \PoP\ComponentModel\Engine_Vars::getVars();
 
         // If data is not to be loaded, then "stop-fetching" as to not show the Load More button
         if ($data_properties[GD_DATALOAD_SKIPDATALOAD] || $data_properties[GD_DATALOAD_DATASOURCE] != POP_DATALOAD_DATASOURCE_MUTABLEONREQUEST) {
@@ -73,7 +75,7 @@ class GD_DataLoad_QueryHandler_List extends \PoP\ComponentModel\QueryHandlerBase
         $nextpaged = '';
         if (!PoP_BaseCollectionData_Utils::stopFetching($dbObjectIDOrIDs, $data_properties)) {
             // When loading latest, we need to return the same $pagenumber as we got, because it must not alter the params
-            $nextpagenumber = (PoP_Application_Engine_Utils::loadingLatest()) ? $pagenumber : $pagenumber + 1;
+            $nextpagenumber = ($vars['loading-latest']) ? $pagenumber : $pagenumber + 1;
         }
         $ret[GD_URLPARAM_PAGENUMBER] = $nextpagenumber;
         
