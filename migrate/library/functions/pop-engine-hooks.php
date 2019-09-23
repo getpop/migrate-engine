@@ -57,7 +57,7 @@ class EngineHooks
                     GD_URLPARAM_DATAOUTPUTITEMS_DATABASES,
                 ],
                 ModuleFilterManager::URLPARAM_MODULEFILTER => \PoP\Engine\ModuleFilters\Lazy::NAME,
-                GD_URLPARAM_ACTION => POP_ACTION_LOADLAZY,
+                GD_URLPARAM_ACTIONS.'[]' => POP_ACTION_LOADLAZY,
             ], \PoP\ComponentModel\Utils::getCurrentUrl());
             $engine->addBackgroundUrl($url, array(POP_TARGET_MAIN));
         }
