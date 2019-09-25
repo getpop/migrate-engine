@@ -4,6 +4,7 @@ namespace PoP\Engine;
 use PoP\Hooks\Facades\HooksAPIFacade;
 use PoP\Translation\Facades\TranslationAPIFacade;
 use PoP\ComponentModel\FieldUtils;
+use PoP\ComponentModel\FieldValidationUtils;
 use PoP\ComponentModel\Engine_Vars;
 
 class FieldValueResolver extends \PoP\ComponentModel\AbstractDBDataFieldValueResolver
@@ -160,62 +161,15 @@ class FieldValueResolver extends \PoP\ComponentModel\AbstractDBDataFieldValueRes
         return parent::getFieldDocumentationArgs($fieldName);
     }
 
-    protected function validateNotMissingFieldArguments($fieldResolver, $fieldArgumentProperties, string $fieldName, array $fieldArgs = []): ?string
-    {
-        $missing = [];
-        foreach ($fieldArgumentProperties as $fieldArgumentProperty) {
-            if (!isset($fieldArgs[$fieldArgumentProperty])) {
-                $missing[] = $fieldArgumentProperty;
-            }
-        }
-        if ($missing) {
-            $translationAPI = TranslationAPIFacade::getInstance();
-            return count($missing) == 1 ?
-                sprintf(
-                    $translationAPI->__('Argument \'%s\' cannot be empty', 'pop-component-model'),
-                    $missing[0]
-                ) :
-                sprintf(
-                    $translationAPI->__('Arguments \'%s\' cannot be empty', 'pop-component-model'),
-                    implode($translationAPI->__('\', \''), $missing)
-                );
-        }
-        return null;
-    }
-
-    protected function validateFieldsExist($fieldResolver, $validateFields, string $fieldName, array $fieldArgs = [])
-    {
-        $doNotExist = [];
-        $resolvedFieldNames = $fieldResolver->getFieldNamesToResolve();
-        foreach ($validateFields as $validateField) {
-            $validateFieldName = FieldUtils::getFieldName($validateField);
-            if (!in_array($validateFieldName, $resolvedFieldNames)) {
-                $doNotExist[] = $validateFieldName;
-            }
-        }
-        if ($doNotExist) {
-            $translationAPI = TranslationAPIFacade::getInstance();
-            return count($doNotExist) == 1 ?
-                sprintf(
-                    $translationAPI->__('Field with name \'%s\' does not exist for this entity', 'pop-component-model'),
-                    $doNotExist[0]
-                ) :
-                sprintf(
-                    $translationAPI->__('Fields with names \'%s\' do not exist for this entity', 'pop-component-model'),
-                    implode($translationAPI->__('\', \''), $doNotExist)
-                );
-        }
-    }
-
     public function resolveSchemaValidationErrorDescription($fieldResolver, string $fieldName, array $fieldArgs = []): ?string
     {
         $translationAPI = TranslationAPIFacade::getInstance();
         switch ($fieldName) {
             case 'if':
-                if ($maybeError = $this->validateNotMissingFieldArguments($fieldResolver, ['condition-field', 'then-field'], $fieldName, $fieldArgs)) {
+                if ($maybeError = FieldValidationUtils::validateNotMissingFieldArguments($fieldResolver, ['condition-field', 'then-field'], $fieldName, $fieldArgs)) {
                     return $maybeError;
                 }
-                if ($maybeError = $this->validateFieldsExist(
+                if ($maybeError = FieldValidationUtils::validateFieldsExist(
                     $fieldResolver,
                     array_filter([
                         $fieldArgs['condition-field'],
@@ -229,45 +183,45 @@ class FieldValueResolver extends \PoP\ComponentModel\AbstractDBDataFieldValueRes
                 }
                 return null;
             case 'not':
-                if ($maybeError = $this->validateNotMissingFieldArguments($fieldResolver, ['field'], $fieldName, $fieldArgs)) {
+                if ($maybeError = FieldValidationUtils::validateNotMissingFieldArguments($fieldResolver, ['field'], $fieldName, $fieldArgs)) {
                     return $maybeError;
                 }
-                if ($maybeError = $this->validateFieldsExist($fieldResolver, [$fieldArgs['field']], $fieldName, $fieldArgs)) {
+                if ($maybeError = FieldValidationUtils::validateFieldsExist($fieldResolver, [$fieldArgs['field']], $fieldName, $fieldArgs)) {
                     return $maybeError;
                 }
                 return null;
             case 'and':
             case 'or':
-                if ($maybeError = $this->validateNotMissingFieldArguments($fieldResolver, ['fields'], $fieldName, $fieldArgs)) {
+                if ($maybeError = FieldValidationUtils::validateNotMissingFieldArguments($fieldResolver, ['fields'], $fieldName, $fieldArgs)) {
                     return $maybeError;
                 }
-                if ($maybeError = $this->validateFieldsExist($fieldResolver, [$fieldArgs['fields']], $fieldName, $fieldArgs)) {
+                if ($maybeError = FieldValidationUtils::validateFieldsExist($fieldResolver, [$fieldArgs['fields']], $fieldName, $fieldArgs)) {
                     return $maybeError;
                 }
                 return null;
             case 'equals':
-                if ($missingError = $this->validateNotMissingFieldArguments($fieldResolver, ['field', 'value'], $fieldName, $fieldArgs)) {
+                if ($missingError = FieldValidationUtils::validateNotMissingFieldArguments($fieldResolver, ['field', 'value'], $fieldName, $fieldArgs)) {
                     return $missingError;
                 }
-                if ($maybeError = $this->validateFieldsExist($fieldResolver, [$fieldArgs['field']], $fieldName, $fieldArgs)) {
+                if ($maybeError = FieldValidationUtils::validateFieldsExist($fieldResolver, [$fieldArgs['field']], $fieldName, $fieldArgs)) {
                     return $maybeError;
                 }
                 return null;
             case 'empty':
-                if ($missingError = $this->validateNotMissingFieldArguments($fieldResolver, ['field'], $fieldName, $fieldArgs)) {
+                if ($missingError = FieldValidationUtils::validateNotMissingFieldArguments($fieldResolver, ['field'], $fieldName, $fieldArgs)) {
                     return $missingError;
                 }
-                if ($maybeError = $this->validateFieldsExist($fieldResolver, [$fieldArgs['field']], $fieldName, $fieldArgs)) {
+                if ($maybeError = FieldValidationUtils::validateFieldsExist($fieldResolver, [$fieldArgs['field']], $fieldName, $fieldArgs)) {
                     return $maybeError;
                 }
                 return null;
             case 'echo':
-                if ($missingError = $this->validateNotMissingFieldArguments($fieldResolver, ['value'], $fieldName, $fieldArgs)) {
+                if ($missingError = FieldValidationUtils::validateNotMissingFieldArguments($fieldResolver, ['value'], $fieldName, $fieldArgs)) {
                     return $missingError;
                 }
                 return null;
             case 'var':
-                if ($missingError = $this->validateNotMissingFieldArguments($fieldResolver, ['name'], $fieldName, $fieldArgs)) {
+                if ($missingError = FieldValidationUtils::validateNotMissingFieldArguments($fieldResolver, ['name'], $fieldName, $fieldArgs)) {
                     return $missingError;
                 }
                 $safeVars = $this->getSafeVars();
