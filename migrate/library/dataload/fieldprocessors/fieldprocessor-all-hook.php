@@ -195,7 +195,7 @@ class FieldValueResolver extends \PoP\ComponentModel\AbstractDBDataFieldValueRes
                 if ($maybeError = FieldValidationUtils::validateNotMissingFieldArguments($fieldResolver, ['fields'], $fieldName, $fieldArgs)) {
                     return $maybeError;
                 }
-                if ($maybeError = FieldValidationUtils::validateFieldsExist($fieldResolver, explode(',', $fieldArgs['fields']), $fieldName, $fieldArgs)) {
+                if ($maybeError = FieldValidationUtils::validateFieldsExist($fieldResolver, array_map('trim', explode(',', $fieldArgs['fields'])), $fieldName, $fieldArgs)) {
                     return $maybeError;
                 }
                 return null;
