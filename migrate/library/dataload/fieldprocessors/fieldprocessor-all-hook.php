@@ -160,13 +160,12 @@ class FieldValueResolver extends \PoP\ComponentModel\AbstractDBDataFieldValueRes
         return parent::getFieldDocumentationArgs($fieldName);
     }
 
-    protected function validateNotMissingFieldArguments($fieldResolver, $mandatoryFieldNames, string $fieldName, array $fieldArgs = []): ?string
+    protected function validateNotMissingFieldArguments($fieldResolver, $fieldArgumentProperties, string $fieldName, array $fieldArgs = []): ?string
     {
         $missing = [];
-        $mandatoryFieldNames = ['condition-field', 'then-field'];
-        foreach ($mandatoryFieldNames as $mandatoryFieldName) {
-            if (!isset($fieldArgs[$mandatoryFieldName])) {
-                $missing[] = $mandatoryFieldName;
+        foreach ($fieldArgumentProperties as $fieldArgumentProperty) {
+            if (!isset($fieldArgs[$fieldArgumentProperty])) {
+                $missing[] = $fieldArgumentProperty;
             }
         }
         if ($missing) {
