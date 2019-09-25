@@ -136,7 +136,7 @@ class FieldValueResolver extends \PoP\ComponentModel\AbstractDBDataFieldValueRes
         return parent::getFieldDocumentationArgs($fieldName);
     }
 
-    public function getSchemaValidationErrorDescription($fieldResolver, string $fieldName, array $fieldArgs = []): ?string
+    public function resolveSchemaValidationErrorDescription($fieldResolver, string $fieldName, array $fieldArgs = []): ?string
     {
         $translationAPI = TranslationAPIFacade::getInstance();
         switch ($fieldName) {
@@ -235,7 +235,7 @@ class FieldValueResolver extends \PoP\ComponentModel\AbstractDBDataFieldValueRes
                 return null;
         }
 
-        return parent::getSchemaValidationErrorDescription($fieldResolver, $fieldName, $fieldArgs);
+        return parent::resolveSchemaValidationErrorDescription($fieldResolver, $fieldName, $fieldArgs);
     }
 
     protected function getSafeVars() {
