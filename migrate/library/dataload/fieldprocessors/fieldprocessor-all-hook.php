@@ -16,6 +16,7 @@ class FieldValueResolver extends \PoP\ComponentModel\AbstractDBDataFieldValueRes
     public function getFieldNamesToResolve(): array
     {
         return [
+            'if',
             'not',
             'and',
             'or',
@@ -30,6 +31,7 @@ class FieldValueResolver extends \PoP\ComponentModel\AbstractDBDataFieldValueRes
     public function getFieldDocumentationType(string $fieldName): ?string
     {
         $types = [
+            'if' => TYPE_MIXED,
             'not' => TYPE_BOOL,
             'and' => TYPE_BOOL,
             'or' => TYPE_BOOL,
@@ -46,6 +48,7 @@ class FieldValueResolver extends \PoP\ComponentModel\AbstractDBDataFieldValueRes
     {
         $translationAPI = TranslationAPIFacade::getInstance();
         $descriptions = [
+            'if' => $translationAPI->__('If a boolean property is true, execute a field, else, execute another field', 'pop-component-model'),
             'not' => $translationAPI->__('Return the opposite value of a boolean property', 'pop-component-model'),
             'and' => $translationAPI->__('Return an `AND` operation among several boolean properties', 'pop-component-model'),
             'or' => $translationAPI->__('Return an `OR` operation among several boolean properties', 'pop-component-model'),
@@ -62,6 +65,27 @@ class FieldValueResolver extends \PoP\ComponentModel\AbstractDBDataFieldValueRes
     {
         $translationAPI = TranslationAPIFacade::getInstance();
         switch ($fieldName) {
+            case 'if':
+                return [
+                    [
+                        'name' => 'condition-field',
+                        'type' => TYPE_STRING,
+                        'description' => $translationAPI->__('The field, of boolean type, to eval if its execution value is `true`', 'pop-component-model'),
+                        'mandatory' => true,
+                    ],
+                    [
+                        'name' => 'then-field',
+                        'type' => TYPE_STRING,
+                        'description' => $translationAPI->__('The field to execute if the condition field evals to `true`', 'pop-component-model'),
+                        'mandatory' => true,
+                    ],
+                    [
+                        'name' => 'else-field',
+                        'type' => TYPE_STRING,
+                        'description' => $translationAPI->__('The field to execute if the condition field evals to `false`', 'pop-component-model'),
+                    ],
+                ];
+
             case 'not':
                 return [
                     [
@@ -136,94 +160,116 @@ class FieldValueResolver extends \PoP\ComponentModel\AbstractDBDataFieldValueRes
         return parent::getFieldDocumentationArgs($fieldName);
     }
 
+    protected function validateNotMissingFieldArguments($fieldResolver, $mandatoryFieldNames, string $fieldName, array $fieldArgs = []): ?string
+    {
+        $missing = [];
+        $mandatoryFieldNames = ['condition-field', 'then-field'];
+        foreach ($mandatoryFieldNames as $mandatoryFieldName) {
+            if (!isset($fieldArgs[$mandatoryFieldName])) {
+                $missing[] = $mandatoryFieldName;
+            }
+        }
+        if ($missing) {
+            $translationAPI = TranslationAPIFacade::getInstance();
+            return count($missing) == 1 ?
+                sprintf(
+                    $translationAPI->__('Argument \'%s\' cannot be empty', 'pop-component-model'),
+                    $missing[0]
+                ) :
+                sprintf(
+                    $translationAPI->__('Arguments \'%s\' cannot be empty', 'pop-component-model'),
+                    implode($translationAPI->__('\', \''), $missing)
+                );
+        }
+        return null;
+    }
+
+    protected function validateFieldsExist($fieldResolver, $validateFields, string $fieldName, array $fieldArgs = [])
+    {
+        $doNotExist = [];
+        $resolvedFieldNames = $fieldResolver->getFieldNamesToResolve();
+        foreach ($validateFields as $validateField) {
+            $validateFieldName = FieldUtils::getFieldName($validateField);
+            if (!in_array($validateFieldName, $resolvedFieldNames)) {
+                $doNotExist[] = $validateFieldName;
+            }
+        }
+        if ($doNotExist) {
+            $translationAPI = TranslationAPIFacade::getInstance();
+            return count($doNotExist) == 1 ?
+                sprintf(
+                    $translationAPI->__('Field with name \'%s\' does not exist for this entity', 'pop-component-model'),
+                    $doNotExist[0]
+                ) :
+                sprintf(
+                    $translationAPI->__('Fields with names \'%s\' do not exist for this entity', 'pop-component-model'),
+                    implode($translationAPI->__('\', \''), $doNotExist)
+                );
+        }
+    }
+
     public function resolveSchemaValidationErrorDescription($fieldResolver, string $fieldName, array $fieldArgs = []): ?string
     {
         $translationAPI = TranslationAPIFacade::getInstance();
         switch ($fieldName) {
-            case 'not':
-                if (!isset($fieldArgs['field'])) {
-                    return $translationAPI->__('Argument \'field\' cannot be empty', 'pop-component-model');
+            case 'if':
+                if ($maybeError = $this->validateNotMissingFieldArguments($fieldResolver, ['condition-field', 'then-field'], $fieldName, $fieldArgs)) {
+                    return $maybeError;
                 }
-                $notFieldName = FieldUtils::getFieldName($fieldArgs['field']);
-                if (!in_array($notFieldName, $fieldResolver->getFieldNamesToResolve())) {
-                    return sprintf(
-                        $translationAPI->__('Field with name \'%s\' does not exist for this entity', 'pop-component-model'),
-                        $notFieldName
-                    );
+                if ($maybeError = $this->validateFieldsExist(
+                    $fieldResolver,
+                    array_filter([
+                        $fieldArgs['condition-field'],
+                        $fieldArgs['then-field'],
+                        $fieldArgs['else-field']
+                    ]),
+                    $fieldName,
+                    $fieldArgs)
+                ) {
+                    return $maybeError;
+                }
+                return null;
+            case 'not':
+                if ($maybeError = $this->validateNotMissingFieldArguments($fieldResolver, ['field'], $fieldName, $fieldArgs)) {
+                    return $maybeError;
+                }
+                if ($maybeError = $this->validateFieldsExist($fieldResolver, [$fieldArgs['field']], $fieldName, $fieldArgs)) {
+                    return $maybeError;
                 }
                 return null;
             case 'and':
             case 'or':
-                if (!isset($fieldArgs['fields'])) {
-                    return $translationAPI->__('Argument \'fields\' cannot be empty', 'pop-component-model');
+                if ($maybeError = $this->validateNotMissingFieldArguments($fieldResolver, ['fields'], $fieldName, $fieldArgs)) {
+                    return $maybeError;
                 }
-                $doNotExist = [];
-                $resolvedFieldNames = $fieldResolver->getFieldNamesToResolve();
-                foreach (explode(',', $fieldArgs['fields']) as $andField) {
-                    $andFieldName = FieldUtils::getFieldName($andField);
-                    if (!in_array($andFieldName, $resolvedFieldNames)) {
-                        $doNotExist[] = $andFieldName;
-                    }
-                }
-                if ($doNotExist) {
-                    return count($doNotExist) == 1 ?
-                        sprintf(
-                            $translationAPI->__('Field with name \'%s\' does not exist for this entity', 'pop-component-model'),
-                            $doNotExist[0]
-                        ) :
-                        sprintf(
-                            $translationAPI->__('Fields with names \'%s\' do not exist for this entity', 'pop-component-model'),
-                            implode($translationAPI->__('\', \''), $doNotExist)
-                        );
+                if ($maybeError = $this->validateFieldsExist($fieldResolver, [$fieldArgs['fields']], $fieldName, $fieldArgs)) {
+                    return $maybeError;
                 }
                 return null;
             case 'equals':
-                $missing = [];
-                $mandatoryFieldNames = ['field', 'value'];
-                foreach ($mandatoryFieldNames as $mandatoryFieldName) {
-                    if (!isset($fieldArgs[$mandatoryFieldName])) {
-                        $missing[] = $mandatoryFieldName;
-                    }
+                if ($missingError = $this->validateNotMissingFieldArguments($fieldResolver, ['field', 'value'], $fieldName, $fieldArgs)) {
+                    return $missingError;
                 }
-                if ($missing) {
-                    return count($missing) == 1 ?
-                        sprintf(
-                            $translationAPI->__('Argument \'%s\' cannot be empty', 'pop-component-model'),
-                            $missing[0]
-                        ) :
-                        sprintf(
-                            $translationAPI->__('Arguments \'%s\' cannot be empty', 'pop-component-model'),
-                            implode($translationAPI->__('\', \''), $missing)
-                        );
-                }
-                $equalsFieldName = FieldUtils::getFieldName($fieldArgs['field']);
-                if (!in_array($equalsFieldName, $fieldResolver->getFieldNamesToResolve())) {
-                    return sprintf(
-                        $translationAPI->__('Field with name \'%s\' does not exist for this entity', 'pop-component-model'),
-                        $equalsFieldName
-                    );
+                if ($maybeError = $this->validateFieldsExist($fieldResolver, [$fieldArgs['field']], $fieldName, $fieldArgs)) {
+                    return $maybeError;
                 }
                 return null;
             case 'empty':
-                if (!isset($fieldArgs['field'])) {
-                    return $translationAPI->__('Argument \'field\' cannot be empty', 'pop-component-model');
+                if ($missingError = $this->validateNotMissingFieldArguments($fieldResolver, ['field'], $fieldName, $fieldArgs)) {
+                    return $missingError;
                 }
-                $emptyFieldName = FieldUtils::getFieldName($fieldArgs['field']);
-                if (!in_array($emptyFieldName, $fieldResolver->getFieldNamesToResolve())) {
-                    return sprintf(
-                        $translationAPI->__('Field with name \'%s\' does not exist for this entity', 'pop-component-model'),
-                        $emptyFieldName
-                    );
+                if ($maybeError = $this->validateFieldsExist($fieldResolver, [$fieldArgs['field']], $fieldName, $fieldArgs)) {
+                    return $maybeError;
                 }
                 return null;
             case 'echo':
-                if (!isset($fieldArgs['value'])) {
-                    return $translationAPI->__('Argument \'value\' cannot be empty', 'pop-component-model');
+                if ($missingError = $this->validateNotMissingFieldArguments($fieldResolver, ['value'], $fieldName, $fieldArgs)) {
+                    return $missingError;
                 }
                 return null;
             case 'var':
-                if (!isset($fieldArgs['name'])) {
-                    return $translationAPI->__('Argument \'name\' cannot be empty', 'pop-component-model');
+                if ($missingError = $this->validateNotMissingFieldArguments($fieldResolver, ['name'], $fieldName, $fieldArgs)) {
+                    return $missingError;
                 }
                 $safeVars = $this->getSafeVars();
                 if (!isset($safeVars[$fieldArgs['name']])) {
@@ -252,6 +298,22 @@ class FieldValueResolver extends \PoP\ComponentModel\AbstractDBDataFieldValueRes
     public function resolveValue($fieldResolver, $resultItem, string $fieldName, array $fieldArgs = [])
     {
         switch ($fieldName) {
+            case 'if':
+                $conditionField = $fieldArgs['condition-field'];
+                $conditionFieldName = FieldUtils::getFieldName($conditionField);
+                $conditionFieldArgs = FieldUtils::getFieldArgs($conditionField);
+                $executeField = null;
+                if ($fieldResolver->resolveValue($resultItem, $conditionFieldName, $conditionFieldArgs)) {
+                    $executeField = $fieldArgs['then-field'];
+                } elseif (isset($fieldArgs['else-field'])) {
+                    $executeField = $fieldArgs['else-field'];
+                }
+                if ($executeField) {
+                    $executeFieldName = FieldUtils::getFieldName($executeField);
+                    $executeFieldArgs = FieldUtils::getFieldArgs($executeField);
+                    return $fieldResolver->resolveValue($resultItem, $executeFieldName, $executeFieldArgs);
+                }
+                return null;
             case 'not':
                 $notField = $fieldArgs['field'];
                 $notFieldName = FieldUtils::getFieldName($notField);
