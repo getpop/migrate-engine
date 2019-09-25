@@ -249,14 +249,14 @@ class FieldValueResolver extends \PoP\ComponentModel\AbstractDBDataFieldValueRes
         return $this->safeVars;
     }
 
-    public function getValue($fieldResolver, $resultItem, string $fieldName, array $fieldArgs = [])
+    public function resolveValue($fieldResolver, $resultItem, string $fieldName, array $fieldArgs = [])
     {
         switch ($fieldName) {
             case 'not':
                 $notField = $fieldArgs['field'];
                 $notFieldName = FieldUtils::getFieldName($notField);
                 $notFieldArgs = FieldUtils::getFieldArgs($notField);
-                return !$fieldResolver->getValue($resultItem, $notFieldName, $notFieldArgs);
+                return !$fieldResolver->resolveValue($resultItem, $notFieldName, $notFieldArgs);
             case 'and':
             case 'or':
                 $opFields = explode(',', $fieldArgs['fields']);
@@ -265,9 +265,9 @@ class FieldValueResolver extends \PoP\ComponentModel\AbstractDBDataFieldValueRes
                     $opFieldName = FieldUtils::getFieldName($opField);
                     $opFieldArgs = FieldUtils::getFieldArgs($opField);
                     if ($fieldName == 'and') {
-                        $value = $value && $fieldResolver->getValue($resultItem, $opFieldName, $opFieldArgs);
+                        $value = $value && $fieldResolver->resolveValue($resultItem, $opFieldName, $opFieldArgs);
                     } elseif ($fieldName == 'or') {
-                        $value = $value || $fieldResolver->getValue($resultItem, $opFieldName, $opFieldArgs);
+                        $value = $value || $fieldResolver->resolveValue($resultItem, $opFieldName, $opFieldArgs);
                     }
                 }
                 return $value;
@@ -275,12 +275,12 @@ class FieldValueResolver extends \PoP\ComponentModel\AbstractDBDataFieldValueRes
                 $equalsFieldName = FieldUtils::getFieldName($fieldArgs['field']);
                 $equalsFieldArgs = FieldUtils::getFieldArgs($fieldArgs['field']);
                 $equalsValue = $fieldArgs['value'];
-                return $equalsValue == $fieldResolver->getValue($resultItem, $equalsFieldName, $equalsFieldArgs);
+                return $equalsValue == $fieldResolver->resolveValue($resultItem, $equalsFieldName, $equalsFieldArgs);
             case 'empty':
                 $emptyField = $fieldArgs['field'];
                 $emptyFieldName = FieldUtils::getFieldName($emptyField);
                 $emptyFieldArgs = FieldUtils::getFieldArgs($emptyField);
-                return empty($fieldResolver->getValue($resultItem, $emptyFieldName, $emptyFieldArgs));
+                return empty($fieldResolver->resolveValue($resultItem, $emptyFieldName, $emptyFieldArgs));
             case 'echo':
                 return $fieldArgs['value'];
             case 'var':
@@ -290,7 +290,7 @@ class FieldValueResolver extends \PoP\ComponentModel\AbstractDBDataFieldValueRes
                 return $this->getSafeVars();
         }
 
-        return parent::getValue($fieldResolver, $resultItem, $fieldName, $fieldArgs);
+        return parent::resolveValue($fieldResolver, $resultItem, $fieldName, $fieldArgs);
     }
 }
 
