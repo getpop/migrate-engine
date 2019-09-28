@@ -17,17 +17,9 @@ class SkipDirectiveResolver extends AbstractDirectiveResolver
         $field = $this->directiveArgs['if-field'];
         $fieldName = FieldUtils::getFieldName($field);
         $fieldArgs = FieldUtils::getFieldArgs($field);
-        $fieldOutputKey = FieldUtils::getFieldOutputKey($field);
         foreach (array_keys($idsDataFields) as $id) {
-            // If the field is to be retrieved anyway, already get it from dbItems
-            // Otherwise, resolve it
             $resultItem = $resultIDItems[$id];
-            if (isset($resultItem[$fieldOutputKey])) {
-                $value = $resultItem[$fieldOutputKey];
-            } else {
-                $value = $fieldResolver->resolveValue($resultItem, $fieldName, $fieldArgs);
-            }
-            // If the value is true, then skip this field
+            $value = $fieldResolver->resolveValue($resultItem, $fieldName, $fieldArgs);
             if ($value) {
                 $skipDataFieldsForIds[] = $id;
             }
