@@ -17,10 +17,14 @@ class SkipDirectiveResolver extends AbstractDirectiveResolver
         $field = $this->directiveArgs['if-field'];
         $fieldName = FieldUtils::getFieldName($field);
         $fieldArgs = FieldUtils::getFieldArgs($field);
+        $fieldOutputKey = FieldUtils::getFieldOutputKey($field);
         foreach (array_keys($idsDataFields) as $id) {
             $resultItem = $resultIDItems[$id];
             $value = $fieldResolver->resolveValue($resultItem, $fieldName, $fieldArgs);
-            if ($value) {
+            if (\PoP\ComponentModel\GeneralUtils::isError($value)) {
+                $error = $value;
+                $dbErrors[(string)$id][$fieldOutputKey][] = $error->getErrorMessage();
+            } elseif ($value) {
                 $skipDataFieldsForIds[] = $id;
             }
         }
