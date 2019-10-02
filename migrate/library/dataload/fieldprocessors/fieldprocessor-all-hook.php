@@ -253,49 +253,38 @@ class FieldValueResolver extends \PoP\ComponentModel\AbstractDBDataFieldValueRes
         switch ($fieldName) {
             case 'if':
                 $conditionField = $fieldArgs['condition-field'];
-                $conditionFieldName = FieldUtils::getFieldName($conditionField);
-                $conditionFieldArgs = FieldUtils::getFieldArgs($fieldResolver, $conditionField);
                 $executeField = null;
-                if ($fieldResolver->resolveValue($resultItem, $conditionFieldName, $conditionFieldArgs)) {
+                if ($fieldResolver->resolveValue($resultItem, $conditionField)) {
                     $executeField = $fieldArgs['then-field'];
                 } elseif (isset($fieldArgs['else-field'])) {
                     $executeField = $fieldArgs['else-field'];
                 }
                 if ($executeField) {
-                    $executeFieldName = FieldUtils::getFieldName($executeField);
-                    $executeFieldArgs = FieldUtils::getFieldArgs($fieldResolver, $executeField);
-                    return $fieldResolver->resolveValue($resultItem, $executeFieldName, $executeFieldArgs);
+                    return $fieldResolver->resolveValue($resultItem, $executeField);
                 }
                 return null;
             case 'not':
                 $notField = $fieldArgs['field'];
-                $notFieldName = FieldUtils::getFieldName($notField);
-                $notFieldArgs = FieldUtils::getFieldArgs($fieldResolver, $notField);
-                return !$fieldResolver->resolveValue($resultItem, $notFieldName, $notFieldArgs);
+                return !$fieldResolver->resolveValue($resultItem, $notField);
             case 'and':
             case 'or':
                 $opFields = explode(',', $fieldArgs['fields']);
                 $value = true;
                 foreach ($opFields as $opField) {
-                    $opFieldName = FieldUtils::getFieldName($opField);
-                    $opFieldArgs = FieldUtils::getFieldArgs($fieldResolver, $opField);
                     if ($fieldName == 'and') {
-                        $value = $value && $fieldResolver->resolveValue($resultItem, $opFieldName, $opFieldArgs);
+                        $value = $value && $fieldResolver->resolveValue($resultItem, $opField);
                     } elseif ($fieldName == 'or') {
-                        $value = $value || $fieldResolver->resolveValue($resultItem, $opFieldName, $opFieldArgs);
+                        $value = $value || $fieldResolver->resolveValue($resultItem, $opField);
                     }
                 }
                 return $value;
             case 'equals':
-                $equalsFieldName = FieldUtils::getFieldName($fieldArgs['field']);
-                $equalsFieldArgs = FieldUtils::getFieldArgs($fieldResolver, $fieldArgs['field']);
+                $equalsField = $fieldArgs['field'];
                 $equalsValue = $fieldArgs['value'];
-                return $equalsValue == $fieldResolver->resolveValue($resultItem, $equalsFieldName, $equalsFieldArgs);
+                return $equalsValue == $fieldResolver->resolveValue($resultItem, $equalsField);
             case 'empty':
                 $emptyField = $fieldArgs['field'];
-                $emptyFieldName = FieldUtils::getFieldName($emptyField);
-                $emptyFieldArgs = FieldUtils::getFieldArgs($fieldResolver, $emptyField);
-                return empty($fieldResolver->resolveValue($resultItem, $emptyFieldName, $emptyFieldArgs));
+                return empty($fieldResolver->resolveValue($resultItem, $emptyField));
             case 'echo':
                 return $fieldArgs['value'];
             case 'var':

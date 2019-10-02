@@ -9,12 +9,10 @@ trait FilterIDsSatisfyingConditionTrait
         // Check the condition field. If it is satisfied, then skip those fields
         $idsSatisfyingCondition = [];
         $field = $this->directiveArgs['if-field'];
-        $fieldName = FieldUtils::getFieldName($field);
-        $fieldArgs = FieldUtils::getFieldArgs($fieldResolver, $field);
         $fieldOutputKey = FieldUtils::getFieldOutputKey($field);
         foreach (array_keys($idsDataFields) as $id) {
             $resultItem = $resultIDItems[$id];
-            $value = $fieldResolver->resolveValue($resultItem, $fieldName, $fieldArgs);
+            $value = $fieldResolver->resolveValue($resultItem, $field);
             if (\PoP\ComponentModel\GeneralUtils::isError($value)) {
                 $error = $value;
                 $dbErrors[(string)$id][$fieldOutputKey][] = $error->getErrorMessage();
