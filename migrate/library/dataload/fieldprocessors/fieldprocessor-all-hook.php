@@ -150,38 +150,13 @@ class FieldValueResolver extends \PoP\ComponentModel\AbstractDBDataFieldValueRes
 
     public function resolveSchemaValidationErrorDescription($fieldResolver, string $fieldName, array $fieldArgs = []): ?string
     {
+        if ($error = parent::resolveSchemaValidationErrorDescription($fieldResolver, $fieldName, $fieldArgs)) {
+            return $error;
+        }
+
         $translationAPI = TranslationAPIFacade::getInstance();
         switch ($fieldName) {
-            case 'if':
-                if ($maybeError = FieldValidationUtils::validateNotMissingFieldArguments($fieldResolver, ['condition', 'then'], $fieldName, $fieldArgs)) {
-                    return $maybeError;
-                }
-                return null;
-            case 'not':
-                if ($maybeError = FieldValidationUtils::validateNotMissingFieldArguments($fieldResolver, ['value'], $fieldName, $fieldArgs)) {
-                    return $maybeError;
-                }
-                return null;
-            case 'and':
-            case 'or':
-                if ($maybeError = FieldValidationUtils::validateNotMissingFieldArguments($fieldResolver, ['values'], $fieldName, $fieldArgs)) {
-                    return $maybeError;
-                }
-                return null;
-            case 'equals':
-                if ($missingError = FieldValidationUtils::validateNotMissingFieldArguments($fieldResolver, ['value1', 'value2'], $fieldName, $fieldArgs)) {
-                    return $missingError;
-                }
-                return null;
-            case 'empty':
-                if ($missingError = FieldValidationUtils::validateNotMissingFieldArguments($fieldResolver, ['value'], $fieldName, $fieldArgs)) {
-                    return $missingError;
-                }
-                return null;
             case 'var':
-                if ($missingError = FieldValidationUtils::validateNotMissingFieldArguments($fieldResolver, ['name'], $fieldName, $fieldArgs)) {
-                    return $missingError;
-                }
                 $safeVars = $this->getSafeVars();
                 if (!isset($safeVars[$fieldArgs['name']])) {
                     return sprintf(
@@ -192,7 +167,7 @@ class FieldValueResolver extends \PoP\ComponentModel\AbstractDBDataFieldValueRes
                 return null;
         }
 
-        return parent::resolveSchemaValidationErrorDescription($fieldResolver, $fieldName, $fieldArgs);
+        return null;
     }
 
     protected function getSafeVars() {
