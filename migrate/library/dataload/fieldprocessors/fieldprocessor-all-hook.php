@@ -23,7 +23,6 @@ class FieldValueResolver extends \PoP\ComponentModel\AbstractDBDataFieldValueRes
             'or',
             'equals',
             'empty',
-            'echo',
             'var',
             'context',
         ];
@@ -38,7 +37,6 @@ class FieldValueResolver extends \PoP\ComponentModel\AbstractDBDataFieldValueRes
             'or' => TYPE_BOOL,
             'equals' => TYPE_BOOL,
             'empty' => TYPE_BOOL,
-            'echo' => TYPE_MIXED,
             'var' => TYPE_MIXED,
             'context' => TYPE_OBJECT,
         ];
@@ -55,7 +53,6 @@ class FieldValueResolver extends \PoP\ComponentModel\AbstractDBDataFieldValueRes
             'or' => $translationAPI->__('Return an `OR` operation among several boolean properties', 'pop-component-model'),
             'equals' => $translationAPI->__('Indicate if the result from a field equals a certain value', 'pop-component-model'),
             'empty' => $translationAPI->__('Indicate if the result from a field is empty', 'pop-component-model'),
-            'echo' => $translationAPI->__('Echo a value', 'pop-component-model'),
             'var' => $translationAPI->__('Retrieve the value of a certain property from the `$vars` context object', 'pop-component-model'),
             'context' => $translationAPI->__('Retrieve the `$vars` context object', 'pop-component-model'),
         ];
@@ -137,16 +134,6 @@ class FieldValueResolver extends \PoP\ComponentModel\AbstractDBDataFieldValueRes
                     ],
                 ];
 
-            case 'echo':
-                return [
-                    [
-                        'name' => 'value',
-                        'type' => TYPE_STRING,
-                        'description' => $translationAPI->__('Value to echo back', 'pop-component-model'),
-                        'mandatory' => true,
-                    ],
-                ];
-
             case 'var':
                 return [
                     [
@@ -187,11 +174,6 @@ class FieldValueResolver extends \PoP\ComponentModel\AbstractDBDataFieldValueRes
                 }
                 return null;
             case 'empty':
-                if ($missingError = FieldValidationUtils::validateNotMissingFieldArguments($fieldResolver, ['value'], $fieldName, $fieldArgs)) {
-                    return $missingError;
-                }
-                return null;
-            case 'echo':
                 if ($missingError = FieldValidationUtils::validateNotMissingFieldArguments($fieldResolver, ['value'], $fieldName, $fieldArgs)) {
                     return $missingError;
                 }
@@ -250,8 +232,6 @@ class FieldValueResolver extends \PoP\ComponentModel\AbstractDBDataFieldValueRes
                 return $fieldArgs['value1'] == $fieldArgs['value2'];
             case 'empty':
                 return empty($fieldArgs['value']);
-            case 'echo':
-                return $fieldArgs['value'];
             case 'var':
                 $safeVars = $this->getSafeVars();
                 return $safeVars[$fieldArgs['name']];
