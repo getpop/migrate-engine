@@ -10,7 +10,7 @@ trait FilterIDsSatisfyingConditionTrait
         $idsSatisfyingCondition = [];
         $field = $this->directiveArgs['if-field'];
         $fieldName = FieldUtils::getFieldName($field);
-        $fieldArgs = FieldUtils::getFieldArgs($field);
+        $fieldArgs = FieldUtils::getFieldArgs($fieldResolver, $field);
         $fieldOutputKey = FieldUtils::getFieldOutputKey($field);
         foreach (array_keys($idsDataFields) as $id) {
             $resultItem = $resultIDItems[$id];
