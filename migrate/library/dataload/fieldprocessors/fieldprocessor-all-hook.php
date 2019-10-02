@@ -175,10 +175,8 @@ class FieldValueResolver extends \PoP\ComponentModel\AbstractDBDataFieldValueRes
                         $fieldArgs['condition-field'],
                         $fieldArgs['then-field'],
                         $fieldArgs['else-field']
-                    ]),
-                    $fieldName,
-                    $fieldArgs)
-                ) {
+                    ])
+                )) {
                     return $maybeError;
                 }
                 return null;
@@ -186,7 +184,7 @@ class FieldValueResolver extends \PoP\ComponentModel\AbstractDBDataFieldValueRes
                 if ($maybeError = FieldValidationUtils::validateNotMissingFieldArguments($fieldResolver, ['field'], $fieldName, $fieldArgs)) {
                     return $maybeError;
                 }
-                if ($maybeError = FieldValidationUtils::validateFieldsExist($fieldResolver, [$fieldArgs['field']], $fieldName, $fieldArgs)) {
+                if ($maybeError = FieldValidationUtils::validateFieldsExist($fieldResolver, [$fieldArgs['field']])) {
                     return $maybeError;
                 }
                 return null;
@@ -195,7 +193,7 @@ class FieldValueResolver extends \PoP\ComponentModel\AbstractDBDataFieldValueRes
                 if ($maybeError = FieldValidationUtils::validateNotMissingFieldArguments($fieldResolver, ['fields'], $fieldName, $fieldArgs)) {
                     return $maybeError;
                 }
-                if ($maybeError = FieldValidationUtils::validateFieldsExist($fieldResolver, array_map('trim', explode(',', $fieldArgs['fields'])), $fieldName, $fieldArgs)) {
+                if ($maybeError = FieldValidationUtils::validateFieldsExist($fieldResolver, array_map('trim', explode(',', $fieldArgs['fields'])))) {
                     return $maybeError;
                 }
                 return null;
@@ -211,7 +209,7 @@ class FieldValueResolver extends \PoP\ComponentModel\AbstractDBDataFieldValueRes
                 if ($missingError = FieldValidationUtils::validateNotMissingFieldArguments($fieldResolver, ['field'], $fieldName, $fieldArgs)) {
                     return $missingError;
                 }
-                if ($maybeError = FieldValidationUtils::validateFieldsExist($fieldResolver, [$fieldArgs['field']], $fieldName, $fieldArgs)) {
+                if ($maybeError = FieldValidationUtils::validateFieldsExist($fieldResolver, [$fieldArgs['field']])) {
                     return $maybeError;
                 }
                 return null;
