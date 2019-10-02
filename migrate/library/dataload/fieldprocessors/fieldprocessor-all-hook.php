@@ -69,30 +69,30 @@ class FieldValueResolver extends \PoP\ComponentModel\AbstractDBDataFieldValueRes
             case 'if':
                 return [
                     [
-                        'name' => 'condition-field',
-                        'type' => TYPE_STRING,
-                        'description' => $translationAPI->__('The field, of boolean type, to eval if its execution value is `true`', 'pop-component-model'),
+                        'name' => 'condition',
+                        'type' => TYPE_MIXED,
+                        'description' => $translationAPI->__('The condition to check if its value is `true` or `false`', 'pop-component-model'),
                         'mandatory' => true,
                     ],
                     [
-                        'name' => 'then-field',
-                        'type' => TYPE_STRING,
-                        'description' => $translationAPI->__('The field to execute if the condition field evals to `true`', 'pop-component-model'),
+                        'name' => 'then',
+                        'type' => TYPE_MIXED,
+                        'description' => $translationAPI->__('The value to return if the condition evals to `true`', 'pop-component-model'),
                         'mandatory' => true,
                     ],
                     [
-                        'name' => 'else-field',
-                        'type' => TYPE_STRING,
-                        'description' => $translationAPI->__('The field to execute if the condition field evals to `false`', 'pop-component-model'),
+                        'name' => 'else',
+                        'type' => TYPE_MIXED,
+                        'description' => $translationAPI->__('The value to return if the condition evals to `false`', 'pop-component-model'),
                     ],
                 ];
 
             case 'not':
                 return [
                     [
-                        'name' => 'field',
-                        'type' => TYPE_STRING,
-                        'description' => $translationAPI->__('The field, of boolean type, from which to obtain the opposite value', 'pop-component-model'),
+                        'name' => 'value',
+                        'type' => TYPE_MIXED,
+                        'description' => $translationAPI->__('The value from which to return its opposite value', 'pop-component-model'),
                         'mandatory' => true,
                     ],
                 ];
@@ -102,9 +102,9 @@ class FieldValueResolver extends \PoP\ComponentModel\AbstractDBDataFieldValueRes
                 return [
                     [
                         'name' => 'fields',
-                        'type' => TYPE_STRING,
+                        'type' => TYPE_ARRAY,
                         'description' => sprintf(
-                            $translationAPI->__('The fields (of boolean type) on whose results to execute the `%s` operation, separated with \',\'', 'pop-component-model'),
+                            $translationAPI->__('The array of values on which to execute the `%s` operation', 'pop-component-model'),
                             strtoupper($fieldName)
                         ),
                         'mandatory' => true,
@@ -114,15 +114,15 @@ class FieldValueResolver extends \PoP\ComponentModel\AbstractDBDataFieldValueRes
             case 'equals':
                 return [
                     [
-                        'name' => 'field',
-                        'type' => TYPE_STRING,
-                        'description' => $translationAPI->__('The field to execute and compare against the provided value', 'pop-component-model'),
+                        'name' => 'value1',
+                        'type' => TYPE_MIXED,
+                        'description' => $translationAPI->__('The first value to compare', 'pop-component-model'),
                         'mandatory' => true,
                     ],
                     [
-                        'name' => 'value',
+                        'name' => 'value2',
                         'type' => TYPE_MIXED,
-                        'description' => $translationAPI->__('The value against which to compare the result from the field', 'pop-component-model'),
+                        'description' => $translationAPI->__('The second value to compare', 'pop-component-model'),
                         'mandatory' => true,
                     ],
                 ];
@@ -130,9 +130,9 @@ class FieldValueResolver extends \PoP\ComponentModel\AbstractDBDataFieldValueRes
             case 'empty':
                 return [
                     [
-                        'name' => 'field',
-                        'type' => TYPE_STRING,
-                        'description' => $translationAPI->__('The field to execute and check if its value is empty', 'pop-component-model'),
+                        'name' => 'value',
+                        'type' => TYPE_MIXED,
+                        'description' => $translationAPI->__('The value to check if it is empty', 'pop-component-model'),
                         'mandatory' => true,
                     ],
                 ];
@@ -166,51 +166,29 @@ class FieldValueResolver extends \PoP\ComponentModel\AbstractDBDataFieldValueRes
         $translationAPI = TranslationAPIFacade::getInstance();
         switch ($fieldName) {
             case 'if':
-                if ($maybeError = FieldValidationUtils::validateNotMissingFieldArguments($fieldResolver, ['condition-field', 'then-field'], $fieldName, $fieldArgs)) {
-                    return $maybeError;
-                }
-                if ($maybeError = FieldValidationUtils::validateFieldsExist(
-                    $fieldResolver,
-                    array_filter([
-                        $fieldArgs['condition-field'],
-                        $fieldArgs['then-field'],
-                        $fieldArgs['else-field']
-                    ])
-                )) {
+                if ($maybeError = FieldValidationUtils::validateNotMissingFieldArguments($fieldResolver, ['condition', 'then'], $fieldName, $fieldArgs)) {
                     return $maybeError;
                 }
                 return null;
             case 'not':
-                if ($maybeError = FieldValidationUtils::validateNotMissingFieldArguments($fieldResolver, ['field'], $fieldName, $fieldArgs)) {
-                    return $maybeError;
-                }
-                if ($maybeError = FieldValidationUtils::validateFieldsExist($fieldResolver, [$fieldArgs['field']])) {
+                if ($maybeError = FieldValidationUtils::validateNotMissingFieldArguments($fieldResolver, ['value'], $fieldName, $fieldArgs)) {
                     return $maybeError;
                 }
                 return null;
             case 'and':
             case 'or':
-                if ($maybeError = FieldValidationUtils::validateNotMissingFieldArguments($fieldResolver, ['fields'], $fieldName, $fieldArgs)) {
-                    return $maybeError;
-                }
-                if ($maybeError = FieldValidationUtils::validateFieldsExist($fieldResolver, array_map('trim', explode(',', $fieldArgs['fields'])))) {
+                if ($maybeError = FieldValidationUtils::validateNotMissingFieldArguments($fieldResolver, ['values'], $fieldName, $fieldArgs)) {
                     return $maybeError;
                 }
                 return null;
             case 'equals':
-                if ($missingError = FieldValidationUtils::validateNotMissingFieldArguments($fieldResolver, ['field', 'value'], $fieldName, $fieldArgs)) {
+                if ($missingError = FieldValidationUtils::validateNotMissingFieldArguments($fieldResolver, ['value1', 'value2'], $fieldName, $fieldArgs)) {
                     return $missingError;
-                }
-                if ($maybeError = FieldValidationUtils::validateFieldsExist($fieldResolver, [$fieldArgs['field']], $fieldName, $fieldArgs)) {
-                    return $maybeError;
                 }
                 return null;
             case 'empty':
-                if ($missingError = FieldValidationUtils::validateNotMissingFieldArguments($fieldResolver, ['field'], $fieldName, $fieldArgs)) {
+                if ($missingError = FieldValidationUtils::validateNotMissingFieldArguments($fieldResolver, ['value'], $fieldName, $fieldArgs)) {
                     return $missingError;
-                }
-                if ($maybeError = FieldValidationUtils::validateFieldsExist($fieldResolver, [$fieldArgs['field']])) {
-                    return $maybeError;
                 }
                 return null;
             case 'echo':
@@ -250,39 +228,28 @@ class FieldValueResolver extends \PoP\ComponentModel\AbstractDBDataFieldValueRes
     {
         switch ($fieldName) {
             case 'if':
-                $conditionField = $fieldArgs['condition-field'];
-                $executeField = null;
-                if ($fieldResolver->resolveValue($resultItem, $conditionField)) {
-                    $executeField = $fieldArgs['then-field'];
-                } elseif (isset($fieldArgs['else-field'])) {
-                    $executeField = $fieldArgs['else-field'];
-                }
-                if ($executeField) {
-                    return $fieldResolver->resolveValue($resultItem, $executeField);
+                if ($fieldArgs['condition']) {
+                    return $fieldArgs['then'];
+                } elseif (isset($fieldArgs['else'])) {
+                    return $fieldArgs['else'];
                 }
                 return null;
             case 'not':
-                $notField = $fieldArgs['field'];
-                return !$fieldResolver->resolveValue($resultItem, $notField);
+                return !$fieldArgs['value'];
             case 'and':
+                return array_reduce($fieldArgs['values'], function($accumulated, $value) {
+                    $accumulated = $accumulated && $value;
+                    return $accumulated;
+                }, true);
             case 'or':
-                $opFields = explode(',', $fieldArgs['fields']);
-                $value = true;
-                foreach ($opFields as $opField) {
-                    if ($fieldName == 'and') {
-                        $value = $value && $fieldResolver->resolveValue($resultItem, $opField);
-                    } elseif ($fieldName == 'or') {
-                        $value = $value || $fieldResolver->resolveValue($resultItem, $opField);
-                    }
-                }
-                return $value;
+                return array_reduce($fieldArgs['values'], function($accumulated, $value) {
+                    $accumulated = $accumulated || $value;
+                    return $accumulated;
+                }, false);
             case 'equals':
-                $equalsField = $fieldArgs['field'];
-                $equalsValue = $fieldArgs['value'];
-                return $equalsValue == $fieldResolver->resolveValue($resultItem, $equalsField);
+                return $fieldArgs['value1'] == $fieldArgs['value2'];
             case 'empty':
-                $emptyField = $fieldArgs['field'];
-                return empty($fieldResolver->resolveValue($resultItem, $emptyField));
+                return empty($fieldArgs['value']);
             case 'echo':
                 return $fieldArgs['value'];
             case 'var':
