@@ -98,7 +98,7 @@ class FieldValueResolver extends \PoP\ComponentModel\AbstractDBDataFieldValueRes
             case 'or':
                 return [
                     [
-                        'name' => 'fields',
+                        'name' => 'values',
                         'type' => TYPE_ARRAY,
                         'description' => sprintf(
                             $translationAPI->__('The array of values on which to execute the `%s` operation', 'pop-component-model'),
