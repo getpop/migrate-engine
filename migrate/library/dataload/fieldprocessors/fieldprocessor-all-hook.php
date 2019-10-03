@@ -3,8 +3,6 @@ namespace PoP\Engine;
 
 use PoP\Hooks\Facades\HooksAPIFacade;
 use PoP\Translation\Facades\TranslationAPIFacade;
-use PoP\ComponentModel\FieldUtils;
-use PoP\ComponentModel\FieldValidationUtils;
 use PoP\ComponentModel\Engine_Vars;
 
 class FieldValueResolver extends \PoP\ComponentModel\AbstractDBDataFieldValueResolver
@@ -17,28 +15,28 @@ class FieldValueResolver extends \PoP\ComponentModel\AbstractDBDataFieldValueRes
     public function getFieldNamesToResolve(): array
     {
         return [
-            'if',
-            'not',
-            'and',
-            'or',
-            'equals',
-            'empty',
-            'var',
-            'context',
+            'IF',
+            'NOT',
+            'AND',
+            'OR',
+            'EQUALS',
+            'EMPTY',
+            'VAR',
+            'CONTEXT',
         ];
     }
 
     public function getFieldDocumentationType(string $fieldName): ?string
     {
         $types = [
-            'if' => TYPE_MIXED,
-            'not' => TYPE_BOOL,
-            'and' => TYPE_BOOL,
-            'or' => TYPE_BOOL,
-            'equals' => TYPE_BOOL,
-            'empty' => TYPE_BOOL,
-            'var' => TYPE_MIXED,
-            'context' => TYPE_OBJECT,
+            'IF' => TYPE_MIXED,
+            'NOT' => TYPE_BOOL,
+            'AND' => TYPE_BOOL,
+            'OR' => TYPE_BOOL,
+            'EQUALS' => TYPE_BOOL,
+            'EMPTY' => TYPE_BOOL,
+            'VAR' => TYPE_MIXED,
+            'CONTEXT' => TYPE_OBJECT,
         ];
         return $types[$fieldName];
     }
@@ -47,14 +45,14 @@ class FieldValueResolver extends \PoP\ComponentModel\AbstractDBDataFieldValueRes
     {
         $translationAPI = TranslationAPIFacade::getInstance();
         $descriptions = [
-            'if' => $translationAPI->__('If a boolean property is true, execute a field, else, execute another field', 'pop-component-model'),
-            'not' => $translationAPI->__('Return the opposite value of a boolean property', 'pop-component-model'),
-            'and' => $translationAPI->__('Return an `AND` operation among several boolean properties', 'pop-component-model'),
-            'or' => $translationAPI->__('Return an `OR` operation among several boolean properties', 'pop-component-model'),
-            'equals' => $translationAPI->__('Indicate if the result from a field equals a certain value', 'pop-component-model'),
-            'empty' => $translationAPI->__('Indicate if the result from a field is empty', 'pop-component-model'),
-            'var' => $translationAPI->__('Retrieve the value of a certain property from the `$vars` context object', 'pop-component-model'),
-            'context' => $translationAPI->__('Retrieve the `$vars` context object', 'pop-component-model'),
+            'IF' => $translationAPI->__('If a boolean property is true, execute a field, else, execute another field', 'pop-component-model'),
+            'NOT' => $translationAPI->__('Return the opposite value of a boolean property', 'pop-component-model'),
+            'AND' => $translationAPI->__('Return an `AND` operation among several boolean properties', 'pop-component-model'),
+            'OR' => $translationAPI->__('Return an `OR` operation among several boolean properties', 'pop-component-model'),
+            'EQUALS' => $translationAPI->__('Indicate if the result from a field equals a certain value', 'pop-component-model'),
+            'EMPTY' => $translationAPI->__('Indicate if the result from a field is empty', 'pop-component-model'),
+            'VAR' => $translationAPI->__('Retrieve the value of a certain property from the `$vars` context object', 'pop-component-model'),
+            'CONTEXT' => $translationAPI->__('Retrieve the `$vars` context object', 'pop-component-model'),
         ];
         return $descriptions[$fieldName];
     }
@@ -63,7 +61,7 @@ class FieldValueResolver extends \PoP\ComponentModel\AbstractDBDataFieldValueRes
     {
         $translationAPI = TranslationAPIFacade::getInstance();
         switch ($fieldName) {
-            case 'if':
+            case 'IF':
                 return [
                     [
                         'name' => 'condition',
@@ -84,7 +82,7 @@ class FieldValueResolver extends \PoP\ComponentModel\AbstractDBDataFieldValueRes
                     ],
                 ];
 
-            case 'not':
+            case 'NOT':
                 return [
                     [
                         'name' => 'value',
@@ -94,8 +92,8 @@ class FieldValueResolver extends \PoP\ComponentModel\AbstractDBDataFieldValueRes
                     ],
                 ];
 
-            case 'and':
-            case 'or':
+            case 'AND':
+            case 'OR':
                 return [
                     [
                         'name' => 'values',
@@ -108,7 +106,7 @@ class FieldValueResolver extends \PoP\ComponentModel\AbstractDBDataFieldValueRes
                     ],
                 ];
 
-            case 'equals':
+            case 'EQUALS':
                 return [
                     [
                         'name' => 'value1',
@@ -124,7 +122,7 @@ class FieldValueResolver extends \PoP\ComponentModel\AbstractDBDataFieldValueRes
                     ],
                 ];
 
-            case 'empty':
+            case 'EMPTY':
                 return [
                     [
                         'name' => 'value',
@@ -134,7 +132,7 @@ class FieldValueResolver extends \PoP\ComponentModel\AbstractDBDataFieldValueRes
                     ],
                 ];
 
-            case 'var':
+            case 'VAR':
                 return [
                     [
                         'name' => 'name',
@@ -156,7 +154,7 @@ class FieldValueResolver extends \PoP\ComponentModel\AbstractDBDataFieldValueRes
 
         $translationAPI = TranslationAPIFacade::getInstance();
         switch ($fieldName) {
-            case 'var':
+            case 'VAR':
                 $safeVars = $this->getSafeVars();
                 if (!isset($safeVars[$fieldArgs['name']])) {
                     return sprintf(
@@ -184,33 +182,33 @@ class FieldValueResolver extends \PoP\ComponentModel\AbstractDBDataFieldValueRes
     public function resolveValue($fieldResolver, $resultItem, string $fieldName, array $fieldArgs = [])
     {
         switch ($fieldName) {
-            case 'if':
+            case 'IF':
                 if ($fieldArgs['condition']) {
                     return $fieldArgs['then'];
                 } elseif (isset($fieldArgs['else'])) {
                     return $fieldArgs['else'];
                 }
                 return null;
-            case 'not':
+            case 'NOT':
                 return !$fieldArgs['value'];
-            case 'and':
+            case 'AND':
                 return array_reduce($fieldArgs['values'], function($accumulated, $value) {
                     $accumulated = $accumulated && $value;
                     return $accumulated;
                 }, true);
-            case 'or':
+            case 'OR':
                 return array_reduce($fieldArgs['values'], function($accumulated, $value) {
                     $accumulated = $accumulated || $value;
                     return $accumulated;
                 }, false);
-            case 'equals':
+            case 'EQUALS':
                 return $fieldArgs['value1'] == $fieldArgs['value2'];
-            case 'empty':
+            case 'EMPTY':
                 return empty($fieldArgs['value']);
-            case 'var':
+            case 'VAR':
                 $safeVars = $this->getSafeVars();
                 return $safeVars[$fieldArgs['name']];
-            case 'context':
+            case 'CONTEXT':
                 return $this->getSafeVars();
         }
 
