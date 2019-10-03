@@ -5,13 +5,8 @@ use PoP\Hooks\Facades\HooksAPIFacade;
 use PoP\Translation\Facades\TranslationAPIFacade;
 use PoP\ComponentModel\Engine_Vars;
 
-class FieldValueResolver extends \PoP\ComponentModel\AbstractDBDataFieldValueResolver
+class OperatorsFieldValueResolver extends AbstractOperatorsFieldValueResolver
 {
-    public static function getClassesToAttachTo(): array
-    {
-        return array(\PoP\ComponentModel\FieldResolverBase::class);
-    }
-
     public function getFieldNamesToResolve(): array
     {
         return [
@@ -238,4 +233,4 @@ class FieldValueResolver extends \PoP\ComponentModel\AbstractDBDataFieldValueRes
 }
 
 // Static Initialization: Attach
-FieldValueResolver::attach(POP_ATTACHABLEEXTENSIONGROUP_FIELDVALUERESOLVERS);
+OperatorsFieldValueResolver::attach(POP_ATTACHABLEEXTENSIONGROUP_FIELDVALUERESOLVERS);
