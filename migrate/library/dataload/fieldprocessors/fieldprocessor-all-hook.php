@@ -23,6 +23,7 @@ class FieldValueResolver extends \PoP\ComponentModel\AbstractDBDataFieldValueRes
             'EMPTY',
             'VAR',
             'CONTEXT',
+            'SPRINTF',
         ];
     }
 
@@ -37,6 +38,7 @@ class FieldValueResolver extends \PoP\ComponentModel\AbstractDBDataFieldValueRes
             'EMPTY' => TYPE_BOOL,
             'VAR' => TYPE_MIXED,
             'CONTEXT' => TYPE_OBJECT,
+            'SPRINTF' => TYPE_STRING,
         ];
         return $types[$fieldName];
     }
@@ -53,6 +55,7 @@ class FieldValueResolver extends \PoP\ComponentModel\AbstractDBDataFieldValueRes
             'EMPTY' => $translationAPI->__('Indicate if the result from a field is empty', 'pop-component-model'),
             'VAR' => $translationAPI->__('Retrieve the value of a certain property from the `$vars` context object', 'pop-component-model'),
             'CONTEXT' => $translationAPI->__('Retrieve the `$vars` context object', 'pop-component-model'),
+            'SPRINTF' => $translationAPI->__('Replace placeholders inside a string with provided values', 'pop-component-model'),
         ];
         return $descriptions[$fieldName];
     }
@@ -141,6 +144,22 @@ class FieldValueResolver extends \PoP\ComponentModel\AbstractDBDataFieldValueRes
                         'mandatory' => true,
                     ],
                 ];
+
+            case 'SPRINTF':
+                return [
+                    [
+                        'name' => 'string',
+                        'type' => TYPE_STRING,
+                        'description' => $translationAPI->__('The string containing the placeholders', 'pop-component-model'),
+                        'mandatory' => true,
+                    ],
+                    [
+                        'name' => 'values',
+                        'type' => TYPE_ARRAY,
+                        'description' => $translationAPI->__('The values to replace the placeholders with inside the string', 'pop-component-model'),
+                        'mandatory' => true,
+                    ],
+                ];
         }
 
         return parent::getFieldDocumentationArgs($fieldName);
@@ -210,6 +229,8 @@ class FieldValueResolver extends \PoP\ComponentModel\AbstractDBDataFieldValueRes
                 return $safeVars[$fieldArgs['name']];
             case 'CONTEXT':
                 return $this->getSafeVars();
+            case 'SPRINTF':
+                return sprintf($fieldArgs['string'], ...$fieldArgs['values']);
         }
 
         return parent::resolveValue($fieldResolver, $resultItem, $fieldName, $fieldArgs);
