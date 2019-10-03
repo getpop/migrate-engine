@@ -115,7 +115,7 @@ class DataStructureFormatter_MirrorQuery extends \PoP\ComponentModel\DataStructu
         foreach ($propertyFields as $propertyField) {
             // Only if the property has been set (in case of dbError it is not set)
             $propertyFieldOutputKey = FieldUtils::getFieldOutputKey($propertyField);
-            if (isset($dbObject[$propertyFieldOutputKey])) {
+            if (array_key_exists($propertyFieldOutputKey, $dbObject)) {
                 $dbObjectRet[$propertyFieldOutputKey] = $dbObject[$propertyFieldOutputKey];
             }
         }
