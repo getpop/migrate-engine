@@ -10,30 +10,30 @@ class OperatorsFieldValueResolver extends AbstractOperatorsFieldValueResolver
     public function getFieldNamesToResolve(): array
     {
         return [
-            'IF',
-            'NOT',
-            'AND',
-            'OR',
-            'EQUALS',
-            'EMPTY',
-            'VAR',
-            'CONTEXT',
-            'SPRINTF',
+            'if',
+            'not',
+            'and',
+            'or',
+            'equals',
+            'empty',
+            'var',
+            'context',
+            'sprintf',
         ];
     }
 
     public function getFieldDocumentationType(string $fieldName): ?string
     {
         $types = [
-            'IF' => TYPE_MIXED,
-            'NOT' => TYPE_BOOL,
-            'AND' => TYPE_BOOL,
-            'OR' => TYPE_BOOL,
-            'EQUALS' => TYPE_BOOL,
-            'EMPTY' => TYPE_BOOL,
-            'VAR' => TYPE_MIXED,
-            'CONTEXT' => TYPE_OBJECT,
-            'SPRINTF' => TYPE_STRING,
+            'if' => TYPE_MIXED,
+            'not' => TYPE_BOOL,
+            'and' => TYPE_BOOL,
+            'or' => TYPE_BOOL,
+            'equals' => TYPE_BOOL,
+            'empty' => TYPE_BOOL,
+            'var' => TYPE_MIXED,
+            'context' => TYPE_OBJECT,
+            'sprintf' => TYPE_STRING,
         ];
         return $types[$fieldName];
     }
@@ -42,15 +42,15 @@ class OperatorsFieldValueResolver extends AbstractOperatorsFieldValueResolver
     {
         $translationAPI = TranslationAPIFacade::getInstance();
         $descriptions = [
-            'IF' => $translationAPI->__('If a boolean property is true, execute a field, else, execute another field', 'pop-component-model'),
-            'NOT' => $translationAPI->__('Return the opposite value of a boolean property', 'pop-component-model'),
-            'AND' => $translationAPI->__('Return an `AND` operation among several boolean properties', 'pop-component-model'),
-            'OR' => $translationAPI->__('Return an `OR` operation among several boolean properties', 'pop-component-model'),
-            'EQUALS' => $translationAPI->__('Indicate if the result from a field equals a certain value', 'pop-component-model'),
-            'EMPTY' => $translationAPI->__('Indicate if the result from a field is empty', 'pop-component-model'),
-            'VAR' => $translationAPI->__('Retrieve the value of a certain property from the `$vars` context object', 'pop-component-model'),
-            'CONTEXT' => $translationAPI->__('Retrieve the `$vars` context object', 'pop-component-model'),
-            'SPRINTF' => $translationAPI->__('Replace placeholders inside a string with provided values', 'pop-component-model'),
+            'if' => $translationAPI->__('If a boolean property is true, execute a field, else, execute another field', 'pop-component-model'),
+            'not' => $translationAPI->__('Return the opposite value of a boolean property', 'pop-component-model'),
+            'and' => $translationAPI->__('Return an `AND` operation among several boolean properties', 'pop-component-model'),
+            'or' => $translationAPI->__('Return an `OR` operation among several boolean properties', 'pop-component-model'),
+            'equals' => $translationAPI->__('Indicate if the result from a field equals a certain value', 'pop-component-model'),
+            'empty' => $translationAPI->__('Indicate if the result from a field is empty', 'pop-component-model'),
+            'var' => $translationAPI->__('Retrieve the value of a certain property from the `$vars` context object', 'pop-component-model'),
+            'context' => $translationAPI->__('Retrieve the `$vars` context object', 'pop-component-model'),
+            'sprintf' => $translationAPI->__('Replace placeholders inside a string with provided values', 'pop-component-model'),
         ];
         return $descriptions[$fieldName];
     }
@@ -59,7 +59,7 @@ class OperatorsFieldValueResolver extends AbstractOperatorsFieldValueResolver
     {
         $translationAPI = TranslationAPIFacade::getInstance();
         switch ($fieldName) {
-            case 'IF':
+            case 'if':
                 return [
                     [
                         'name' => 'condition',
@@ -80,7 +80,7 @@ class OperatorsFieldValueResolver extends AbstractOperatorsFieldValueResolver
                     ],
                 ];
 
-            case 'NOT':
+            case 'not':
                 return [
                     [
                         'name' => 'value',
@@ -90,8 +90,8 @@ class OperatorsFieldValueResolver extends AbstractOperatorsFieldValueResolver
                     ],
                 ];
 
-            case 'AND':
-            case 'OR':
+            case 'and':
+            case 'or':
                 return [
                     [
                         'name' => 'values',
@@ -104,7 +104,7 @@ class OperatorsFieldValueResolver extends AbstractOperatorsFieldValueResolver
                     ],
                 ];
 
-            case 'EQUALS':
+            case 'equals':
                 return [
                     [
                         'name' => 'value1',
@@ -120,7 +120,7 @@ class OperatorsFieldValueResolver extends AbstractOperatorsFieldValueResolver
                     ],
                 ];
 
-            case 'EMPTY':
+            case 'empty':
                 return [
                     [
                         'name' => 'value',
@@ -130,7 +130,7 @@ class OperatorsFieldValueResolver extends AbstractOperatorsFieldValueResolver
                     ],
                 ];
 
-            case 'VAR':
+            case 'var':
                 return [
                     [
                         'name' => 'name',
@@ -140,7 +140,7 @@ class OperatorsFieldValueResolver extends AbstractOperatorsFieldValueResolver
                     ],
                 ];
 
-            case 'SPRINTF':
+            case 'sprintf':
                 return [
                     [
                         'name' => 'string',
@@ -168,7 +168,7 @@ class OperatorsFieldValueResolver extends AbstractOperatorsFieldValueResolver
 
         $translationAPI = TranslationAPIFacade::getInstance();
         switch ($fieldName) {
-            case 'VAR':
+            case 'var':
                 $safeVars = $this->getSafeVars();
                 if (!isset($safeVars[$fieldArgs['name']])) {
                     return sprintf(
@@ -196,35 +196,35 @@ class OperatorsFieldValueResolver extends AbstractOperatorsFieldValueResolver
     public function resolveValue($fieldResolver, $resultItem, string $fieldName, array $fieldArgs = [])
     {
         switch ($fieldName) {
-            case 'IF':
+            case 'if':
                 if ($fieldArgs['condition']) {
                     return $fieldArgs['then'];
                 } elseif (isset($fieldArgs['else'])) {
                     return $fieldArgs['else'];
                 }
                 return null;
-            case 'NOT':
+            case 'not':
                 return !$fieldArgs['value'];
-            case 'AND':
+            case 'and':
                 return array_reduce($fieldArgs['values'], function($accumulated, $value) {
                     $accumulated = $accumulated && $value;
                     return $accumulated;
                 }, true);
-            case 'OR':
+            case 'or':
                 return array_reduce($fieldArgs['values'], function($accumulated, $value) {
                     $accumulated = $accumulated || $value;
                     return $accumulated;
                 }, false);
-            case 'EQUALS':
+            case 'equals':
                 return $fieldArgs['value1'] == $fieldArgs['value2'];
-            case 'EMPTY':
+            case 'empty':
                 return empty($fieldArgs['value']);
-            case 'VAR':
+            case 'var':
                 $safeVars = $this->getSafeVars();
                 return $safeVars[$fieldArgs['name']];
-            case 'CONTEXT':
+            case 'context':
                 return $this->getSafeVars();
-            case 'SPRINTF':
+            case 'sprintf':
                 return sprintf($fieldArgs['string'], ...$fieldArgs['values']);
         }
 
