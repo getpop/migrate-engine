@@ -13,10 +13,12 @@ trait FilterIDsSatisfyingConditionTrait
             // Extract the directiveArguments, to be evaluated on the field as fieldArgs
             list($fieldArgs, $nestedDBErrors) = FieldUtils::extractFieldArgumentsForResultItem($fieldResolver, $resultItem, $this->directive);
             if ($nestedDBErrors) {
-                $dbErrors = array_merge(
-                    $dbErrors,
-                    $nestedDBErrors
-                );
+                foreach ($nestedDBErrors as $id => $fieldOutputKeyErrorMessages) {
+                    $dbErrors[$id] = array_merge(
+                        $dbErrors[$id] ?? [],
+                        $fieldOutputKeyErrorMessages
+                    );
+                }
             }
             if ($fieldArgs['if']) {
                 $idsSatisfyingCondition[] = $id;
