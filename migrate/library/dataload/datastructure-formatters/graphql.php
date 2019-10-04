@@ -61,16 +61,18 @@ class DataStructureFormatter_GraphQL extends DataStructureFormatter_MirrorQuery
     protected function reformatDBEntries($entries)
     {
         $ret = [];
-        foreach ($entries as $dbKey => $id_field_message) {
-            foreach ($id_field_message as $id => $field_message) {
-                foreach ($field_message as $field => $message) {
-                    $ret[] = [
-                        'type' => 'dataobject',
-                        'entity' => $dbKey,
-                        'id' => $id,
-                        'fieldOrDirective' => $field,
-                        'message' => $message,
-                    ];
+        foreach ($entries as $dbKey => $id_field_messages) {
+            foreach ($id_field_messages as $id => $field_messages) {
+                foreach ($field_messages as $field => $messages) {
+                    foreach ($messages as $message) {
+                        $ret[] = [
+                            'type' => 'dataobject',
+                            'entity' => $dbKey,
+                            'id' => $id,
+                            'fieldOrDirective' => $field,
+                            'message' => $message,
+                        ];
+                    }
                 }
             }
         }
@@ -80,14 +82,16 @@ class DataStructureFormatter_GraphQL extends DataStructureFormatter_MirrorQuery
     protected function reformatSchemaEntries($entries)
     {
         $ret = [];
-        foreach ($entries as $dbKey => $field_message) {
-            foreach ($field_message as $field => $message) {
-                $ret[] = [
-                    'type' => 'schema',
-                    'entity' => $dbKey,
-                    'fieldOrDirective' => $field,
-                    'message' => $message,
-                ];
+        foreach ($entries as $dbKey => $field_messages) {
+            foreach ($field_messages as $field => $messages) {
+                foreach ($messages as $message) {
+                    $ret[] = [
+                        'type' => 'schema',
+                        'entity' => $dbKey,
+                        'fieldOrDirective' => $field,
+                        'message' => $message,
+                    ];
+                }
             }
         }
         return $ret;
