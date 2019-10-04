@@ -7,8 +7,11 @@ trait FilterIDsSatisfyingConditionTrait
     protected function getIdsSatisfyingCondition($fieldResolver, array &$resultIDItems, array &$idsDataFields, array &$dbErrors, array &$schemaErrors, array &$schemaDeprecations)
     {
         // First validate schema (eg of error in schema: ?fields=posts<include(if:this-field-doesnt-exist())>)
-        $directiveSchemaErrors = $directiveSchemaDeprecations = [];
-        $directiveArgs = FieldUtils::extractFieldArgumentsForSchema($fieldResolver, $this->directive, $directiveSchemaErrors, $directiveSchemaDeprecations);
+        list(
+            $directiveArgs,
+            $directiveSchemaErrors,
+            $directiveSchemaDeprecations
+        ) = FieldUtils::extractFieldArgumentsForSchema($fieldResolver, $this->directive);
         if ($directiveSchemaErrors || $directiveSchemaDeprecations) {
             // Save the errors
             $directiveOutputKey = FieldUtils::getFieldOutputKey($this->directive);
