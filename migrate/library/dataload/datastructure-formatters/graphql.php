@@ -67,7 +67,7 @@ class DataStructureFormatter_GraphQL extends DataStructureFormatter_MirrorQuery
                     foreach ($messages as $message) {
                         $ret[] = [
                             'type' => 'dataobject',
-                            'entity' => $dbKey,
+                            'entityDBKey' => $dbKey,
                             'id' => $id,
                             'fieldOrDirective' => $field,
                             'message' => $message,
@@ -87,7 +87,7 @@ class DataStructureFormatter_GraphQL extends DataStructureFormatter_MirrorQuery
                 foreach ($messages as $message) {
                     $ret[] = [
                         'type' => 'schema',
-                        'entity' => $dbKey,
+                        'entityDBKey' => $dbKey,
                         'fieldOrDirective' => $field,
                         'message' => $message,
                     ];
