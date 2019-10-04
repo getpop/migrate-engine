@@ -7,10 +7,23 @@ trait FilterIDsSatisfyingConditionTrait
     protected function getIdsSatisfyingCondition($fieldResolver, array &$resultIDItems, array &$idsDataFields, array &$dbErrors, array &$schemaErrors, array &$schemaDeprecations)
     {
         // First validate schema (eg of error in schema: ?fields=posts<include(if:this-field-doesnt-exist())>)
-        $directiveArgs = FieldUtils::extractFieldArgumentsForSchema($fieldResolver, $this->directive, $schemaErrors, $schemaDeprecations);
-        // If there's an error, those args will be removed. Then, re-create the fieldDirective to pass it to the function below
-        $directiveName = FieldUtils::getFieldDirectiveName($this->directive);
-        $directive = FieldUtils::getFieldDirective($directiveName, $directiveArgs);
+        $directiveSchemaErrors = $directiveSchemaDeprecations = [];
+        $directiveArgs = FieldUtils::extractFieldArgumentsForSchema($fieldResolver, $this->directive, $directiveSchemaErrors, $directiveSchemaDeprecations);
+        if ($directiveSchemaErrors || $directiveSchemaDeprecations) {
+            // Save the errors
+            $directiveOutputKey = FieldUtils::getFieldOutputKey($this->directive);
+            foreach ($directiveSchemaErrors as $error) {
+                $schemaErrors[$directiveOutputKey][] = $error;
+            }
+            foreach ($directiveSchemaDeprecations as $error) {
+                $schemaDeprecations[$directiveOutputKey][] = $error;
+            }
+            // If there's an error, those args will be removed. Then, re-create the fieldDirective to pass it to the function below
+            $directiveName = FieldUtils::getFieldDirectiveName($this->directive);
+            $directive = FieldUtils::getFieldDirective($directiveName, $directiveArgs);
+        } else {
+            $directive = $this->directive;
+        }
 
         // Check the condition field. If it is satisfied, then skip those fields
         $idsSatisfyingCondition = [];
