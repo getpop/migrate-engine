@@ -4,6 +4,7 @@ namespace PoP\Engine;
 use PoP\Hooks\Facades\HooksAPIFacade;
 use PoP\Translation\Facades\TranslationAPIFacade;
 use PoP\ComponentModel\Engine_Vars;
+use PoP\ComponentModel\DataloadUtils;
 
 class OperatorsFieldValueResolver extends AbstractOperatorsFieldValueResolver
 {
@@ -63,7 +64,7 @@ class OperatorsFieldValueResolver extends AbstractOperatorsFieldValueResolver
                 return [
                     [
                         'name' => 'condition',
-                        'type' => TYPE_MIXED,
+                        'type' => TYPE_BOOL,
                         'description' => $translationAPI->__('The condition to check if its value is `true` or `false`', 'pop-component-model'),
                         'mandatory' => true,
                     ],
@@ -84,7 +85,7 @@ class OperatorsFieldValueResolver extends AbstractOperatorsFieldValueResolver
                 return [
                     [
                         'name' => 'value',
-                        'type' => TYPE_MIXED,
+                        'type' => TYPE_BOOL,
                         'description' => $translationAPI->__('The value from which to return its opposite value', 'pop-component-model'),
                         'mandatory' => true,
                     ],
@@ -95,7 +96,7 @@ class OperatorsFieldValueResolver extends AbstractOperatorsFieldValueResolver
                 return [
                     [
                         'name' => 'values',
-                        'type' => TYPE_ARRAY,
+                        'type' => DataloadUtils::combineTypes(TYPE_ARRAY, TYPE_BOOL),
                         'description' => sprintf(
                             $translationAPI->__('The array of values on which to execute the `%s` operation', 'pop-component-model'),
                             strtoupper($fieldName)
@@ -150,7 +151,7 @@ class OperatorsFieldValueResolver extends AbstractOperatorsFieldValueResolver
                     ],
                     [
                         'name' => 'values',
-                        'type' => TYPE_ARRAY,
+                        'type' => DataloadUtils::combineTypes(TYPE_ARRAY, TYPE_STRING),
                         'description' => $translationAPI->__('The values to replace the placeholders with inside the string', 'pop-component-model'),
                         'mandatory' => true,
                     ],
