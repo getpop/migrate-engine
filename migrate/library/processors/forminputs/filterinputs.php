@@ -1,6 +1,7 @@
 <?php
 use PoP\Engine\FilterInputProcessor;
 use PoP\Translation\Facades\TranslationAPIFacade;
+use PoP\ComponentModel\PoP_InputUtils;
 
 class PoP_Module_Processor_FilterInputs extends \PoP\ComponentModel\AbstractFormInputs implements \PoP\ComponentModel\DataloadQueryArgsFilter
 {
@@ -101,6 +102,36 @@ class PoP_Module_Processor_FilterInputs extends \PoP\ComponentModel\AbstractForm
         return $names[$module[1]] ?? parent::getName($module);
     }
 
+    protected function modifyFilterDocumentationItems(array &$documentationItems, array $module)
+    {
+        // Replace the "date" item with "date-from" and "date-to"
+        switch ($module[1]) {
+            case self::MODULE_FILTERINPUT_DATES:
+                $translationAPI = TranslationAPIFacade::getInstance();
+                $name = $this->getName($module);
+                $subnames = $this->getInputOptions($module)['subnames'];
+                // Save documentation as template, and remove it
+                $documentation = $documentationItems[0];
+                array_shift($documentation);
+                // Add the other elements, using the original documantation as placeholder
+                $documentationItems[] = array_merge(
+                    $documentation,
+                    [
+                        'name' => PoP_InputUtils::getMultipleinputsName($name, $subnames[0]),
+                        'description' => $translationAPI->__('Search for elements starting from this date', 'pop-engine'),
+                    ]
+                );
+                $documentationItems[] = array_merge(
+                    $documentation,
+                    [
+                        'name' => PoP_InputUtils::getMultipleinputsName($name, $subnames[1]),
+                        'description' => $translationAPI->__('Search for elements starting until this date', 'pop-engine'),
+                    ]
+                );
+                break;
+        }
+    }
+
     public function getFilterDocumentationType(array $module): ?string
     {
         $types = [
@@ -124,8 +155,8 @@ class PoP_Module_Processor_FilterInputs extends \PoP\ComponentModel\AbstractForm
                 $subnames = $this->getInputOptions($module)['subnames'];
                 return sprintf(
                     $translationAPI->__('Search for elements between the \'from\' and \'to\' dates. Provide dates through params \'%s\' and \'%s\'', 'pop-engine'),
-                    \PoP\ComponentModel\PoP_InputUtils::getMultipleinputsName($name, $subnames[0]),
-                    \PoP\ComponentModel\PoP_InputUtils::getMultipleinputsName($name, $subnames[1])
+                    PoP_InputUtils::getMultipleinputsName($name, $subnames[0]),
+                    PoP_InputUtils::getMultipleinputsName($name, $subnames[1])
                 );
         }
 
