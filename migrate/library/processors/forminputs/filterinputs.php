@@ -108,6 +108,7 @@ class PoP_Module_Processor_FilterInputs extends \PoP\ComponentModel\AbstractForm
         switch ($module[1]) {
             case self::MODULE_FILTERINPUT_DATES:
                 $translationAPI = TranslationAPIFacade::getInstance();
+                $cmsengineapi = \PoP\Engine\FunctionAPIFactory::getInstance();
                 $name = $this->getName($module);
                 $subnames = $this->getInputOptions($module)['subnames'];
                 // Save documentation as template, and remove it
@@ -122,7 +123,10 @@ class PoP_Module_Processor_FilterInputs extends \PoP\ComponentModel\AbstractForm
                     ],
                     $documentation,
                     [
-                        'description' => $translationAPI->__('Search for elements starting from this date', 'pop-engine'),
+                        'description' => sprintf(
+                            $translationAPI->__('Search for elements starting from this date, in format \'%s\'', 'pop-engine'),
+                            $cmsengineapi->getOption(\PoP\LooseContracts\NameResolverFactory::getInstance()->getName('popcms:option:dateFormat'))
+                        ),
                     ]
                 );
                 $documentationItems[] = array_merge(
@@ -131,7 +135,10 @@ class PoP_Module_Processor_FilterInputs extends \PoP\ComponentModel\AbstractForm
                     ],
                     $documentation,
                     [
-                        'description' => $translationAPI->__('Search for elements starting until this date', 'pop-engine'),
+                        'description' => sprintf(
+                            $translationAPI->__('Search for elements starting until this date, in format \'%s\'', 'pop-engine'),
+                            $cmsengineapi->getOption(\PoP\LooseContracts\NameResolverFactory::getInstance()->getName('popcms:option:dateFormat'))
+                        ),
                     ]
                 );
                 break;
@@ -159,10 +166,12 @@ class PoP_Module_Processor_FilterInputs extends \PoP\ComponentModel\AbstractForm
             case self::MODULE_FILTERINPUT_DATES:
                 $name = $this->getName($module);
                 $subnames = $this->getInputOptions($module)['subnames'];
+                $cmsengineapi = \PoP\Engine\FunctionAPIFactory::getInstance();
                 return sprintf(
-                    $translationAPI->__('Search for elements between the \'from\' and \'to\' dates. Provide dates through params \'%s\' and \'%s\'', 'pop-engine'),
+                    $translationAPI->__('Search for elements between the \'from\' and \'to\' dates. Provide dates through params \'%s\' and \'%s\', in format \'%s\'', 'pop-engine'),
                     PoP_InputUtils::getMultipleinputsName($name, $subnames[0]),
-                    PoP_InputUtils::getMultipleinputsName($name, $subnames[1])
+                    PoP_InputUtils::getMultipleinputsName($name, $subnames[1]),
+                    $cmsengineapi->getOption(\PoP\LooseContracts\NameResolverFactory::getInstance()->getName('popcms:option:dateFormat'))
                 );
         }
 
