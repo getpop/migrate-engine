@@ -112,19 +112,25 @@ class PoP_Module_Processor_FilterInputs extends \PoP\ComponentModel\AbstractForm
                 $subnames = $this->getInputOptions($module)['subnames'];
                 // Save documentation as template, and remove it
                 $documentation = $documentationItems[0];
-                array_shift($documentation);
+                unset($documentation['name']);
+                unset($documentation['description']);
+                array_shift($documentationItems);
                 // Add the other elements, using the original documantation as placeholder
                 $documentationItems[] = array_merge(
-                    $documentation,
                     [
                         'name' => PoP_InputUtils::getMultipleinputsName($name, $subnames[0]),
+                    ],
+                    $documentation,
+                    [
                         'description' => $translationAPI->__('Search for elements starting from this date', 'pop-engine'),
                     ]
                 );
                 $documentationItems[] = array_merge(
-                    $documentation,
                     [
                         'name' => PoP_InputUtils::getMultipleinputsName($name, $subnames[1]),
+                    ],
+                    $documentation,
+                    [
                         'description' => $translationAPI->__('Search for elements starting until this date', 'pop-engine'),
                     ]
                 );
