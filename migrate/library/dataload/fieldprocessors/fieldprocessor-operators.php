@@ -5,6 +5,7 @@ use PoP\Hooks\Facades\HooksAPIFacade;
 use PoP\Translation\Facades\TranslationAPIFacade;
 use PoP\ComponentModel\Engine_Vars;
 use PoP\ComponentModel\DataloadUtils;
+use PoP\ComponentModel\SchemaDefinition;
 
 class OperatorsFieldValueResolver extends AbstractOperatorsFieldValueResolver
 {
@@ -63,31 +64,31 @@ class OperatorsFieldValueResolver extends AbstractOperatorsFieldValueResolver
             case 'if':
                 return [
                     [
-                        'name' => 'condition',
-                        'type' => TYPE_BOOL,
-                        'description' => $translationAPI->__('The condition to check if its value is `true` or `false`', 'pop-component-model'),
-                        'mandatory' => true,
+                        SchemaDefinition::ARGNAME_NAME => 'condition',
+                        SchemaDefinition::ARGNAME_TYPE => TYPE_BOOL,
+                        SchemaDefinition::ARGNAME_DESCRIPTION => $translationAPI->__('The condition to check if its value is `true` or `false`', 'pop-component-model'),
+                        SchemaDefinition::ARGNAME_MANDATORY => true,
                     ],
                     [
-                        'name' => 'then',
-                        'type' => TYPE_MIXED,
-                        'description' => $translationAPI->__('The value to return if the condition evals to `true`', 'pop-component-model'),
-                        'mandatory' => true,
+                        SchemaDefinition::ARGNAME_NAME => 'then',
+                        SchemaDefinition::ARGNAME_TYPE => TYPE_MIXED,
+                        SchemaDefinition::ARGNAME_DESCRIPTION => $translationAPI->__('The value to return if the condition evals to `true`', 'pop-component-model'),
+                        SchemaDefinition::ARGNAME_MANDATORY => true,
                     ],
                     [
-                        'name' => 'else',
-                        'type' => TYPE_MIXED,
-                        'description' => $translationAPI->__('The value to return if the condition evals to `false`', 'pop-component-model'),
+                        SchemaDefinition::ARGNAME_NAME => 'else',
+                        SchemaDefinition::ARGNAME_TYPE => TYPE_MIXED,
+                        SchemaDefinition::ARGNAME_DESCRIPTION => $translationAPI->__('The value to return if the condition evals to `false`', 'pop-component-model'),
                     ],
                 ];
 
             case 'not':
                 return [
                     [
-                        'name' => 'value',
-                        'type' => TYPE_BOOL,
-                        'description' => $translationAPI->__('The value from which to return its opposite value', 'pop-component-model'),
-                        'mandatory' => true,
+                        SchemaDefinition::ARGNAME_NAME => 'value',
+                        SchemaDefinition::ARGNAME_TYPE => TYPE_BOOL,
+                        SchemaDefinition::ARGNAME_DESCRIPTION => $translationAPI->__('The value from which to return its opposite value', 'pop-component-model'),
+                        SchemaDefinition::ARGNAME_MANDATORY => true,
                     ],
                 ];
 
@@ -95,65 +96,65 @@ class OperatorsFieldValueResolver extends AbstractOperatorsFieldValueResolver
             case 'or':
                 return [
                     [
-                        'name' => 'values',
-                        'type' => DataloadUtils::combineTypes(TYPE_ARRAY, TYPE_BOOL),
-                        'description' => sprintf(
+                        SchemaDefinition::ARGNAME_NAME => 'values',
+                        SchemaDefinition::ARGNAME_TYPE => DataloadUtils::combineTypes(TYPE_ARRAY, TYPE_BOOL),
+                        SchemaDefinition::ARGNAME_DESCRIPTION => sprintf(
                             $translationAPI->__('The array of values on which to execute the `%s` operation', 'pop-component-model'),
                             strtoupper($fieldName)
                         ),
-                        'mandatory' => true,
+                        SchemaDefinition::ARGNAME_MANDATORY => true,
                     ],
                 ];
 
             case 'equals':
                 return [
                     [
-                        'name' => 'value1',
-                        'type' => TYPE_MIXED,
-                        'description' => $translationAPI->__('The first value to compare', 'pop-component-model'),
-                        'mandatory' => true,
+                        SchemaDefinition::ARGNAME_NAME => 'value1',
+                        SchemaDefinition::ARGNAME_TYPE => TYPE_MIXED,
+                        SchemaDefinition::ARGNAME_DESCRIPTION => $translationAPI->__('The first value to compare', 'pop-component-model'),
+                        SchemaDefinition::ARGNAME_MANDATORY => true,
                     ],
                     [
-                        'name' => 'value2',
-                        'type' => TYPE_MIXED,
-                        'description' => $translationAPI->__('The second value to compare', 'pop-component-model'),
-                        'mandatory' => true,
+                        SchemaDefinition::ARGNAME_NAME => 'value2',
+                        SchemaDefinition::ARGNAME_TYPE => TYPE_MIXED,
+                        SchemaDefinition::ARGNAME_DESCRIPTION => $translationAPI->__('The second value to compare', 'pop-component-model'),
+                        SchemaDefinition::ARGNAME_MANDATORY => true,
                     ],
                 ];
 
             case 'empty':
                 return [
                     [
-                        'name' => 'value',
-                        'type' => TYPE_MIXED,
-                        'description' => $translationAPI->__('The value to check if it is empty', 'pop-component-model'),
-                        'mandatory' => true,
+                        SchemaDefinition::ARGNAME_NAME => 'value',
+                        SchemaDefinition::ARGNAME_TYPE => TYPE_MIXED,
+                        SchemaDefinition::ARGNAME_DESCRIPTION => $translationAPI->__('The value to check if it is empty', 'pop-component-model'),
+                        SchemaDefinition::ARGNAME_MANDATORY => true,
                     ],
                 ];
 
             case 'var':
                 return [
                     [
-                        'name' => 'name',
-                        'type' => TYPE_STRING,
-                        'description' => $translationAPI->__('The name of the variable to retrieve from the `$vars` context object', 'pop-component-model'),
-                        'mandatory' => true,
+                        SchemaDefinition::ARGNAME_NAME => 'name',
+                        SchemaDefinition::ARGNAME_TYPE => TYPE_STRING,
+                        SchemaDefinition::ARGNAME_DESCRIPTION => $translationAPI->__('The name of the variable to retrieve from the `$vars` context object', 'pop-component-model'),
+                        SchemaDefinition::ARGNAME_MANDATORY => true,
                     ],
                 ];
 
             case 'sprintf':
                 return [
                     [
-                        'name' => 'string',
-                        'type' => TYPE_STRING,
-                        'description' => $translationAPI->__('The string containing the placeholders', 'pop-component-model'),
-                        'mandatory' => true,
+                        SchemaDefinition::ARGNAME_NAME => 'string',
+                        SchemaDefinition::ARGNAME_TYPE => TYPE_STRING,
+                        SchemaDefinition::ARGNAME_DESCRIPTION => $translationAPI->__('The string containing the placeholders', 'pop-component-model'),
+                        SchemaDefinition::ARGNAME_MANDATORY => true,
                     ],
                     [
-                        'name' => 'values',
-                        'type' => DataloadUtils::combineTypes(TYPE_ARRAY, TYPE_STRING),
-                        'description' => $translationAPI->__('The values to replace the placeholders with inside the string', 'pop-component-model'),
-                        'mandatory' => true,
+                        SchemaDefinition::ARGNAME_NAME => 'values',
+                        SchemaDefinition::ARGNAME_TYPE => DataloadUtils::combineTypes(TYPE_ARRAY, TYPE_STRING),
+                        SchemaDefinition::ARGNAME_DESCRIPTION => $translationAPI->__('The values to replace the placeholders with inside the string', 'pop-component-model'),
+                        SchemaDefinition::ARGNAME_MANDATORY => true,
                     ],
                 ];
         }

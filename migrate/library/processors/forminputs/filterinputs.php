@@ -113,17 +113,17 @@ class PoP_Module_Processor_FilterInputs extends \PoP\ComponentModel\AbstractForm
                 $dateFormat = 'YYYY-MM-DD';
                 // Save documentation as template, and remove it
                 $documentation = $documentationItems[0];
-                unset($documentation['name']);
-                unset($documentation['description']);
+                unset($documentation[SchemaDefinition::ARGNAME_NAME]);
+                unset($documentation[SchemaDefinition::ARGNAME_DESCRIPTION]);
                 array_shift($documentationItems);
                 // Add the other elements, using the original documantation as placeholder
                 $documentationItems[] = array_merge(
                     [
-                        'name' => PoP_InputUtils::getMultipleinputsName($name, $subnames[0]),
+                        SchemaDefinition::ARGNAME_NAME => PoP_InputUtils::getMultipleinputsName($name, $subnames[0]),
                     ],
                     $documentation,
                     [
-                        'description' => sprintf(
+                        SchemaDefinition::ARGNAME_DESCRIPTION => sprintf(
                             $translationAPI->__('Search for elements starting from this date, in format \'%s\'', 'pop-engine'),
                             $dateFormat
                         ),
@@ -131,11 +131,11 @@ class PoP_Module_Processor_FilterInputs extends \PoP\ComponentModel\AbstractForm
                 );
                 $documentationItems[] = array_merge(
                     [
-                        'name' => PoP_InputUtils::getMultipleinputsName($name, $subnames[1]),
+                        SchemaDefinition::ARGNAME_NAME => PoP_InputUtils::getMultipleinputsName($name, $subnames[1]),
                     ],
                     $documentation,
                     [
-                        'description' => sprintf(
+                        SchemaDefinition::ARGNAME_DESCRIPTION => sprintf(
                             $translationAPI->__('Search for elements starting until this date, in format \'%s\'', 'pop-engine'),
                             $dateFormat
                         ),
