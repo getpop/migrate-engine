@@ -2,6 +2,7 @@
 use PoP\Engine\FilterInputProcessor;
 use PoP\Translation\Facades\TranslationAPIFacade;
 use PoP\ComponentModel\PoP_InputUtils;
+use PoP\ComponentModel\SchemaDefinition;
 
 class PoP_Module_Processor_FilterInputs extends \PoP\ComponentModel\AbstractFormInputs implements \PoP\ComponentModel\DataloadQueryArgsFilter
 {
@@ -148,13 +149,13 @@ class PoP_Module_Processor_FilterInputs extends \PoP\ComponentModel\AbstractForm
     public function getFilterDocumentationType(array $module): ?string
     {
         $types = [
-            self::MODULE_FILTERINPUT_ORDER => TYPE_STRING,
-            self::MODULE_FILTERINPUT_LIMIT => TYPE_INT,
-            self::MODULE_FILTERINPUT_OFFSET => TYPE_INT,
-            self::MODULE_FILTERINPUT_SEARCH => TYPE_STRING,
-            self::MODULE_FILTERINPUT_DATES => TYPE_DATE,
-            self::MODULE_FILTERINPUT_IDS => \PoP\ComponentModel\DataloadUtils::combineTypes(TYPE_ARRAY, TYPE_ID),
-            self::MODULE_FILTERINPUT_ID => TYPE_STRING,
+            self::MODULE_FILTERINPUT_ORDER => SchemaDefinition::TYPE_STRING,
+            self::MODULE_FILTERINPUT_LIMIT => SchemaDefinition::TYPE_INT,
+            self::MODULE_FILTERINPUT_OFFSET => SchemaDefinition::TYPE_INT,
+            self::MODULE_FILTERINPUT_SEARCH => SchemaDefinition::TYPE_STRING,
+            self::MODULE_FILTERINPUT_DATES => SchemaDefinition::TYPE_DATE,
+            self::MODULE_FILTERINPUT_IDS => \PoP\ComponentModel\DataloadUtils::combineTypes(SchemaDefinition::TYPE_ARRAY, SchemaDefinition::TYPE_ID),
+            self::MODULE_FILTERINPUT_ID => SchemaDefinition::TYPE_STRING,
         ];
         return $types[$module[1]] ?? parent::getFilterDocumentationType($module);
     }

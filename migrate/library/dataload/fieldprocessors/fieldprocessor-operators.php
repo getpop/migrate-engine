@@ -27,15 +27,15 @@ class OperatorsFieldValueResolver extends AbstractOperatorsFieldValueResolver
     public function getFieldDocumentationType(string $fieldName): ?string
     {
         $types = [
-            'if' => TYPE_MIXED,
-            'not' => TYPE_BOOL,
-            'and' => TYPE_BOOL,
-            'or' => TYPE_BOOL,
-            'equals' => TYPE_BOOL,
-            'empty' => TYPE_BOOL,
-            'var' => TYPE_MIXED,
-            'context' => TYPE_OBJECT,
-            'sprintf' => TYPE_STRING,
+            'if' => SchemaDefinition::TYPE_MIXED,
+            'not' => SchemaDefinition::TYPE_BOOL,
+            'and' => SchemaDefinition::TYPE_BOOL,
+            'or' => SchemaDefinition::TYPE_BOOL,
+            'equals' => SchemaDefinition::TYPE_BOOL,
+            'empty' => SchemaDefinition::TYPE_BOOL,
+            'var' => SchemaDefinition::TYPE_MIXED,
+            'context' => SchemaDefinition::TYPE_OBJECT,
+            'sprintf' => SchemaDefinition::TYPE_STRING,
         ];
         return $types[$fieldName];
     }
@@ -65,19 +65,19 @@ class OperatorsFieldValueResolver extends AbstractOperatorsFieldValueResolver
                 return [
                     [
                         SchemaDefinition::ARGNAME_NAME => 'condition',
-                        SchemaDefinition::ARGNAME_TYPE => TYPE_BOOL,
+                        SchemaDefinition::ARGNAME_TYPE => SchemaDefinition::TYPE_BOOL,
                         SchemaDefinition::ARGNAME_DESCRIPTION => $translationAPI->__('The condition to check if its value is `true` or `false`', 'pop-component-model'),
                         SchemaDefinition::ARGNAME_MANDATORY => true,
                     ],
                     [
                         SchemaDefinition::ARGNAME_NAME => 'then',
-                        SchemaDefinition::ARGNAME_TYPE => TYPE_MIXED,
+                        SchemaDefinition::ARGNAME_TYPE => SchemaDefinition::TYPE_MIXED,
                         SchemaDefinition::ARGNAME_DESCRIPTION => $translationAPI->__('The value to return if the condition evals to `true`', 'pop-component-model'),
                         SchemaDefinition::ARGNAME_MANDATORY => true,
                     ],
                     [
                         SchemaDefinition::ARGNAME_NAME => 'else',
-                        SchemaDefinition::ARGNAME_TYPE => TYPE_MIXED,
+                        SchemaDefinition::ARGNAME_TYPE => SchemaDefinition::TYPE_MIXED,
                         SchemaDefinition::ARGNAME_DESCRIPTION => $translationAPI->__('The value to return if the condition evals to `false`', 'pop-component-model'),
                     ],
                 ];
@@ -86,7 +86,7 @@ class OperatorsFieldValueResolver extends AbstractOperatorsFieldValueResolver
                 return [
                     [
                         SchemaDefinition::ARGNAME_NAME => 'value',
-                        SchemaDefinition::ARGNAME_TYPE => TYPE_BOOL,
+                        SchemaDefinition::ARGNAME_TYPE => SchemaDefinition::TYPE_BOOL,
                         SchemaDefinition::ARGNAME_DESCRIPTION => $translationAPI->__('The value from which to return its opposite value', 'pop-component-model'),
                         SchemaDefinition::ARGNAME_MANDATORY => true,
                     ],
@@ -97,7 +97,7 @@ class OperatorsFieldValueResolver extends AbstractOperatorsFieldValueResolver
                 return [
                     [
                         SchemaDefinition::ARGNAME_NAME => 'values',
-                        SchemaDefinition::ARGNAME_TYPE => DataloadUtils::combineTypes(TYPE_ARRAY, TYPE_BOOL),
+                        SchemaDefinition::ARGNAME_TYPE => DataloadUtils::combineTypes(SchemaDefinition::TYPE_ARRAY, SchemaDefinition::TYPE_BOOL),
                         SchemaDefinition::ARGNAME_DESCRIPTION => sprintf(
                             $translationAPI->__('The array of values on which to execute the `%s` operation', 'pop-component-model'),
                             strtoupper($fieldName)
@@ -110,13 +110,13 @@ class OperatorsFieldValueResolver extends AbstractOperatorsFieldValueResolver
                 return [
                     [
                         SchemaDefinition::ARGNAME_NAME => 'value1',
-                        SchemaDefinition::ARGNAME_TYPE => TYPE_MIXED,
+                        SchemaDefinition::ARGNAME_TYPE => SchemaDefinition::TYPE_MIXED,
                         SchemaDefinition::ARGNAME_DESCRIPTION => $translationAPI->__('The first value to compare', 'pop-component-model'),
                         SchemaDefinition::ARGNAME_MANDATORY => true,
                     ],
                     [
                         SchemaDefinition::ARGNAME_NAME => 'value2',
-                        SchemaDefinition::ARGNAME_TYPE => TYPE_MIXED,
+                        SchemaDefinition::ARGNAME_TYPE => SchemaDefinition::TYPE_MIXED,
                         SchemaDefinition::ARGNAME_DESCRIPTION => $translationAPI->__('The second value to compare', 'pop-component-model'),
                         SchemaDefinition::ARGNAME_MANDATORY => true,
                     ],
@@ -126,7 +126,7 @@ class OperatorsFieldValueResolver extends AbstractOperatorsFieldValueResolver
                 return [
                     [
                         SchemaDefinition::ARGNAME_NAME => 'value',
-                        SchemaDefinition::ARGNAME_TYPE => TYPE_MIXED,
+                        SchemaDefinition::ARGNAME_TYPE => SchemaDefinition::TYPE_MIXED,
                         SchemaDefinition::ARGNAME_DESCRIPTION => $translationAPI->__('The value to check if it is empty', 'pop-component-model'),
                         SchemaDefinition::ARGNAME_MANDATORY => true,
                     ],
@@ -136,7 +136,7 @@ class OperatorsFieldValueResolver extends AbstractOperatorsFieldValueResolver
                 return [
                     [
                         SchemaDefinition::ARGNAME_NAME => 'name',
-                        SchemaDefinition::ARGNAME_TYPE => TYPE_STRING,
+                        SchemaDefinition::ARGNAME_TYPE => SchemaDefinition::TYPE_STRING,
                         SchemaDefinition::ARGNAME_DESCRIPTION => $translationAPI->__('The name of the variable to retrieve from the `$vars` context object', 'pop-component-model'),
                         SchemaDefinition::ARGNAME_MANDATORY => true,
                     ],
@@ -146,13 +146,13 @@ class OperatorsFieldValueResolver extends AbstractOperatorsFieldValueResolver
                 return [
                     [
                         SchemaDefinition::ARGNAME_NAME => 'string',
-                        SchemaDefinition::ARGNAME_TYPE => TYPE_STRING,
+                        SchemaDefinition::ARGNAME_TYPE => SchemaDefinition::TYPE_STRING,
                         SchemaDefinition::ARGNAME_DESCRIPTION => $translationAPI->__('The string containing the placeholders', 'pop-component-model'),
                         SchemaDefinition::ARGNAME_MANDATORY => true,
                     ],
                     [
                         SchemaDefinition::ARGNAME_NAME => 'values',
-                        SchemaDefinition::ARGNAME_TYPE => DataloadUtils::combineTypes(TYPE_ARRAY, TYPE_STRING),
+                        SchemaDefinition::ARGNAME_TYPE => DataloadUtils::combineTypes(SchemaDefinition::TYPE_ARRAY, SchemaDefinition::TYPE_STRING),
                         SchemaDefinition::ARGNAME_DESCRIPTION => $translationAPI->__('The values to replace the placeholders with inside the string', 'pop-component-model'),
                         SchemaDefinition::ARGNAME_MANDATORY => true,
                     ],
