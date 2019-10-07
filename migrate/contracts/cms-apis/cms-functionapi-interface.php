@@ -12,4 +12,5 @@ interface FunctionAPI
     public function isError($object): bool;
     public function getContentDir();
     public function getContentURL();
+    public function getDate($format, $date);
 }
