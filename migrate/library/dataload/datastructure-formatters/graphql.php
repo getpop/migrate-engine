@@ -37,7 +37,10 @@ class DataStructureFormatter_GraphQL extends DataStructureFormatter_MirrorQuery
             $ret['errors'] = $errors;
         }
 
-        // Add deprecations
+        // Add warnings and deprecations
+        if ($data['schemaWarnings']) {
+            $ret['warnings'] = $this->reformatSchemaEntries($data['schemaWarnings']);
+        }
         if ($data['schemaDeprecations']) {
             $ret['deprecations'] = $this->reformatSchemaEntries($data['schemaDeprecations']);
         }

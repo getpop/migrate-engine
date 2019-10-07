@@ -4,19 +4,23 @@ use PoP\ComponentModel\FieldUtils;
 
 trait FilterIDsSatisfyingConditionTrait
 {
-    protected function getIdsSatisfyingCondition($fieldResolver, array &$resultIDItems, array &$idsDataFields, array &$dbErrors, array &$schemaErrors, array &$schemaDeprecations)
+    protected function getIdsSatisfyingCondition($fieldResolver, array &$resultIDItems, array &$idsDataFields, array &$dbErrors, array &$schemaErrors, array &$schemaWarnings, array &$schemaDeprecations)
     {
         // First validate schema (eg of error in schema: ?fields=posts<include(if:this-field-doesnt-exist())>)
         list(
             $directiveArgs,
             $directiveSchemaErrors,
+            $directiveSchemaWarnings,
             $directiveSchemaDeprecations
         ) = FieldUtils::extractFieldArgumentsForSchema($fieldResolver, $this->directive);
-        if ($directiveSchemaErrors || $directiveSchemaDeprecations) {
+        if ($directiveSchemaErrors || $directiveSchemaWarnings || $directiveSchemaDeprecations) {
             // Save the errors
             $directiveOutputKey = FieldUtils::getFieldOutputKey($this->directive);
             foreach ($directiveSchemaErrors as $error) {
                 $schemaErrors[$directiveOutputKey][] = $error;
+            }
+            foreach ($directiveSchemaWarnings as $error) {
+                $schemaWarnings[$directiveOutputKey][] = $error;
             }
             foreach ($directiveSchemaDeprecations as $error) {
                 $schemaDeprecations[$directiveOutputKey][] = $error;
