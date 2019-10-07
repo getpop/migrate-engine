@@ -139,7 +139,7 @@ class DataStructureFormatter_MirrorQuery extends \PoP\ComponentModel\DataStructu
                     // Watch out! If the property has already been loaded from a previous iteration, in some cases it can create trouble!
                     // But make sure that there truly are subproperties! It could also be a schemaError.
                     // Eg: ?fields=posts.title.id, then no need to transform "title" from string to {"id" => ...}
-                    if (!empty($dbObjectNestedPropertyRet) && !\PoP\ComponentModel\ErrorMessageUtils::getSchemaError($dbKey, $nestedField)) {
+                    if (!empty($dbObjectNestedPropertyRet) && !\PoP\ComponentModel\ErrorMessageUtils::getSchemaErrorsForField($dbKey, $nestedField)) {
                         // 1. If we load a relational property as its ID, and then load properties on the corresponding object, then it will fail because it will attempt to add a property to a non-array element
                         // Eg: /posts/api/graphql/?fields=id|author,author.name will first return "author => 1" and on the "1" element add property "name"
                         // Then, if this situation happens, simply override the ID (which is a scalar value, such as an int or string) with an object with the 'id' property
