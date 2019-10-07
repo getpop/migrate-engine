@@ -111,7 +111,7 @@ class PoP_Module_Processor_FilterInputs extends \PoP\ComponentModel\AbstractForm
                 $translationAPI = TranslationAPIFacade::getInstance();
                 $name = $this->getName($module);
                 $subnames = $this->getInputOptions($module)['subnames'];
-                $dateFormat = 'YYYY-MM-DD';
+                $dateFormat = 'Y-m-d';
                 // Save documentation as template, and remove it
                 $documentation = $documentationItems[0];
                 unset($documentation[SchemaDefinition::ARGNAME_NAME]);
