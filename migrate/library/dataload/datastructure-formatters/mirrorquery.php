@@ -1,7 +1,7 @@
 <?php
 namespace PoP\Engine\Impl;
 use PoP\ComponentModel\Schema\FieldQueryInterpreter;
-use PoP\ComponentModel\Schema\ErrorMessageUtils;
+use PoP\ComponentModel\Schema\ErrorMessageStore;
 
 define('GD_DATALOAD_DATASTRUCTURE_MIRRORQUERY', 'mirrorquery');
 
@@ -131,7 +131,7 @@ class DataStructureFormatter_MirrorQuery extends \PoP\ComponentModel\DataStructu
                 // Watch out! If the property has already been loaded from a previous iteration, in some cases it can create trouble!
                 // But make sure that there truly are subproperties! It could also be a schemaError.
                 // Eg: ?fields=posts.title.id, then no need to transform "title" from string to {"id" => ...}
-                if (ErrorMessageUtils::getSchemaErrorsForField($dbKey, $nestedField)) {
+                if (ErrorMessageStore::getSchemaErrorsForField($dbKey, $nestedField)) {
                     $dbObjectRet[$nestedFieldOutputKey] = $dbObject[$nestedFieldOutputKey];
                 } else {
                     // The first field, "id", needs not be concatenated. All the others do need
