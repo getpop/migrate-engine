@@ -1,6 +1,6 @@
 <?php
 namespace PoP\Engine;
-use PoP\ComponentModel\FieldUtils;
+use PoP\ComponentModel\Schema\FieldUtils;
 
 trait FilterIDsSatisfyingConditionTrait
 {

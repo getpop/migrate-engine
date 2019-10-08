@@ -2,7 +2,7 @@
 use PoP\Engine\FilterInputProcessor;
 use PoP\Translation\Facades\TranslationAPIFacade;
 use PoP\ComponentModel\PoP_InputUtils;
-use PoP\ComponentModel\SchemaDefinition;
+use PoP\ComponentModel\Schema\SchemaDefinition;
 
 class PoP_Module_Processor_FilterInputs extends \PoP\ComponentModel\AbstractFormInputs implements \PoP\ComponentModel\DataloadQueryArgsFilter
 {

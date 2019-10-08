@@ -5,7 +5,7 @@ use PoP\Hooks\Facades\HooksAPIFacade;
 use PoP\Translation\Facades\TranslationAPIFacade;
 use PoP\ComponentModel\Engine_Vars;
 use PoP\ComponentModel\DataloadUtils;
-use PoP\ComponentModel\SchemaDefinition;
+use PoP\ComponentModel\Schema\SchemaDefinition;
 
 class OperatorsFieldValueResolver extends AbstractOperatorsFieldValueResolver
 {
