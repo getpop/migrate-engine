@@ -1,6 +1,6 @@
 <?php
 namespace PoP\Engine\Impl;
-use PoP\ComponentModel\Schema\FieldQueryInterpreter;
+use PoP\ComponentModel\Facades\Schema\FieldQueryInterpreterFacade;
 use PoP\ComponentModel\Facades\Schema\ErrorMessageStoreFacade;
 
 define('GD_DATALOAD_DATASTRUCTURE_MIRRORQUERY', 'mirrorquery');
@@ -115,7 +115,7 @@ class DataStructureFormatter_MirrorQuery extends \PoP\ComponentModel\DataStructu
         $dbObject = $databases[$dbKey][$dbObjectID] ?? [];
         foreach ($propertyFields as $propertyField) {
             // Only if the property has been set (in case of dbError it is not set)
-            $propertyFieldOutputKey = FieldQueryInterpreter::getFieldOutputKey($propertyField);
+            $propertyFieldOutputKey = FieldQueryInterpreterFacade::getInstance()->getFieldOutputKey($propertyField);
             if (array_key_exists($propertyFieldOutputKey, $dbObject)) {
                 $dbObjectRet[$propertyFieldOutputKey] = $dbObject[$propertyFieldOutputKey];
             }
@@ -124,7 +124,7 @@ class DataStructureFormatter_MirrorQuery extends \PoP\ComponentModel\DataStructu
         // Add the nested levels
         foreach ($nestedFields as $nestedField => $nestedPropertyFields) {
 
-            $nestedFieldOutputKey = FieldQueryInterpreter::getFieldOutputKey($nestedField);
+            $nestedFieldOutputKey = FieldQueryInterpreterFacade::getInstance()->getFieldOutputKey($nestedField);
             // If the value of the nested property is NULL, then no need to return it (to avoid guessing if it's a null ID or a null array, in which case the response may be different)
             if (!is_null($dbObject[$nestedFieldOutputKey])) {
 

@@ -1,6 +1,6 @@
 <?php
 namespace PoP\Engine;
-use PoP\ComponentModel\Schema\FieldQueryInterpreter;
+use PoP\ComponentModel\Facades\Schema\FieldQueryInterpreterFacade;
 
 trait FilterIDsSatisfyingConditionTrait
 {
@@ -12,10 +12,10 @@ trait FilterIDsSatisfyingConditionTrait
             $directiveSchemaErrors,
             $directiveSchemaWarnings,
             $directiveSchemaDeprecations
-        ) = FieldQueryInterpreter::extractFieldArgumentsForSchema($fieldResolver, $this->directive);
+        ) = FieldQueryInterpreterFacade::getInstance()->extractFieldArgumentsForSchema($fieldResolver, $this->directive);
         if ($directiveSchemaErrors || $directiveSchemaWarnings || $directiveSchemaDeprecations) {
             // Save the errors
-            $directiveOutputKey = FieldQueryInterpreter::getFieldOutputKey($this->directive);
+            $directiveOutputKey = FieldQueryInterpreterFacade::getInstance()->getFieldOutputKey($this->directive);
             foreach ($directiveSchemaErrors as $error) {
                 $schemaErrors[$directiveOutputKey][] = $error;
             }
@@ -26,8 +26,8 @@ trait FilterIDsSatisfyingConditionTrait
                 $schemaDeprecations[$directiveOutputKey][] = $error;
             }
             // If there's an error, those args will be removed. Then, re-create the fieldDirective to pass it to the function below
-            $directiveName = FieldQueryInterpreter::getFieldDirectiveName($this->directive);
-            $directive = FieldQueryInterpreter::getFieldDirective($directiveName, $directiveArgs);
+            $directiveName = FieldQueryInterpreterFacade::getInstance()->getFieldDirectiveName($this->directive);
+            $directive = FieldQueryInterpreterFacade::getInstance()->getFieldDirective($directiveName, $directiveArgs);
         } else {
             $directive = $this->directive;
         }
@@ -37,7 +37,7 @@ trait FilterIDsSatisfyingConditionTrait
         foreach (array_keys($idsDataFields) as $id) {
             $resultItem = $resultIDItems[$id];
             // Extract the directiveArguments, to be evaluated on the field as fieldArgs
-            list($fieldArgs, $nestedDBErrors) = FieldQueryInterpreter::extractFieldArgumentsForResultItem($fieldResolver, $resultItem, $directive);
+            list($fieldArgs, $nestedDBErrors) = FieldQueryInterpreterFacade::getInstance()->extractFieldArgumentsForResultItem($fieldResolver, $resultItem, $directive);
             if ($nestedDBErrors) {
                 foreach ($nestedDBErrors as $id => $fieldOutputKeyErrorMessages) {
                     $dbErrors[$id] = array_merge(
