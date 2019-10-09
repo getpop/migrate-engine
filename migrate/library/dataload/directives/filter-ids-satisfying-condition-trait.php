@@ -7,7 +7,7 @@ trait FilterIDsSatisfyingConditionTrait
 {
     use DirectiveValidatorTrait;
 
-    protected function getIdsSatisfyingCondition($fieldResolver, array &$resultIDItems, array &$idsDataFields, array &$dbErrors, array &$schemaErrors, array &$schemaWarnings, array &$schemaDeprecations)
+    protected function getIdsSatisfyingCondition($fieldResolver, array &$resultIDItems, array &$idsDataFields, array &$dbErrors, array &$dbWarnings, array &$schemaErrors, array &$schemaWarnings, array &$schemaDeprecations)
     {
         // First validate schema (eg of error in schema: ?fields=posts<include(if:this-field-doesnt-exist())>)
         list(
@@ -22,7 +22,7 @@ trait FilterIDsSatisfyingConditionTrait
             list(
                 $resultItemDirective,
                 $resultItemDirectiveArgs
-            ) = $this->validateDirectiveForResultItem($fieldResolver, $resultItem, $directive, $dbErrors, $schemaWarnings);
+            ) = $this->validateDirectiveForResultItem($fieldResolver, $resultItem, $directive, $dbErrors, $dbWarnings);
             // $resultItemDirectiveArgs has all the right directiveArgs values. Now we can evaluate on it
             if ($resultItemDirectiveArgs['if']) {
                 $idsSatisfyingCondition[] = $id;
