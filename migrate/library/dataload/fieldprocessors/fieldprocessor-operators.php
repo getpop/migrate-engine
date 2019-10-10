@@ -21,6 +21,7 @@ class OperatorsFieldValueResolver extends AbstractOperatorsFieldValueResolver
             'var',
             'context',
             'sprintf',
+            'divide',
         ];
     }
 
@@ -36,6 +37,7 @@ class OperatorsFieldValueResolver extends AbstractOperatorsFieldValueResolver
             'var' => SchemaDefinition::TYPE_MIXED,
             'context' => SchemaDefinition::TYPE_OBJECT,
             'sprintf' => SchemaDefinition::TYPE_STRING,
+            'divide' => SchemaDefinition::TYPE_FLOAT,
         ];
         return $types[$fieldName];
     }
@@ -53,6 +55,7 @@ class OperatorsFieldValueResolver extends AbstractOperatorsFieldValueResolver
             'var' => $translationAPI->__('Retrieve the value of a certain property from the `$vars` context object', 'pop-component-model'),
             'context' => $translationAPI->__('Retrieve the `$vars` context object', 'pop-component-model'),
             'sprintf' => $translationAPI->__('Replace placeholders inside a string with provided values', 'pop-component-model'),
+            'divide' => $translationAPI->__('Divide a number by another number', 'pop-component-model'),
         ];
         return $descriptions[$fieldName];
     }
@@ -157,6 +160,22 @@ class OperatorsFieldValueResolver extends AbstractOperatorsFieldValueResolver
                         SchemaDefinition::ARGNAME_MANDATORY => true,
                     ],
                 ];
+
+                case 'divide':
+                    return [
+                        [
+                            SchemaDefinition::ARGNAME_NAME => 'number',
+                            SchemaDefinition::ARGNAME_TYPE => SchemaDefinition::TYPE_FLOAT,
+                            SchemaDefinition::ARGNAME_DESCRIPTION => $translationAPI->__('Number to divide', 'pop-component-model'),
+                            SchemaDefinition::ARGNAME_MANDATORY => true,
+                        ],
+                        [
+                            SchemaDefinition::ARGNAME_NAME => 'by',
+                            SchemaDefinition::ARGNAME_TYPE => SchemaDefinition::TYPE_FLOAT,
+                            SchemaDefinition::ARGNAME_DESCRIPTION => $translationAPI->__('The division operandum', 'pop-component-model'),
+                            SchemaDefinition::ARGNAME_MANDATORY => true,
+                        ],
+                    ];
         }
 
         return parent::getFieldDocumentationArgs($fieldName);
@@ -228,6 +247,8 @@ class OperatorsFieldValueResolver extends AbstractOperatorsFieldValueResolver
                 return $this->getSafeVars();
             case 'sprintf':
                 return sprintf($fieldArgs['string'], ...$fieldArgs['values']);
+            case 'divide':
+                return (float)$fieldArgs['number']/(float)$fieldArgs['by'];
         }
 
         return parent::resolveValue($fieldResolver, $resultItem, $fieldName, $fieldArgs);
