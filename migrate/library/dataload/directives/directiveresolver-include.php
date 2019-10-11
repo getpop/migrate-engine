@@ -23,4 +23,4 @@ class IncludeDirectiveResolver extends AbstractDirectiveResolver
     }
 }
 
-IncludeDirectiveResolver::attach(POP_ATTACHABLEEXTENSIONGROUP_FIELDDIRECTIVERESOLVERS);
+IncludeDirectiveResolver::attach(\PoP\ComponentModel\AttachableExtensions\AttachableExtensionGroups::FIELDDIRECTIVERESOLVERS);

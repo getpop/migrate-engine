@@ -256,4 +256,4 @@ class OperatorsFieldValueResolver extends AbstractOperatorsFieldValueResolver
 }
 
 // Static Initialization: Attach
-OperatorsFieldValueResolver::attach(POP_ATTACHABLEEXTENSIONGROUP_FIELDVALUERESOLVERS);
+OperatorsFieldValueResolver::attach(\PoP\ComponentModel\AttachableExtensions\AttachableExtensionGroups::FIELDVALUERESOLVERS);

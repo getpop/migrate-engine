@@ -22,4 +22,4 @@ class SkipDirectiveResolver extends AbstractDirectiveResolver
     }
 }
 
-SkipDirectiveResolver::attach(POP_ATTACHABLEEXTENSIONGROUP_FIELDDIRECTIVERESOLVERS);
+SkipDirectiveResolver::attach(\PoP\ComponentModel\AttachableExtensions\AttachableExtensionGroups::FIELDDIRECTIVERESOLVERS);
