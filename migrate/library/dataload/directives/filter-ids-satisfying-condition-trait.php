@@ -15,7 +15,8 @@ trait FilterIDsSatisfyingConditionTrait
             // Validate directive args for the resultItem
             $resultItem = $resultIDItems[$id];
             list(
-                $resultItemDirective,
+                $resultItemValidDirective,
+                $resultItemDirectiveName,
                 $resultItemDirectiveArgs
             ) = $this->dissectAndValidateDirectiveForResultItem($fieldResolver, $resultItem, $this->directive, $dbErrors, $dbWarnings);
             // $resultItemDirectiveArgs has all the right directiveArgs values. Now we can evaluate on it
