@@ -7,7 +7,7 @@ trait FilterIDsSatisfyingConditionTrait
 {
     use DirectiveValidatorTrait;
 
-    protected function getIdsSatisfyingCondition($fieldResolver, array &$resultIDItems, array &$idsDataFields, array &$dbErrors, array &$dbWarnings, array &$schemaErrors, array &$schemaWarnings, array &$schemaDeprecations)
+    protected function getIdsSatisfyingCondition($fieldResolver, array &$resultIDItems, array &$idsDataFields, array &$dbErrors, array &$dbWarnings)
     {
         // Check the condition field. If it is satisfied, then skip those fields
         $idsSatisfyingCondition = [];
@@ -19,7 +19,7 @@ trait FilterIDsSatisfyingConditionTrait
                 $resultItemDirectiveName,
                 $resultItemDirectiveArgs
             ) = $this->dissectAndValidateDirectiveForResultItem($fieldResolver, $resultItem, $this->directive, $dbErrors, $dbWarnings);
-            // Check that the directive is valid
+            // Check that the directive is valid. If it is not, $dbErrors will have the error already added
             if (is_null($resultItemValidDirective)) {
                 continue;
             }
