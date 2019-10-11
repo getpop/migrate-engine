@@ -25,7 +25,7 @@ class OperatorsFieldValueResolver extends AbstractOperatorsFieldValueResolver
         ];
     }
 
-    public function getFieldDocumentationType(string $fieldName): ?string
+    public function getFieldDocumentationType($fieldResolver, string $fieldName): ?string
     {
         $types = [
             'if' => SchemaDefinition::TYPE_MIXED,
@@ -39,10 +39,10 @@ class OperatorsFieldValueResolver extends AbstractOperatorsFieldValueResolver
             'sprintf' => SchemaDefinition::TYPE_STRING,
             'divide' => SchemaDefinition::TYPE_FLOAT,
         ];
-        return $types[$fieldName];
+        return $types[$fieldName] ?? parent::getFieldDocumentationType($fieldResolver, $fieldName);
     }
 
-    public function getFieldDocumentationDescription(string $fieldName): ?string
+    public function getFieldDocumentationDescription($fieldResolver, string $fieldName): ?string
     {
         $translationAPI = TranslationAPIFacade::getInstance();
         $descriptions = [
@@ -57,7 +57,7 @@ class OperatorsFieldValueResolver extends AbstractOperatorsFieldValueResolver
             'sprintf' => $translationAPI->__('Replace placeholders inside a string with provided values', 'pop-component-model'),
             'divide' => $translationAPI->__('Divide a number by another number', 'pop-component-model'),
         ];
-        return $descriptions[$fieldName];
+        return $descriptions[$fieldName] ?? parent::getFieldDocumentationDescription($fieldResolver, $fieldName);
     }
 
     public function getFieldDocumentationArgs($fieldResolver, string $fieldName): ?array
