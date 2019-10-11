@@ -17,7 +17,7 @@ trait FilterIDsSatisfyingConditionTrait
             list(
                 $resultItemDirective,
                 $resultItemDirectiveArgs
-            ) = $this->validateDirectiveForResultItem($fieldResolver, $resultItem, $this->directive, $dbErrors, $dbWarnings);
+            ) = $this->dissectAndValidateDirectiveForResultItem($fieldResolver, $resultItem, $this->directive, $dbErrors, $dbWarnings);
             // $resultItemDirectiveArgs has all the right directiveArgs values. Now we can evaluate on it
             if ($resultItemDirectiveArgs['if']) {
                 $idsSatisfyingCondition[] = $id;
