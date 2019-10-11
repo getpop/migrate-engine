@@ -1,13 +1,9 @@
 <?php
 namespace PoP\Engine;
 
-use PoP\ComponentModel\Schema\DirectiveValidatorTrait;
-
 trait FilterIDsSatisfyingConditionTrait
 {
-    use DirectiveValidatorTrait;
-
-    protected function getIdsSatisfyingCondition($fieldResolver, array &$resultIDItems, array &$idsDataFields, array &$dbErrors, array &$dbWarnings)
+    protected function getIdsSatisfyingCondition($fieldResolver, array &$resultIDItems, string $directive, array &$idsDataFields, array &$dbErrors, array &$dbWarnings)
     {
         // Check the condition field. If it is satisfied, then skip those fields
         $idsSatisfyingCondition = [];
@@ -18,7 +14,7 @@ trait FilterIDsSatisfyingConditionTrait
                 $resultItemValidDirective,
                 $resultItemDirectiveName,
                 $resultItemDirectiveArgs
-            ) = $this->dissectAndValidateDirectiveForResultItem($fieldResolver, $resultItem, $this->directive, $dbErrors, $dbWarnings);
+            ) = $this->dissectAndValidateDirectiveForResultItem($fieldResolver, $resultItem, $directive, $dbErrors, $dbWarnings);
             // Check that the directive is valid. If it is not, $dbErrors will have the error already added
             if (is_null($resultItemValidDirective)) {
                 continue;
