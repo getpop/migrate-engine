@@ -9,6 +9,7 @@ use PoP\ComponentModel\Schema\SchemaDefinition;
 
 class OperatorsFieldValueResolver extends AbstractOperatorsFieldValueResolver
 {
+    public const HOOK_SAFEVARS = __CLASS__.':safeVars';
     public function getFieldNamesToResolve(): array
     {
         return [
@@ -207,7 +208,7 @@ class OperatorsFieldValueResolver extends AbstractOperatorsFieldValueResolver
         if (is_null($this->safeVars)) {
             $this->safeVars = Engine_Vars::getVars();
             HooksAPIFacade::getInstance()->doAction(
-                'PoP\ComponentModel\AbstractFieldResolver:safeVars',
+                self::HOOK_SAFEVARS,
                 array(&$this->safeVars)
             );
         }
