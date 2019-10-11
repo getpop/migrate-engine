@@ -60,7 +60,7 @@ class OperatorsFieldValueResolver extends AbstractOperatorsFieldValueResolver
         return $descriptions[$fieldName];
     }
 
-    public function getFieldDocumentationArgs(string $fieldName): ?array
+    public function getFieldDocumentationArgs($fieldResolver, string $fieldName): ?array
     {
         $translationAPI = TranslationAPIFacade::getInstance();
         switch ($fieldName) {
@@ -178,7 +178,7 @@ class OperatorsFieldValueResolver extends AbstractOperatorsFieldValueResolver
                     ];
         }
 
-        return parent::getFieldDocumentationArgs($fieldName);
+        return parent::getFieldDocumentationArgs($fieldResolver, $fieldName);
     }
 
     public function resolveSchemaValidationErrorDescription($fieldResolver, string $fieldName, array $fieldArgs = []): ?string
