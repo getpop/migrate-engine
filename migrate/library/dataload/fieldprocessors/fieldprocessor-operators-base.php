@@ -1,7 +1,8 @@
 <?php
 namespace PoP\Engine;
+use PoP\ComponentModel\FieldValueResolvers\AbstractDBDataFieldValueResolver;
 
-abstract class AbstractOperatorsFieldValueResolver extends \PoP\ComponentModel\AbstractDBDataFieldValueResolver
+abstract class AbstractOperatorsFieldValueResolver extends AbstractDBDataFieldValueResolver
 {
     public static function getClassesToAttachTo(): array
     {
