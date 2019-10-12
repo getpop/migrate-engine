@@ -1,7 +1,7 @@
 <?php
 namespace PoP\Engine;
 use PoP\ComponentModel\QueryHandlers\AbstractQueryHandler;
-use PoP\ComponentModel\QueryHandler\ResponseConstants;
+use PoP\ComponentModel\QueryHandlers\ResponseConstants;
 
 class QueryHandler_ActionExecution extends AbstractQueryHandler
 {

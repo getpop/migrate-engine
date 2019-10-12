@@ -1,6 +1,6 @@
 <?php
 namespace PoP\Engine;
-use PoP\ComponentModel\QueryHandler\ParamConstants;
+use PoP\ComponentModel\QueryHandlers\ParamConstants;
 
 class QueryHandler_Redirect extends QueryHandler_ActionExecution
 {

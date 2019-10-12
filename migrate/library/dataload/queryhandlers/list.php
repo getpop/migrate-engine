@@ -1,6 +1,6 @@
 <?php
 use PoP\ComponentModel\QueryHandlers\AbstractQueryHandler;
-use PoP\ComponentModel\QueryHandler\ParamConstants;
+use PoP\ComponentModel\QueryHandlers\ParamConstants;
 
 class GD_DataLoad_QueryHandler_List extends AbstractQueryHandler
 {
