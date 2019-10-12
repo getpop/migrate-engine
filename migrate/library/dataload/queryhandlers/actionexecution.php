@@ -1,9 +1,10 @@
 <?php
 namespace PoP\Engine\Impl;
+use PoP\ComponentModel\QueryHandlers\AbstractQueryHandler;
 
 define('GD_DATALOAD_QUERYHANDLER_ACTIONEXECUTION', 'actionexecution');
 
-class QueryHandler_ActionExecution extends \PoP\ComponentModel\QueryHandlerBase
+class QueryHandler_ActionExecution extends AbstractQueryHandler
 {
     public function getName()
     {
