@@ -1,5 +1,6 @@
 <?php
 namespace PoP\Engine;
+use PoP\ComponentModel\QueryHandler\ParamConstants;
 
 class QueryHandler_Redirect extends QueryHandler_ActionExecution
 {
@@ -16,7 +17,7 @@ class QueryHandler_Redirect extends QueryHandler_ActionExecution
     {
         $ret = parent::getQueryParams($data_properties, $dataaccess_checkpoint_validation, $actionexecution_checkpoint_validation, $executed, $dbObjectIDOrIDs);
 
-        $query_args = $data_properties[GD_DATALOAD_QUERYARGS];
+        $query_args = $data_properties[ParamConstants::QUERYARGS];
 
         // Add the Redirect to Param. If there is none, use the referrer.
         // This is useful when coming from the Login link above the Template, which can't pass the 'redirect_to' data
@@ -29,10 +30,10 @@ class QueryHandler_Redirect extends QueryHandler_ActionExecution
     
     //     $ret = parent::getUniquetodomainQuerystate($data_properties, $dataaccess_checkpoint_validation, $actionexecution_checkpoint_validation, $executed, $dbobjectids);
 
-    //     $query_args = $data_properties[GD_DATALOAD_QUERYARGS];
+    //     $query_args = $data_properties[ParamConstants::QUERYARGS];
 
     //     // Add the Redirect to
-    //     $ret[GD_DATALOAD_PARAMS][GD_URLPARAM_REDIRECTTO] = $query_args[GD_URLPARAM_REDIRECTTO];
+    //     $ret[ParamConstants::PARAMS][GD_URLPARAM_REDIRECTTO] = $query_args[GD_URLPARAM_REDIRECTTO];
 
     //     return $ret;
     // }
@@ -41,10 +42,10 @@ class QueryHandler_Redirect extends QueryHandler_ActionExecution
     
     //     $ret = parent::getDatafeedback($data_properties, $dataaccess_checkpoint_validation, $actionexecution_checkpoint_validation, $executed, $dbobjectids);
 
-    //     $query_args = $data_properties[GD_DATALOAD_QUERYARGS];
+    //     $query_args = $data_properties[ParamConstants::QUERYARGS];
         
     //     // Add the Redirect to
-    //     $ret[GD_DATALOAD_PARAMS][GD_URLPARAM_REDIRECTTO] = $query_args[GD_URLPARAM_REDIRECTTO];
+    //     $ret[ParamConstants::PARAMS][GD_URLPARAM_REDIRECTTO] = $query_args[GD_URLPARAM_REDIRECTTO];
         
     //     return $ret;
     // }

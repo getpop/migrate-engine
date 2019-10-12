@@ -1,6 +1,7 @@
 <?php
 namespace PoP\Engine;
 use PoP\ComponentModel\QueryHandlers\AbstractQueryHandler;
+use PoP\ComponentModel\QueryHandler\ResponseConstants;
 
 class QueryHandler_ActionExecution extends AbstractQueryHandler
 {
@@ -9,7 +10,7 @@ class QueryHandler_ActionExecution extends AbstractQueryHandler
         $ret = parent::getQueryResult($data_properties, $dataaccess_checkpoint_validation, $actionexecution_checkpoint_validation, $executed, $dbObjectIDOrIDs);
 
         if ($executed) {
-            // $ret['success'] = $executed[GD_DATALOAD_QUERYHANDLERRESPONSE_SUCCESS] ? true : false;
+            // $ret['success'] = $executed[ResponseConstants::SUCCESS] ? true : false;
 
             // // Redirect?
             // if ($redirect = $executed[GD_DATALOAD_QUERYHANDLERRESPONSE_SOFTREDIRECT]) {
@@ -46,7 +47,7 @@ class QueryHandler_ActionExecution extends AbstractQueryHandler
 
     //         // Allow for multiple messages. Eg: invite members email, send whenever email is valid, error when invalid
     //         $msgs = array();
-    //         if ($data[GD_DATALOAD_QUERYHANDLERRESPONSE_SUCCESS]) {
+    //         if ($data[ResponseConstants::SUCCESS]) {
 
     //             $msg = array(
     //                 'icon' => 'glyphicon-ok',
@@ -61,7 +62,7 @@ class QueryHandler_ActionExecution extends AbstractQueryHandler
     //                     'code' => 'content',
     //                 ),
     //             );
-    //             if ($success_strings = $data[GD_DATALOAD_QUERYHANDLERRESPONSE_SUCCESSSTRINGS]) {
+    //             if ($success_strings = $data[ResponseConstants::SUCCESSSTRINGS]) {
     //                 $msg['strings'] = $success_strings;
     //             }
     //             else {
@@ -71,15 +72,15 @@ class QueryHandler_ActionExecution extends AbstractQueryHandler
     //             $msgs[] = $msg;
     //             $ret['result'] = true;
     //         }
-    //         if ($data[GD_DATALOAD_QUERYHANDLERRESPONSE_ERRORCODES] || $data[GD_DATALOAD_QUERYHANDLERRESPONSE_ERRORSTRINGS]) {
+    //         if ($data[ResponseConstants::ERRORCODES] || $data[ResponseConstants::ERRORSTRINGS]) {
             
     //             $msg = array(
     //                 'icon' => 'glyphicon-remove',
     //                 'header' => array(
     //                     'code' => 'error-header',
     //                 ),
-    //                 'strings' => $data[GD_DATALOAD_QUERYHANDLERRESPONSE_ERRORSTRINGS],
-    //                 'codes' => $data[GD_DATALOAD_QUERYHANDLERRESPONSE_ERRORCODES],
+    //                 'strings' => $data[ResponseConstants::ERRORSTRINGS],
+    //                 'codes' => $data[ResponseConstants::ERRORCODES],
     //                 GD_JS_CLASS => 'alert-danger',
     //             );
 
