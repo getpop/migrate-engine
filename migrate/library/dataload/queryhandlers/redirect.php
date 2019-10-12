@@ -1,15 +1,8 @@
 <?php
-namespace PoP\Engine\Impl;
-
-define('GD_DATALOAD_QUERYHANDLER_REDIRECT', 'redirect');
+namespace PoP\Engine;
 
 class QueryHandler_Redirect extends QueryHandler_ActionExecution
 {
-    public function getName()
-    {
-        return GD_DATALOAD_QUERYHANDLER_REDIRECT;
-    }
-
     // function prepareQueryArgs(&$query_args) {
 
     //     parent::prepareQueryArgs($query_args);

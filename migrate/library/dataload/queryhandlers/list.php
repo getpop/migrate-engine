@@ -1,16 +1,8 @@
 <?php
 use PoP\ComponentModel\QueryHandlers\AbstractQueryHandler;
 
-// BlockList because it serves both Carousel and InfiniteScroll
-define('GD_DATALOAD_QUERYHANDLER_LIST', 'list');
-
 class GD_DataLoad_QueryHandler_List extends AbstractQueryHandler
 {
-    public function getName()
-    {
-        return GD_DATALOAD_QUERYHANDLER_LIST;
-    }
-
     public function prepareQueryArgs(&$query_args)
     {
         parent::prepareQueryArgs($query_args);

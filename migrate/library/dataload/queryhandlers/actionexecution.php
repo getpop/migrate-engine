@@ -1,16 +1,9 @@
 <?php
-namespace PoP\Engine\Impl;
+namespace PoP\Engine;
 use PoP\ComponentModel\QueryHandlers\AbstractQueryHandler;
-
-define('GD_DATALOAD_QUERYHANDLER_ACTIONEXECUTION', 'actionexecution');
 
 class QueryHandler_ActionExecution extends AbstractQueryHandler
 {
-    public function getName()
-    {
-        return GD_DATALOAD_QUERYHANDLER_ACTIONEXECUTION;
-    }
-
     public function getQueryResult($data_properties, $dataaccess_checkpoint_validation, $actionexecution_checkpoint_validation, $executed, $dbObjectIDOrIDs): array
     {
         $ret = parent::getQueryResult($data_properties, $dataaccess_checkpoint_validation, $actionexecution_checkpoint_validation, $executed, $dbObjectIDOrIDs);
