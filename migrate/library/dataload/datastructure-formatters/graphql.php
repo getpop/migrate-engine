@@ -1,8 +1,6 @@
 <?php
 namespace PoP\Engine\Impl;
 
-use PoP\Translation\Facades\TranslationAPIFacade;
-
 define('GD_DATALOAD_DATASTRUCTURE_GRAPHQL', 'graphql');
 
 class DataStructureFormatter_GraphQL extends DataStructureFormatter_MirrorQuery
