@@ -182,7 +182,7 @@ class PoP_Module_Processor_FilterInputs extends \PoP\ComponentModel\AbstractForm
             self::MODULE_FILTERINPUT_OFFSET => $translationAPI->__('Offset the results by how many places (required for pagination)', 'pop-engine'),
             self::MODULE_FILTERINPUT_SEARCH => $translationAPI->__('Search for elements containing the given string', 'pop-engine'),
             self::MODULE_FILTERINPUT_IDS => sprintf(
-                $translationAPI->__('Search for elements with the given IDs, passed as an array through \'variables\' param (eg: ?fields=posts(ids:$ids)&variables[ids][]=4&variables[ids][]=7)', 'pop-engine'),
+                $translationAPI->__('Search for elements with the given IDs, passed as an array through \'variables\' param (eg: ?query=posts(ids:$ids)&variables[ids][]=4&variables[ids][]=7)', 'pop-engine'),
                 POP_CONSTANT_PARAMVALUE_SEPARATOR
             ),
             self::MODULE_FILTERINPUT_ID => sprintf(

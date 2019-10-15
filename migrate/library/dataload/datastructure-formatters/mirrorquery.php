@@ -133,7 +133,7 @@ class DataStructureFormatter_MirrorQuery extends \PoP\ComponentModel\DataStructu
                 } else {
                     // Watch out! If the property has already been loaded from a previous iteration, in some cases it can create trouble!
                     // But make sure that there truly are subproperties! It could also be a schemaError.
-                    // Eg: ?fields=posts.title.id, then no need to transform "title" from string to {"id" => ...}
+                    // Eg: ?query=posts.title.id, then no need to transform "title" from string to {"id" => ...}
                     if (ErrorMessageStoreFacade::getInstance()->getSchemaErrorsForField($dbKey, $nestedField)) {
                         $dbObjectRet[$nestedFieldOutputKey] = $dbObject[$nestedFieldOutputKey];
                     } else {
@@ -149,7 +149,7 @@ class DataStructureFormatter_MirrorQuery extends \PoP\ComponentModel\DataStructu
                         } else {
                             if (!empty($dbObjectNestedPropertyRet)) {
                                 // 1. If we load a relational property as its ID, and then load properties on the corresponding object, then it will fail because it will attempt to add a property to a non-array element
-                                // Eg: /posts/api/graphql/?fields=id|author,author.name will first return "author => 1" and on the "1" element add property "name"
+                                // Eg: /posts/api/graphql/?query=id|author,author.name will first return "author => 1" and on the "1" element add property "name"
                                 // Then, if this situation happens, simply override the ID (which is a scalar value, such as an int or string) with an object with the 'id' property
                                 if (!is_array($dbObjectNestedPropertyRet)) {
                                     $dbObjectRet[$nestedFieldOutputKey] = [
@@ -157,7 +157,7 @@ class DataStructureFormatter_MirrorQuery extends \PoP\ComponentModel\DataStructu
                                     ];
                                 } else {
                                     // 2. If the previous iteration loaded an array of IDs, then override this value with an empty array and initialize the ID again to this object, through adding property 'id' on the next iteration
-                                    // Eg: /api/graphql/?fields=tags,tags.name
+                                    // Eg: /api/graphql/?query=tags,tags.name
                                     $dbObjectRet[$nestedFieldOutputKey] = [];
                                     if (!in_array('id', $nestedPropertyFields)) {
                                         array_unshift($nestedPropertyFields, 'id');
