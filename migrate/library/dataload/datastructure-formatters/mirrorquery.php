@@ -16,7 +16,7 @@ class DataStructureFormatter_MirrorQuery extends \PoP\ComponentModel\DataStructu
     {
         // Allow REST to override with default fields
         $vars = \PoP\ComponentModel\Engine_Vars::getVars();
-        return $vars['fields'];
+        return $vars['query'];
     }
 
     public function getFormattedData($data)
