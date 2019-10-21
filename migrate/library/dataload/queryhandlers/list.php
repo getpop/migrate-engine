@@ -1,6 +1,6 @@
 <?php
 use PoP\ComponentModel\QueryInputOutputHandlers\AbstractQueryInputOutputHandler;
-use PoP\Site\ModuleProcessors\DataloadingConstants;
+use PoP\Application\ModuleProcessors\DataloadingConstants;
 
 class GD_DataLoad_QueryInputOutputHandler_List extends AbstractQueryInputOutputHandler
 {
