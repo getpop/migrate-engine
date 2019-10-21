@@ -7,4 +7,9 @@ abstract class HelperAPI_Base implements HelperAPI
     {
         HelperAPIFactory::setInstance($this);
     }
+
+    public function addQueryArgs(array $key_values, string $url): string
+    {
+        return GeneralUtils::addQueryArgs($key_values, $url);
+    }
 }
