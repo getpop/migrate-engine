@@ -3,6 +3,7 @@ namespace PoP\Engine\Impl;
 use PoP\Hooks\Facades\HooksAPIFacade;
 use PoP\ComponentModel\Managers\ModuleFilterManager;
 use PoP\ComponentModel\QueryInputOutputHandlers\ParamConstants;
+use PoP\ComponentModel\GeneralUtils;
 
 class EngineHooks
 {
@@ -50,8 +51,7 @@ class EngineHooks
 
         // Fetch the lazy-loaded data using the Background URL load
         if ($helperCalculations['has-lazy-load']) {
-            $cmsenginehelpers = \PoP\Engine\HelperAPIFactory::getInstance();
-            $url = $cmsenginehelpers->addQueryArgs([
+                $url = GeneralUtils::addQueryArgs([
                 GD_URLPARAM_DATAOUTPUTITEMS => [
                     GD_URLPARAM_DATAOUTPUTITEMS_META, 
                     GD_URLPARAM_DATAOUTPUTITEMS_MODULEDATA, 
