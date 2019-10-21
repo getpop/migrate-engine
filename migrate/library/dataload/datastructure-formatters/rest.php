@@ -1,6 +1,6 @@
 <?php
 namespace PoP\Engine\Impl;
-
+use PoP\ComponentModel\Facades\Engine\EngineFacade;
 define('GD_DATALOAD_DATASTRUCTURE_REST', 'rest');
 
 class DataStructureFormatter_REST extends DataStructureFormatter_MirrorQuery
@@ -13,7 +13,7 @@ class DataStructureFormatter_REST extends DataStructureFormatter_MirrorQuery
     protected function getFields()
     {
         // Get the fields from the entry module's module atts
-        $engine = \PoP\ComponentModel\EngineFactory::getInstance();
+        $engine = EngineFacade::getInstance();
         $entryModule = $engine->getEntryModule();
         if ($moduleAtts = $entryModule[2]) {
             if ($fields = $moduleAtts['fields']) {

@@ -43,7 +43,7 @@ class DataStructureFormatter_MirrorQuery extends \PoP\ComponentModel\DataStructu
     //     // getting the data from the corresponding dbKeyPath
     //     $ret = [];
     //     if ($fields = $this->getFields()) {
-    //         $engine = EngineFactory::getInstance();
+    //         $engine = EngineFacade::getInstance();
     //         list($has_extra_routes) = $engine->listExtraRouteVars();
     //         $vars = \PoP\ComponentModel\Engine_Vars::getVars();
     //         $dataoutputmode = $vars['dataoutputmode'];

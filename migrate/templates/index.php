@@ -1,4 +1,5 @@
 <?php
+use PoP\ComponentModel\Facades\Engine\EngineFacade;
 
 \PoP\ComponentModel\TemplateUtils::validatePopLoaded(true);
 \PoP\ComponentModel\TemplateUtils::maybeRedirect();
@@ -7,7 +8,7 @@
 // Indicate that this is a json response in the HTTP Header
 header('Content-type: application/json');
 
-$engine = \PoP\ComponentModel\EngineFactory::getInstance();
+$engine = EngineFacade::getInstance();
 // $engine->checkRedirect();
 // $engine->generateData();
 // // $engine->output();
