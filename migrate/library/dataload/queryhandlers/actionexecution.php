@@ -1,9 +1,9 @@
 <?php
 namespace PoP\Engine;
-use PoP\ComponentModel\QueryHandlers\AbstractQueryHandler;
-use PoP\ComponentModel\QueryHandlers\ResponseConstants;
+use PoP\ComponentModel\QueryInputOutputHandlers\AbstractQueryInputOutputHandler;
+use PoP\ComponentModel\QueryInputOutputHandlers\ResponseConstants;
 
-class QueryHandler_ActionExecution extends AbstractQueryHandler
+class QueryInputOutputHandler_ActionExecution extends AbstractQueryInputOutputHandler
 {
     public function getQueryResult($data_properties, $dataaccess_checkpoint_validation, $actionexecution_checkpoint_validation, $executed, $dbObjectIDOrIDs): array
     {
@@ -118,4 +118,4 @@ class QueryHandler_ActionExecution extends AbstractQueryHandler
 /**
  * Initialize
  */
-new QueryHandler_ActionExecution();
+new QueryInputOutputHandler_ActionExecution();

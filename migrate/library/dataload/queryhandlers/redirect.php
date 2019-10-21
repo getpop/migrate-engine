@@ -1,8 +1,8 @@
 <?php
 namespace PoP\Engine;
-use PoP\ComponentModel\QueryHandlers\ParamConstants;
+use PoP\ComponentModel\QueryInputOutputHandlers\ParamConstants;
 
-class QueryHandler_Redirect extends QueryHandler_ActionExecution
+class QueryInputOutputHandler_Redirect extends QueryInputOutputHandler_ActionExecution
 {
     // function prepareQueryArgs(&$query_args) {
 
@@ -54,4 +54,4 @@ class QueryHandler_Redirect extends QueryHandler_ActionExecution
 /**
  * Initialize
  */
-new QueryHandler_Redirect();
+new QueryInputOutputHandler_Redirect();

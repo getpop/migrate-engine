@@ -1,8 +1,8 @@
 <?php
-use PoP\ComponentModel\QueryHandlers\AbstractQueryHandler;
-use PoP\ComponentModel\QueryHandlers\ParamConstants;
+use PoP\ComponentModel\QueryInputOutputHandlers\AbstractQueryInputOutputHandler;
+use PoP\ComponentModel\QueryInputOutputHandlers\ParamConstants;
 
-class GD_DataLoad_QueryHandler_List extends AbstractQueryHandler
+class GD_DataLoad_QueryInputOutputHandler_List extends AbstractQueryInputOutputHandler
 {
     public function prepareQueryArgs(&$query_args)
     {
@@ -113,7 +113,7 @@ class GD_DataLoad_QueryHandler_List extends AbstractQueryHandler
     //     $ret[ParamConstants::PARAMS][GD_URLPARAM_PAGENUMBER] = $stop_loading ? '' : $nextpaged;
 
     //     // Do not send this value back when doing loadLatest, or it will mess up the original structure loading
-    //     // Doing 'unset' as to also take it out if an ancestor class (eg: GD_DataLoad_BlockQueryHandler) has set it
+    //     // Doing 'unset' as to also take it out if an ancestor class (eg: GD_DataLoad_BlockQueryInputOutputHandler) has set it
     //     if ($vars['loading-latest']) {
 
     //         unset($ret[GD_URLPARAM_STOPFETCHING]);
@@ -188,7 +188,7 @@ class GD_DataLoad_QueryHandler_List extends AbstractQueryHandler
     //     }
 
     //     // Do not send this value back when doing loadLatest, or it will mess up the original structure loading
-    //     // Doing 'unset' as to also take it out if an ancestor class (eg: GD_DataLoad_BlockQueryHandler) has set it
+    //     // Doing 'unset' as to also take it out if an ancestor class (eg: GD_DataLoad_BlockQueryInputOutputHandler) has set it
     //     if ($vars['loading-latest']) {
 
     //         unset($ret[GD_URLPARAM_STOPFETCHING]);
@@ -201,4 +201,4 @@ class GD_DataLoad_QueryHandler_List extends AbstractQueryHandler
 /**
  * Initialize
  */
-new GD_DataLoad_QueryHandler_List();
+new GD_DataLoad_QueryInputOutputHandler_List();
