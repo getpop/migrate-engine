@@ -12,4 +12,9 @@ abstract class HelperAPI_Base implements HelperAPI
     {
         return GeneralUtils::addQueryArgs($key_values, $url);
     }
+
+    public function removeQueryArgs(array $keys, string $url): string
+    {
+        return GeneralUtils::removeQueryArgs($keys, $url);
+    }
 }
