@@ -1,6 +1,6 @@
 <?php
 use PoP\ComponentModel\QueryInputOutputHandlers\AbstractQueryInputOutputHandler;
-use PoP\Site\ModuleProcessors\ParamConstants;
+use PoP\Site\ModuleProcessors\DataloadingConstants;
 use PoP\ComponentModel\ModuleProcessors\DataloadingConstants;
 
 class GD_DataLoad_QueryInputOutputHandler_List extends AbstractQueryInputOutputHandler
@@ -35,7 +35,7 @@ class GD_DataLoad_QueryInputOutputHandler_List extends AbstractQueryInputOutputH
         }
         
         // If it is lazy load, no need to calculate pagenumber / stop-fetching / etc
-        if ($data_properties[ParamConstants::LAZYLOAD] || $data_properties[ParamConstants::EXTERNALLOAD] || $data_properties[DataloadingConstants::DATASOURCE] != POP_DATALOAD_DATASOURCE_MUTABLEONREQUEST || $vars['loading-latest']) {
+        if ($data_properties[DataloadingConstants::LAZYLOAD] || $data_properties[DataloadingConstants::EXTERNALLOAD] || $data_properties[DataloadingConstants::DATASOURCE] != POP_DATALOAD_DATASOURCE_MUTABLEONREQUEST || $vars['loading-latest']) {
             return $ret;
         }
 
@@ -85,25 +85,25 @@ class GD_DataLoad_QueryInputOutputHandler_List extends AbstractQueryInputOutputH
     //     $ret[GD_URLPARAM_TIMESTAMP] = POP_CONSTANT_CURRENTTIMESTAMP;
 
     //     // If data is not to be loaded, then "stop-fetching" as to not show the Load More button
-    //     if ($data_properties[ParamConstants::SKIPDATALOAD]) {
+    //     if ($data_properties[DataloadingConstants::SKIPDATALOAD]) {
 
     //         $ret[GD_URLPARAM_STOPFETCHING] = true;
     //         return $ret;
     //     }
         
     //     // If it is lazy load, no need to calculate pagenumber / stop-fetching / etc
-    //     if ($data_properties[ParamConstants::LAZYLOAD]) {
+    //     if ($data_properties[DataloadingConstants::LAZYLOAD]) {
 
     //         return $ret;
     //     }
 
     //     // If loading static data, then that's it
-    //     if ($data_properties[ParamConstants::DATASOURCE] != POP_DATALOAD_DATASOURCE_MUTABLEONREQUEST) {
+    //     if ($data_properties[DataloadingConstants::DATASOURCE] != POP_DATALOAD_DATASOURCE_MUTABLEONREQUEST) {
 
     //         return $ret;
     //     }
 
-    //     $query_args = $data_properties[ParamConstants::QUERYARGS];
+    //     $query_args = $data_properties[DataloadingConstants::QUERYARGS];
     //     $pagenumber = $query_args[GD_URLPARAM_PAGENUMBER];
     //     $stop_loading = PoP_BaseCollectionData_Utils::stopFetching($dbobjectids, $data_properties);
         
@@ -127,7 +127,7 @@ class GD_DataLoad_QueryInputOutputHandler_List extends AbstractQueryInputOutputH
     
     //     $ret = parent::getSharedbydomainsQuerystate($data_properties, $dataaccess_checkpoint_validation, $actionexecution_checkpoint_validation, $executed, $dbobjectids);
 
-    //     $query_args = $data_properties[ParamConstants::QUERYARGS];
+    //     $query_args = $data_properties[DataloadingConstants::QUERYARGS];
 
     //     $limit = $query_args[GD_URLPARAM_LIMIT];
     //     $ret[ParamConstants::PARAMS][GD_URLPARAM_LIMIT] = $limit;
@@ -139,13 +139,13 @@ class GD_DataLoad_QueryInputOutputHandler_List extends AbstractQueryInputOutputH
     
     //     $ret = parent::getDatafeedback($data_properties, $dataaccess_checkpoint_validation, $actionexecution_checkpoint_validation, $executed, $dbobjectids);
 
-    //     $query_args = $data_properties[ParamConstants::QUERYARGS];
+    //     $query_args = $data_properties[DataloadingConstants::QUERYARGS];
 
     //     $limit = $query_args[GD_URLPARAM_LIMIT];
     //     $ret[ParamConstants::PARAMS][GD_URLPARAM_LIMIT] = $limit;
 
     //     // If it is lazy load, no need to calculate show-msg / pagenumber / stop-fetching / etc
-    //     if ($data_properties[ParamConstants::LAZYLOAD]) {
+    //     if ($data_properties[DataloadingConstants::LAZYLOAD]) {
 
     //         return $ret;
     //     }
@@ -183,9 +183,9 @@ class GD_DataLoad_QueryInputOutputHandler_List extends AbstractQueryInputOutputH
     //     $ret[GD_URLPARAM_STOPFETCHING] = $stop_loading;
 
     //     // Add the Fetch more link for the Search Engine
-    //     if (!$stop_loading && $data_properties[ParamConstants::SOURCE]) {
+    //     if (!$stop_loading && $data_properties[DataloadingConstants::SOURCE]) {
 
-    //         $ret[POP_IOCONSTANT_QUERYNEXTURL] = add_query_arg(GD_URLPARAM_PAGENUMBER, $pagenumber+1, $data_properties[ParamConstants::SOURCE]);
+    //         $ret[POP_IOCONSTANT_QUERYNEXTURL] = add_query_arg(GD_URLPARAM_PAGENUMBER, $pagenumber+1, $data_properties[DataloadingConstants::SOURCE]);
     //     }
 
     //     // Do not send this value back when doing loadLatest, or it will mess up the original structure loading

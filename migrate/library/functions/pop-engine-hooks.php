@@ -2,7 +2,7 @@
 namespace PoP\Engine\Impl;
 use PoP\Hooks\Facades\HooksAPIFacade;
 use PoP\ComponentModel\Managers\ModuleFilterManager;
-use PoP\Site\ModuleProcessors\ParamConstants;
+use PoP\Site\ModuleProcessors\DataloadingConstants;
 use PoP\ComponentModel\GeneralUtils;
 
 class EngineHooks
@@ -39,7 +39,7 @@ class EngineHooks
     {
         $data_properties = &$data_properties_in_array[0];
 
-        if ($data_properties[ParamConstants::LAZYLOAD]) {
+        if ($data_properties[DataloadingConstants::LAZYLOAD]) {
             $helperCalculations = &$helperCalculations_in_array[0];
             $helperCalculations['has-lazy-load'] = true;
         }
