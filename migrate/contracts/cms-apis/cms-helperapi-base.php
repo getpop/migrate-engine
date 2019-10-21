@@ -17,4 +17,9 @@ abstract class HelperAPI_Base implements HelperAPI
     {
         return GeneralUtils::removeQueryArgs($keys, $url);
     }
+
+    public function maybeAddTrailingSlash(string $text): string
+    {
+        return GeneralUtils::maybeAddTrailingSlash($text);
+    }
 }
