@@ -1,6 +1,7 @@
 <?php
 use PoP\ComponentModel\QueryInputOutputHandlers\AbstractQueryInputOutputHandler;
-use PoP\ComponentModel\QueryInputOutputHandlers\ParamConstants;
+use PoP\Site\ModuleProcessors\ParamConstants;
+use PoP\ComponentModel\ModuleProcessors\DataloadingConstants;
 
 class GD_DataLoad_QueryInputOutputHandler_List extends AbstractQueryInputOutputHandler
 {
@@ -29,17 +30,17 @@ class GD_DataLoad_QueryInputOutputHandler_List extends AbstractQueryInputOutputH
         $vars = \PoP\ComponentModel\Engine_Vars::getVars();
 
         // Needed to loadLatest, to know from what time to get results
-        if ($data_properties[ParamConstants::DATASOURCE] == POP_DATALOAD_DATASOURCE_MUTABLEONREQUEST) {
+        if ($data_properties[DataloadingConstants::DATASOURCE] == POP_DATALOAD_DATASOURCE_MUTABLEONREQUEST) {
             $ret[GD_URLPARAM_TIMESTAMP] = POP_CONSTANT_CURRENTTIMESTAMP;
         }
         
         // If it is lazy load, no need to calculate pagenumber / stop-fetching / etc
-        if ($data_properties[ParamConstants::LAZYLOAD] || $data_properties[ParamConstants::EXTERNALLOAD] || $data_properties[ParamConstants::DATASOURCE] != POP_DATALOAD_DATASOURCE_MUTABLEONREQUEST || $vars['loading-latest']) {
+        if ($data_properties[ParamConstants::LAZYLOAD] || $data_properties[ParamConstants::EXTERNALLOAD] || $data_properties[DataloadingConstants::DATASOURCE] != POP_DATALOAD_DATASOURCE_MUTABLEONREQUEST || $vars['loading-latest']) {
             return $ret;
         }
 
         // If data is not to be loaded, then "stop-fetching" as to not show the Load More button
-        if ($data_properties[ParamConstants::SKIPDATALOAD]) {
+        if ($data_properties[DataloadingConstants::SKIPDATALOAD]) {
             $ret[GD_URLPARAM_STOPFETCHING] = true;
             return $ret;
         }
@@ -55,11 +56,11 @@ class GD_DataLoad_QueryInputOutputHandler_List extends AbstractQueryInputOutputH
         $vars = \PoP\ComponentModel\Engine_Vars::getVars();
 
         // If data is not to be loaded, then "stop-fetching" as to not show the Load More button
-        if ($data_properties[ParamConstants::SKIPDATALOAD] || $data_properties[ParamConstants::DATASOURCE] != POP_DATALOAD_DATASOURCE_MUTABLEONREQUEST) {
+        if ($data_properties[DataloadingConstants::SKIPDATALOAD] || $data_properties[DataloadingConstants::DATASOURCE] != POP_DATALOAD_DATASOURCE_MUTABLEONREQUEST) {
             return $ret;
         }
 
-        $query_args = $data_properties[ParamConstants::QUERYARGS];
+        $query_args = $data_properties[DataloadingConstants::QUERYARGS];
 
         if ($limit = $query_args[GD_URLPARAM_LIMIT]) {
             $ret[GD_URLPARAM_LIMIT] = $limit;

@@ -1,6 +1,6 @@
 <?php
 namespace PoP\Engine;
-use PoP\ComponentModel\QueryInputOutputHandlers\ParamConstants;
+use PoP\ComponentModel\ModuleProcessors\DataloadingConstants;
 
 class QueryInputOutputHandler_Redirect extends QueryInputOutputHandler_ActionExecution
 {
@@ -17,7 +17,7 @@ class QueryInputOutputHandler_Redirect extends QueryInputOutputHandler_ActionExe
     {
         $ret = parent::getQueryParams($data_properties, $dataaccess_checkpoint_validation, $actionexecution_checkpoint_validation, $executed, $dbObjectIDOrIDs);
 
-        $query_args = $data_properties[ParamConstants::QUERYARGS];
+        $query_args = $data_properties[DataloadingConstants::QUERYARGS];
 
         // Add the Redirect to Param. If there is none, use the referrer.
         // This is useful when coming from the Login link above the Template, which can't pass the 'redirect_to' data

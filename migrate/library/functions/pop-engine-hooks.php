@@ -2,7 +2,7 @@
 namespace PoP\Engine\Impl;
 use PoP\Hooks\Facades\HooksAPIFacade;
 use PoP\ComponentModel\Managers\ModuleFilterManager;
-use PoP\ComponentModel\QueryInputOutputHandlers\ParamConstants;
+use PoP\Site\ModuleProcessors\ParamConstants;
 use PoP\ComponentModel\GeneralUtils;
 
 class EngineHooks
