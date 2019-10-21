@@ -1,8 +1,9 @@
 <?php
 namespace PoP\Engine;
 use PoP\ComponentModel\ModuleProcessors\DataloadingConstants;
+use PoP\Application\QueryInputOutputHandlers\ActionExecutionQueryInputOutputHandler;
 
-class QueryInputOutputHandler_Redirect extends QueryInputOutputHandler_ActionExecution
+class QueryInputOutputHandler_Redirect extends ActionExecutionQueryInputOutputHandler
 {
     // function prepareQueryArgs(&$query_args) {
 
