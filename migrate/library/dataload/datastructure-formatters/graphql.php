@@ -54,6 +54,11 @@ class DataStructureFormatter_GraphQL extends DataStructureFormatter_MirrorQuery
             $ret['deprecations'] = $this->reformatSchemaEntries($data['schemaDeprecations']);
         }
 
+        // Logs
+        if ($data['logEntries']) {
+            $ret['logEntries'] = $data['logEntries'];
+        }
+
         if ($resultData = parent::getFormattedData($data)) {
             // GraphQL places the queried data under entries 'data' => query => results
             // Replicate this structure. Because we don't have a query name here, replace it with the queried URL path, which is known to the client
