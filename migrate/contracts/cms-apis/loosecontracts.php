@@ -30,5 +30,5 @@ class CMSLooseContracts extends AbstractLooseContractSet
 /**
  * Initialize
  */
-new CMSLooseContracts();
+new CMSLooseContracts(\PoP\LooseContracts\Facades\Contracts\LooseContractManagerFacade::getInstance());
 
