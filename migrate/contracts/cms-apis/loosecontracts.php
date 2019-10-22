@@ -18,7 +18,6 @@ class CMSLooseContracts extends \PoP\LooseContracts\AbstractCMSLooseContracts
 	public function getRequiredNames() {
 		return [
 			// Options
-			'popcms:option:limit',
 			'popcms:option:dateFormat',
 			'popcms:option:charset',
 			'popcms:option:gmtOffset',
