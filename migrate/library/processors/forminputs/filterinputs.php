@@ -3,7 +3,7 @@ use PoP\Engine\FilterInputProcessor;
 use PoP\Translation\Facades\TranslationAPIFacade;
 use PoP\ComponentModel\PoP_InputUtils;
 use PoP\ComponentModel\Schema\SchemaDefinition;
-use PoP\LooseContracts\Facades\Contracts\NameResolverFacade;
+use PoP\LooseContracts\Facades\NameResolverFacade;
 
 class PoP_Module_Processor_FilterInputs extends \PoP\ComponentModel\AbstractFormInputs implements \PoP\ComponentModel\DataloadQueryArgsFilter
 {
