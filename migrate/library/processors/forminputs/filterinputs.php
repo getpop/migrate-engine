@@ -150,7 +150,7 @@ class PoP_Module_Processor_FilterInputs extends \PoP\ComponentModel\AbstractForm
         }
     }
 
-    public function getFilterDocumentationType(array $module): ?string
+    public function getSchemaFilterInputType(array $module): ?string
     {
         $types = [
             self::MODULE_FILTERINPUT_ORDER => SchemaDefinition::TYPE_STRING,
@@ -161,10 +161,10 @@ class PoP_Module_Processor_FilterInputs extends \PoP\ComponentModel\AbstractForm
             self::MODULE_FILTERINPUT_IDS => \PoP\ComponentModel\DataloadUtils::combineTypes(SchemaDefinition::TYPE_ARRAY, SchemaDefinition::TYPE_ID),
             self::MODULE_FILTERINPUT_ID => SchemaDefinition::TYPE_STRING,
         ];
-        return $types[$module[1]] ?? parent::getFilterDocumentationType($module);
+        return $types[$module[1]] ?? parent::getSchemaFilterInputType($module);
     }
 
-    public function getFilterDocumentationDescription(array $module): ?string
+    public function getSchemaFilterInputDescription(array $module): ?string
     {
         $translationAPI = TranslationAPIFacade::getInstance();
         switch ($module[1]) {
@@ -194,7 +194,7 @@ class PoP_Module_Processor_FilterInputs extends \PoP\ComponentModel\AbstractForm
                 POP_CONSTANT_PARAMVALUE_SEPARATOR
             ),
         ];
-        return $descriptions[$module[1]] ?? parent::getFilterDocumentationDescription($module);
+        return $descriptions[$module[1]] ?? parent::getSchemaFilterInputDescription($module);
     }
 }
 
