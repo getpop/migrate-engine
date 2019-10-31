@@ -4,13 +4,13 @@ use PoP\Translation\Facades\TranslationAPIFacade;
 use PoP\ComponentModel\PoP_InputUtils;
 use PoP\ComponentModel\Schema\SchemaDefinition;
 use PoP\LooseContracts\Facades\NameResolverFacade;
-use PoP\ComponentModel\ModuleProcessors\DataloadQueryArgsSchemaFilterModuleProcessorTrait;
-use PoP\ComponentModel\ModuleProcessors\DataloadQueryArgsFilterModuleProcessorInterface;
-use PoP\ComponentModel\ModuleProcessors\DataloadQueryArgsSchemaFilterModuleProcessorInterface;
+use PoP\ComponentModel\ModuleProcessors\DataloadQueryArgsSchemaFilterInputModuleProcessorTrait;
+use PoP\ComponentModel\ModuleProcessors\DataloadQueryArgsFilterInputModuleProcessorInterface;
+use PoP\ComponentModel\ModuleProcessors\DataloadQueryArgsSchemaFilterInputModuleProcessorInterface;
 
-class PoP_Module_Processor_FilterInputs extends \PoP\ComponentModel\AbstractFormInputs implements DataloadQueryArgsFilterModuleProcessorInterface, DataloadQueryArgsSchemaFilterModuleProcessorInterface
+class PoP_Module_Processor_FilterInputs extends \PoP\ComponentModel\AbstractFormInputs implements DataloadQueryArgsFilterInputModuleProcessorInterface, DataloadQueryArgsSchemaFilterInputModuleProcessorInterface
 {
-    use DataloadQueryArgsSchemaFilterModuleProcessorTrait;
+    use DataloadQueryArgsSchemaFilterInputModuleProcessorTrait;
 
     public const MODULE_FILTERINPUT_ORDER = 'filterinput-order';
     public const MODULE_FILTERINPUT_LIMIT = 'filterinput-limit';
