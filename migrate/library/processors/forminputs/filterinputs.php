@@ -159,7 +159,7 @@ class PoP_Module_Processor_FilterInputs extends \PoP\ComponentModel\AbstractForm
             self::MODULE_FILTERINPUT_OFFSET => SchemaDefinition::TYPE_INT,
             self::MODULE_FILTERINPUT_SEARCH => SchemaDefinition::TYPE_STRING,
             self::MODULE_FILTERINPUT_DATES => SchemaDefinition::TYPE_DATE,
-            self::MODULE_FILTERINPUT_IDS => TypeCastingHelpers::combineTypes(SchemaDefinition::TYPE_ARRAY, SchemaDefinition::TYPE_ID),
+            self::MODULE_FILTERINPUT_IDS => TypeCastingHelpers::makeArray(SchemaDefinition::TYPE_ID),
             self::MODULE_FILTERINPUT_ID => SchemaDefinition::TYPE_STRING,
         ];
         return $types[$module[1]] ?? parent::getSchemaFilterInputType($module);
