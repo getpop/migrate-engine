@@ -20,7 +20,7 @@
     "require": {
         "php" : "~7.1",
         "getpop/hooks": "^1.0@dev",
-        "getpop/root": ">=0.1",
+        "getpop/root": "~0.1",
         "getpop/translation": "^1.0@dev",
         "getpop/routing": "dev-master",
         "getpop/modulerouting": "dev-master",
