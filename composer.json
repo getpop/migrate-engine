@@ -19,12 +19,12 @@
     "prefer-stable": true,
     "require": {
         "php" : "~7.1",
-        "getpop/hooks": "^1.0@dev",
+        "getpop/hooks": "~0.1",
         "getpop/root": "~0.1",
-        "getpop/translation": "^1.0@dev",
-        "getpop/routing": "dev-master",
-        "getpop/modulerouting": "dev-master",
-        "getpop/definitions": "dev-master"
+        "getpop/translation": "~0.1",
+        "getpop/routing": "~0.1",
+        "getpop/modulerouting": "~0.1",
+        "getpop/definitions": "~0.1"
     },
     "autoload": {
         "files": [
