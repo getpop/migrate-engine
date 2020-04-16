@@ -21,8 +21,8 @@
         "php" : "~7.1",
         "getpop/hooks": "~0.1",
         "getpop/translation": "~0.1",
-        "getpop/routing": "~0.1",
-        "getpop/modulerouting": "~0.1",
+        "getpop/routing": "dev-master",
+        "getpop/modulerouting": "dev-master",
         "getpop/definitions": "~0.1"
     },
     "autoload": {
