@@ -25,11 +25,6 @@
         "getpop/modulerouting": "dev-master",
         "getpop/definitions": "~0.1"
     },
-    "autoload": {
-        "files": [
-            "initialize.php"
-        ]
-    },
     "extra": {
         "branch-alias": {
             "dev-master": "1.0-dev"
