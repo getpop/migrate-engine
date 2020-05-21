@@ -11,12 +11,12 @@ $class = (new class() extends \PoP\Root\Component\AbstractComponent
      *
      * @return void
      */
-    public static function beforeBoot()
+    public static function beforeBoot(): void
     {
         parent::beforeBoot();
 
         // Initialize code
-        require_once 'migrate/pop-engine.php';  
+        require_once 'migrate/pop-engine.php';
     }
 });
 $class::initialize();
