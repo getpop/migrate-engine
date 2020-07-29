@@ -27,7 +27,11 @@ function fullUrl(bool $useHostRequestedByClient = false): string
     $s = empty($_SERVER["HTTPS"]) ? '' : ($_SERVER["HTTPS"] == "on") ? "s" : "";
     $sp = strtolower($_SERVER["SERVER_PROTOCOL"]);
     $protocol = substr($sp, 0, strpos($sp, "/")) . $s;
-    $port = ($_SERVER["SERVER_PORT"] == "80") ? "" : (":".$_SERVER["SERVER_PORT"]);
+    /**
+     * The default ports (80 for HTTP and 443 for HTTPS) must be ignored
+     */
+    $isDefaultPort = $s ? $_SERVER["SERVER_PORT"] == "443" : $_SERVER["SERVER_PORT"] == "80";
+    $port = $isDefaultPort ? "" : (":" . $_SERVER["SERVER_PORT"]);
     /**
      * If accessing from Nginx, the server_name might point to localhost
      * instead of the actual server domain. So provide the change to use
