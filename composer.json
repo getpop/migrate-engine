@@ -19,11 +19,11 @@
     "prefer-stable": true,
     "require": {
         "php": "~7.2",
-        "getpop/hooks": "~0.1",
-        "getpop/translation": "~0.1",
+        "getpop/hooks": "dev-master",
+        "getpop/translation": "dev-master",
         "getpop/routing": "dev-master",
         "getpop/modulerouting": "dev-master",
-        "getpop/definitions": "~0.1"
+        "getpop/definitions": "dev-master"
     },
     "extra": {
         "branch-alias": {
