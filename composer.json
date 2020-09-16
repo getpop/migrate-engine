@@ -18,7 +18,7 @@
     "minimum-stability": "dev",
     "prefer-stable": true,
     "require": {
-        "php": "~7.2",
+        "php": "~7.4",
         "getpop/hooks": "dev-master",
         "getpop/translation": "dev-master",
         "getpop/routing": "dev-master",
