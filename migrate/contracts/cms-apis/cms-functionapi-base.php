@@ -17,11 +17,6 @@ abstract class FunctionAPI_Base implements FunctionAPI
         return removeScheme($this->getHomeURL());
     }
 
-    public function isError($object): bool
-    {
-    	return $object instanceof Throwable;
-    }
-
     public function getDate($format, $date) {
         return date($format, strtotime($date));
     }
