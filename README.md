@@ -1,6 +1,6 @@
 # (Temporary package) Migrate code to package: Engine
 
-Code to be migrated, from legacy PHP 5 code to modern PHP 7 code ([read more here](https://github.com/leoloso/PoP#codebase-migration)). Target package description:  Engine implementing the PoP core code
+Code to be migrated, from legacy to modern PHP code ([read more here](https://github.com/leoloso/PoP#codebase-migration)). Target package description:  Engine implementing the PoP core code
 
 ## Install
 
@@ -9,6 +9,10 @@ Via Composer
 ``` bash
 composer require getpop/migrate-engine
 ```
+
+## Development
+
+The source code is hosted on the [PoP monorepo](https://github.com/leoloso/PoP), under [`Engine/packages/migrate-engine`](https://github.com/leoloso/PoP/tree/master/layers/Engine/packages/migrate-engine).
 
 ## Security
 
@@ -36,4 +40,4 @@ The MIT License (MIT). Please see [License File](LICENSE.md) for more informatio
 [link-code-quality]: https://scrutinizer-ci.com/g/getpop/engine
 [link-downloads]: https://packagist.org/packages/getpop/engine
 [link-author]: https://github.com/leoloso
-[link-contributors]: ../../contributors
+[link-contributors]: ../../../../../../contributors

@@ -2,10 +2,7 @@
     "name": "getpop/migrate-engine",
     "type": "library",
     "description": "(Temporary package) Migrate code to package https://github.com/getpop/engine. Target package description: Engine implementing the PoP core code",
-    "keywords": [
-        "PoP",
-        "engine"
-    ],
+    "keywords": ["PoP", "engine"],
     "homepage": "https://github.com/getpop/migrate-engine",
     "license": "MIT",
     "authors": [
@@ -18,7 +15,7 @@
     "minimum-stability": "dev",
     "prefer-stable": true,
     "require": {
-        "php": "~7.2",
+        "php": "^7.4|^8.0",
         "getpop/hooks": "dev-master",
         "getpop/translation": "dev-master",
         "getpop/routing": "dev-master",
